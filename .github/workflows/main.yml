@@ -65,9 +65,7 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
-          cache-dependency-path: |
-            ui/extensions/user-preferences/yarn.lock
-            ui/pages/collections-dashboard/yarn.lock
+          cache-dependency-path: ${{ matrix.ui }}/yarn.lock
       - name: Install dependencies
         uses: borales/actions-yarn@v5
         with:
