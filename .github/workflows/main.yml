@@ -1,17 +1,14 @@
 name: Sample CI
-on: [ push, pull_request ]
+on: [push, pull_request]
 
 jobs:
-  build:
+  test-functions:
     strategy:
       matrix:
-        ui:
-          - ui/extensions/user-preferences
-          - ui/pages/collections-dashboard
         function:
           - functions/log-event
           - functions/process-events
-    name: Build and Test
+    name: Test Function - ${{ matrix.function }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,12 +33,12 @@ jobs:
         run: |
           python main.py > output.log 2>&1 &
           PID=$!
-          # Wait for output to appear (with timeout)
           timeout=30
           elapsed=0
           while [ $elapsed -lt $timeout ]; do
             if grep -q "running at port 8081" output.log; then
               echo "✅ Application started successfully"
+              kill $PID 2>/dev/null || true
               exit 0
             fi
             sleep 1
@@ -49,20 +46,28 @@ jobs:
           done
           echo "❌ Application failed to start within $timeout seconds"
           cat output.log
+          kill $PID 2>/dev/null || true
           exit 1
         working-directory: ${{ matrix.function }}
-      - name: Use Node 22
+
+  build-ui:
+    strategy:
+      matrix:
+        ui:
+          - ui/extensions/user-preferences
+          - ui/pages/collections-dashboard
+    name: Build UI - ${{ matrix.ui }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'yarn'
-      - name: Run yarn install in ${{ matrix.ui }}
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: install
-          dir: ${{ matrix.ui }}
-      - name: Build React app in ${{ matrix.ui }}
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: build
-          dir: ${{ matrix.ui }}
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ${{ matrix.ui }}
+      - name: Build React app
+        run: yarn build
+        working-directory: ${{ matrix.ui }}
