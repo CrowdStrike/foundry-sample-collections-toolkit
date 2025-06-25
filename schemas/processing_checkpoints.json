@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "x-cs-indexable-fields": [
+    { "field": "/workflow_id", "type": "string", "fql_name": "workflow_id" },
+    { "field": "/status", "type": "string", "fql_name": "status" },
+    { "field": "/last_processed_timestamp", "type": "integer", "fql_name": "last_processed_timestamp" }
+  ],
+  "type": "object",
+  "properties": {
+    "workflow_id": {
+      "type": "string",
+      "description": "Unique identifier for the workflow"
+    },
+    "last_processed_timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp of last processed event"
+    },
+    "processed_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of events processed"
+    },
+    "last_updated": {
+      "type": "integer",
+      "description": "Unix timestamp of checkpoint update"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["running", "completed", "failed"],
+      "description": "Current processing status"
+    }
+  },
+  "required": ["workflow_id", "last_processed_timestamp", "status"]
+}

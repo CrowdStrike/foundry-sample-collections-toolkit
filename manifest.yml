@@ -1,0 +1,160 @@
+app_id: 8271757288804f0ea5d1cdbb2c46b38d
+name: foundry-sample-collections
+description: A comprehensive guide to using Foundry Collections with examples
+logo: ""
+vendor: ""
+vendor_products: []
+use_case: Utilities
+manifest_version: "2023-05-09"
+ignored:
+    - .+/node_modules$
+    - .+/node_modules/.+
+    - .+/venv$
+    - .+/venv/.+
+ui:
+    homepage: pages.collections_dashboard
+    extensions:
+        - id: 51357d101c1540509f2ac0ecbd3785bf
+          name: user-preferences
+          description: Manage user preferences and settings
+          path: ui/extensions/user-preferences/src/dist
+          entrypoint: ui/extensions/user-preferences/src/dist/index.html
+          sockets:
+            - hosts.host.panel
+          content_security_policy:
+            connect-src: []
+            style-src: []
+            style-src-elem: []
+            script-src: []
+            form-action: []
+            img-src: []
+            media-src: []
+            object-src: []
+          permissions: []
+          is_ui_builder: false
+    pages:
+        collections_dashboard:
+            id: 03c8a238f7cc4923ab29757acd98ead2
+            name: collections-dashboard
+            description: Dashboard showing collections usage examples
+            path: ui/pages/collections-dashboard/src/dist
+            entrypoint: ui/pages/collections-dashboard/src/dist/index.html
+            content_security_policy:
+                connect-src: []
+                style-src: []
+                style-src-elem: []
+                script-src: []
+                form-action: []
+                img-src: []
+                media-src: []
+                object-src: []
+            permissions: []
+    dashboards: {}
+    navigation:
+        id: 48367c9e047447509fd5f576ae95f176
+        links:
+            - path: /collections-dashboard
+              name: Collections dashboard
+              permissions: []
+              ref: pages.collections_dashboard
+api_integrations: []
+rtr_scripts: []
+collections:
+    - name: user_preferences
+      description: Store user preferences and settings
+      schema: collections/user_preferences.json
+      permissions: []
+      workflow_integration:
+        system_action: true
+        tags:
+            - Collection
+    - name: processing_checkpoints
+      description: Store processing checkpoints for data workflows
+      schema: collections/processing_checkpoints.json
+      permissions: []
+      workflow_integration:
+        system_action: true
+        tags:
+            - Collection
+    - name: event_logs
+      description: Store event data for analysis
+      schema: collections/event_logs.json
+      permissions: []
+      workflow_integration:
+        system_action: true
+        tags:
+            - Collection
+    - name: threat_intel
+      description: Threat intelligence configuration data
+      schema: collections/threat_intel.json
+      permissions: []
+      workflow_integration:
+        system_action: true
+        tags:
+            - Collection
+auth:
+    scopes: []
+    permissions:
+        access:threat-intel:
+            id: 3f9c437826764ee19c8cd6e853f3378a
+            name: access-threat-intel
+            description: Permission to access threat intel
+    roles:
+        - id: 9f0b584788b24d3288808e681ba4bc64
+          name: threat-intel-access
+          description: Access to threat intelligence collections
+          permissions:
+            - access:threat-intel
+functions:
+    - id: cc6958cef57c4dc190c51614f64810ff
+      name: log-event
+      config: null
+      description: Store event data in collections
+      path: functions/log-event
+      environment_variables: {}
+      handlers:
+        - name: log_event_handler
+          description: Store event data in collections
+          method: POST
+          api_path: /log-event
+          payload_type: ""
+          request_schema: request_schema.json
+          response_schema: response_schema.json
+          workflow_integration:
+            id: 5c151adb3ee147188be446631b227ad6
+            disruptive: false
+            system_action: true
+            tags:
+                - 8271757288804f0ea5d1cdbb2c46b38d
+                - foundry-sample-collections
+          permissions: []
+      language: python
+    - id: c717d79231de4d51a14f9f14843b6873
+      name: process-events
+      config: null
+      description: Process events with checkpointing
+      path: functions/process-events
+      environment_variables: {}
+      handlers:
+        - name: process_events_handler
+          description: Process events with checkpointing
+          method: POST
+          api_path: /process-events
+          payload_type: ""
+          request_schema: request_schema.json
+          response_schema: response_schema.json
+          workflow_integration:
+            id: f7e6bc33ad594044961c1aa4cb80fab9
+            disruptive: false
+            system_action: true
+            tags:
+                - 8271757288804f0ea5d1cdbb2c46b38d
+                - foundry-sample-collections
+          permissions: []
+      language: python
+workflows: []
+parsers: []
+logscale:
+    saved_searches: []
+lookup_files: []
+docs: {}
