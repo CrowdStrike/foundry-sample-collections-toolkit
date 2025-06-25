@@ -66,8 +66,12 @@ jobs:
           node-version: 22
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install
-        working-directory: ${{ matrix.ui }}
+        uses: borales/actions-yarn@v5
+        with:
+          cmd: install
+          dir: ${{ matrix.ui }}
       - name: Build React app
-        run: yarn build
-        working-directory: ${{ matrix.ui }}
+        uses: borales/actions-yarn@v5
+        with:
+          cmd: build
+          dir: ${{ matrix.ui }}
