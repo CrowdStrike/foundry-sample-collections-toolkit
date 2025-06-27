@@ -64,15 +64,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-          cache-dependency-path: ${{ matrix.ui }}/yarn.lock
       - name: Install dependencies
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: install
-          dir: ${{ matrix.ui }}
+        run: npm ci
+        working-directory: ${{ matrix.ui }}
       - name: Build React app
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: build
-          dir: ${{ matrix.ui }}
+        run: npm run build
+        working-directory: ${{ matrix.ui }}
