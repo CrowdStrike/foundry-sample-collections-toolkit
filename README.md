@@ -17,7 +17,7 @@ The Collection sample Foundry app shows how to use collections with functions, w
 
 * The Foundry CLI (instructions below).
 * Python 3.13+ (needed if modifying the app's functions). See [Python For Beginners](https://www.python.org/about/gettingstarted/) for installation instructions.
-* Yarn (needed if modifying the app's UI). See https://yarnpkg.com/getting-started for installation instructions.
+* Node 22+ (needed if modifying the app's UI). See https://nodejs.org/en/download for installation instructions.
 
 ### Install the Foundry CLI
 
