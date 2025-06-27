@@ -1,7 +1,7 @@
-app_id: 8271757288804f0ea5d1cdbb2c46b38d
-name: foundry-sample-collections
-description: A comprehensive guide to using Foundry Collections with examples
-logo: ""
+app_id: 232c5405880a419b93959c023a508af4
+name: Collections
+description: A comprehensive example that shows how to use Foundry Collections
+logo: images/data-collection.png
 vendor: ""
 vendor_products: []
 use_case: Utilities
@@ -14,7 +14,7 @@ ignored:
 ui:
     homepage: pages.collections_dashboard
     extensions:
-        - id: 51357d101c1540509f2ac0ecbd3785bf
+        - id: 6db49dde90a74cf49116ccd59da36964
           name: user-preferences
           description: Manage user preferences and settings
           path: ui/extensions/user-preferences/src/dist
@@ -33,8 +33,24 @@ ui:
           permissions: []
           is_ui_builder: false
     pages:
+        collections-dashboard:
+            id: de8c008039914286a3129c8619d1e26f
+            name: collections-dashboard
+            description: Dashboard showing collections usage examples
+            path: ui/pages/collections-dashboard/src/dist
+            entrypoint: ui/pages/collections-dashboard/src/dist/index.html
+            content_security_policy:
+                connect-src: []
+                style-src: []
+                style-src-elem: []
+                script-src: []
+                form-action: []
+                img-src: []
+                media-src: []
+                object-src: []
+            permissions: []
         collections_dashboard:
-            id: 03c8a238f7cc4923ab29757acd98ead2
+            id: 626bf870370847e28391d09b9f877da6
             name: collections-dashboard
             description: Dashboard showing collections usage examples
             path: ui/pages/collections-dashboard/src/dist
@@ -51,7 +67,7 @@ ui:
             permissions: []
     dashboards: {}
     navigation:
-        id: 48367c9e047447509fd5f576ae95f176
+        id: 2873a54acb0348699ac5cf678cb0e7ca
         links:
             - path: /collections-dashboard
               name: Collections dashboard
@@ -60,14 +76,6 @@ ui:
 api_integrations: []
 rtr_scripts: []
 collections:
-    - name: user_preferences
-      description: Store user preferences and settings
-      schema: collections/user_preferences.json
-      permissions: []
-      workflow_integration:
-        system_action: true
-        tags:
-            - Collection
     - name: processing_checkpoints
       description: Store processing checkpoints for data workflows
       schema: collections/processing_checkpoints.json
@@ -92,21 +100,29 @@ collections:
         system_action: true
         tags:
             - Collection
+    - name: user_preferences
+      description: Store user preferences and settings
+      schema: collections/user_preferences.json
+      permissions: []
+      workflow_integration:
+        system_action: true
+        tags:
+            - Collection
 auth:
     scopes: []
     permissions:
         access:threat-intel:
-            id: 3f9c437826764ee19c8cd6e853f3378a
+            id: 3a7fbf299a5a4edab8f0ecf82c8b0083
             name: access-threat-intel
             description: Permission to access threat intel
     roles:
-        - id: 9f0b584788b24d3288808e681ba4bc64
+        - id: cc9cf9557d344d17b9bcfd38545ef40f
           name: threat-intel-access
           description: Access to threat intelligence collections
           permissions:
             - access:threat-intel
 functions:
-    - id: cc6958cef57c4dc190c51614f64810ff
+    - id: e9397fc09e6e4ccc9a470b2d38d52e99
       name: log-event
       config: null
       description: Store event data in collections
@@ -121,7 +137,7 @@ functions:
           request_schema: request_schema.json
           response_schema: response_schema.json
           workflow_integration:
-            id: 5c151adb3ee147188be446631b227ad6
+            id: 1b3989807fb24188a8f5e3fc7743cc55
             disruptive: false
             system_action: true
             tags:
@@ -129,7 +145,7 @@ functions:
                 - foundry-sample-collections
           permissions: []
       language: python
-    - id: c717d79231de4d51a14f9f14843b6873
+    - id: 2f69defd471340aba0f969f6969f8d37
       name: process-events
       config: null
       description: Process events with checkpointing
@@ -144,7 +160,7 @@ functions:
           request_schema: request_schema.json
           response_schema: response_schema.json
           workflow_integration:
-            id: f7e6bc33ad594044961c1aa4cb80fab9
+            id: 3d15beab072f4250a76cadd5e3f389b2
             disruptive: false
             system_action: true
             tags:
@@ -152,7 +168,19 @@ functions:
                 - foundry-sample-collections
           permissions: []
       language: python
-workflows: []
+workflows:
+    - id: 0d2ccb8cd8be4484bb15b848d6611cea
+      name: Test user_preferences collection
+      path: workflows/Test_user_preferences_collection.yml
+      permissions: []
+    - id: f7781e0101714f3294aeddc66cb689cc
+      name: Test log-event function
+      path: workflows/Test_log-event_function.yml
+      permissions: []
+    - id: a98e8c6c3a5c4ff6a768b6d55659c9fc
+      name: Test process-events function
+      path: workflows/Test_process-events_function.yml
+      permissions: []
 parsers: []
 logscale:
     saved_searches: []

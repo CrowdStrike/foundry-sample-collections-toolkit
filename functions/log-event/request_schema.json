@@ -1,13 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "name": {
-      "type": "string"
+    "event_data": {
+      "type": "object"
     }
   },
   "required": [
-    "name"
+    "event_data"
   ],
   "type": "object",
-  "description": "This generated sample schema should be updated to match the input of your function."
+  "description": "This schema makes the event_data required for requests."
 }

@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "name": {
+    "workflow_id": {
       "type": "string"
     }
   },
   "required": [
-    "name"
+    "workflow_id"
   ],
   "type": "object",
   "description": "This generated sample schema should be updated to match the input of your function."
