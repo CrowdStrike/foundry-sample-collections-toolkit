@@ -1,10 +1,12 @@
-from crowdstrike.foundry.function import Function, Request, Response, APIError
-from falconpy import APIHarnessV2
-import time
 import os
+import time
 import uuid
 
+from crowdstrike.foundry.function import Function, Request, Response, APIError
+from falconpy import APIHarnessV2
+
 func = Function.instance()
+
 
 @func.handler(method='POST', path='/log-event')
 def log_event_handler(request: Request) -> Response:
@@ -76,6 +78,7 @@ def log_event_handler(request: Request) -> Response:
             code=500,
             errors=[APIError(code=500, message=f"Error saving to collection: {str(e)}")]
         )
+
 
 if __name__ == '__main__':
     func.run()
