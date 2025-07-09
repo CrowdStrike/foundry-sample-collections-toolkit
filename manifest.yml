@@ -31,21 +31,6 @@ ui:
       permissions: []
       is_ui_builder: false
   pages:
-    collections-dashboard:
-      name: collections-dashboard
-      description: Dashboard showing collections usage examples
-      path: ui/pages/collections-dashboard/src/dist
-      entrypoint: ui/pages/collections-dashboard/src/dist/index.html
-      content_security_policy:
-        connect-src: []
-        style-src: []
-        style-src-elem: []
-        script-src: []
-        form-action: []
-        img-src: []
-        media-src: []
-        object-src: []
-      permissions: []
     collections_dashboard:
       name: collections-dashboard
       description: Dashboard showing collections usage examples
@@ -100,7 +85,7 @@ collections:
     schema: collections/user_preferences.json
     permissions: []
     workflow_integration:
-      system_action: false
+      system_action: true
       tags: []
 auth:
   scopes: []

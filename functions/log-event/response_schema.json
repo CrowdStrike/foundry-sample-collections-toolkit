@@ -4,6 +4,9 @@
     "stored": {
       "type": "boolean"
     },
+    "event_id": {
+      "type": "string"
+    },
     "metadata": {
       "type": "array"
     }

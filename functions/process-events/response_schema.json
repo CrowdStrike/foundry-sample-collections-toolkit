@@ -1,16 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "processed_events": {
-      "type": "number"
-    },
     "last_checkpoint": {
-      "type": "string",
-      "format": "date-time"
+      "type": "integer"
     },
     "previous_checkpoint": {
-      "type": "string",
-      "format": "date-time"
+      "type": "integer"
+    },
+    "processed_events": {
+      "type": "integer"
     },
     "status": {
       "type": "string"
