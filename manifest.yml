@@ -1,4 +1,3 @@
-app_id: 232c5405880a419b93959c023a508af4
 name: Collections
 description: A comprehensive example that shows how to use Foundry Collections
 logo: images/data-collection.png
@@ -7,182 +6,168 @@ vendor_products: []
 use_case: Utilities
 manifest_version: "2023-05-09"
 ignored:
-    - .+/node_modules$
-    - .+/node_modules/.+
-    - .+/venv$
-    - .+/venv/.+
+  - .+/node_modules$
+  - .+/node_modules/.+
+  - .+/venv$
+  - .+/venv/.+
 ui:
-    homepage: pages.collections_dashboard
-    extensions:
-        - id: 6db49dde90a74cf49116ccd59da36964
-          name: user-preferences
-          description: Manage user preferences and settings
-          path: ui/extensions/user-preferences/src/dist
-          entrypoint: ui/extensions/user-preferences/src/dist/index.html
-          sockets:
-            - hosts.host.panel
-          content_security_policy:
-            connect-src: []
-            style-src: []
-            style-src-elem: []
-            script-src: []
-            form-action: []
-            img-src: []
-            media-src: []
-            object-src: []
-          permissions: []
-          is_ui_builder: false
-    pages:
-        collections-dashboard:
-            id: de8c008039914286a3129c8619d1e26f
-            name: collections-dashboard
-            description: Dashboard showing collections usage examples
-            path: ui/pages/collections-dashboard/src/dist
-            entrypoint: ui/pages/collections-dashboard/src/dist/index.html
-            content_security_policy:
-                connect-src: []
-                style-src: []
-                style-src-elem: []
-                script-src: []
-                form-action: []
-                img-src: []
-                media-src: []
-                object-src: []
-            permissions: []
-        collections_dashboard:
-            id: 626bf870370847e28391d09b9f877da6
-            name: collections-dashboard
-            description: Dashboard showing collections usage examples
-            path: ui/pages/collections-dashboard/src/dist
-            entrypoint: ui/pages/collections-dashboard/src/dist/index.html
-            content_security_policy:
-                connect-src: []
-                style-src: []
-                style-src-elem: []
-                script-src: []
-                form-action: []
-                img-src: []
-                media-src: []
-                object-src: []
-            permissions: []
-    dashboards: {}
-    navigation:
-        id: 2873a54acb0348699ac5cf678cb0e7ca
-        links:
-            - path: /collections-dashboard
-              name: Collections dashboard
-              permissions: []
-              ref: pages.collections_dashboard
+  homepage: pages.collections_dashboard
+  extensions:
+    - name: user-preferences
+      description: Manage user preferences and settings
+      path: ui/extensions/user-preferences/src/dist
+      entrypoint: ui/extensions/user-preferences/src/dist/index.html
+      sockets:
+        - hosts.host.panel
+      content_security_policy:
+        connect-src: []
+        style-src: []
+        style-src-elem: []
+        script-src: []
+        form-action: []
+        img-src: []
+        media-src: []
+        object-src: []
+      permissions: []
+      is_ui_builder: false
+  pages:
+    collections-dashboard:
+      name: collections-dashboard
+      description: Dashboard showing collections usage examples
+      path: ui/pages/collections-dashboard/src/dist
+      entrypoint: ui/pages/collections-dashboard/src/dist/index.html
+      content_security_policy:
+        connect-src: []
+        style-src: []
+        style-src-elem: []
+        script-src: []
+        form-action: []
+        img-src: []
+        media-src: []
+        object-src: []
+      permissions: []
+    collections_dashboard:
+      name: collections-dashboard
+      description: Dashboard showing collections usage examples
+      path: ui/pages/collections-dashboard/src/dist
+      entrypoint: ui/pages/collections-dashboard/src/dist/index.html
+      content_security_policy:
+        connect-src: []
+        style-src: []
+        style-src-elem: []
+        script-src: []
+        form-action: []
+        img-src: []
+        media-src: []
+        object-src: []
+      permissions: []
+  dashboards: {}
+  navigation:
+    links:
+      - path: /collections-dashboard
+        name: Collections dashboard
+        permissions: []
+        ref: pages.collections_dashboard
 api_integrations: []
 rtr_scripts: []
 collections:
-    - name: processing_checkpoints
-      description: Store processing checkpoints for data workflows
-      schema: collections/processing_checkpoints.json
-      permissions: []
-      workflow_integration:
-        system_action: true
-        tags:
-            - Collection
-    - name: event_logs
-      description: Store event data for analysis
-      schema: collections/event_logs.json
-      permissions: []
-      workflow_integration:
-        system_action: true
-        tags:
-            - Collection
-    - name: threat_intel
-      description: Threat intelligence configuration data
-      schema: collections/threat_intel.json
-      permissions: []
-      workflow_integration:
-        system_action: true
-        tags:
-            - Collection
-    - name: user_preferences
-      description: Store user preferences and settings
-      schema: collections/user_preferences.json
-      permissions: []
-      workflow_integration:
-        system_action: true
-        tags:
-            - Collection
+  - name: processing_checkpoints
+    description: Store processing checkpoints for data workflows
+    schema: collections/processing_checkpoints.json
+    permissions: []
+    workflow_integration:
+      system_action: true
+      tags:
+        - Collection
+  - name: event_logs
+    description: Store event data for analysis
+    schema: collections/event_logs.json
+    permissions: []
+    workflow_integration:
+      system_action: true
+      tags:
+        - Collection
+  - name: threat_intel
+    description: Threat intelligence configuration data
+    schema: collections/threat_intel.json
+    permissions: []
+    workflow_integration:
+      system_action: true
+      tags:
+        - Collection
+  - name: user_preferences
+    description: Store user preferences and settings
+    schema: collections/user_preferences.json
+    permissions: []
+    workflow_integration:
+      system_action: false
+      tags: []
 auth:
-    scopes: []
-    permissions:
-        access:threat-intel:
-            id: 3a7fbf299a5a4edab8f0ecf82c8b0083
-            name: access-threat-intel
-            description: Permission to access threat intel
-    roles:
-        - id: cc9cf9557d344d17b9bcfd38545ef40f
-          name: threat-intel-access
-          description: Access to threat intelligence collections
-          permissions:
-            - access:threat-intel
+  scopes: []
+  permissions:
+    access:threat-intel:
+      name: access-threat-intel
+      description: Permission to access threat intel
+  roles:
+    - name: threat-intel-access
+      description: Access to threat intelligence collections
+      permissions:
+        - access:threat-intel
 functions:
-    - id: e9397fc09e6e4ccc9a470b2d38d52e99
-      name: log-event
-      config: null
-      description: Store event data in collections
-      path: functions/log-event
-      environment_variables: {}
-      handlers:
-        - name: log_event_handler
-          description: Store event data in collections
-          method: POST
-          api_path: /log-event
-          payload_type: ""
-          request_schema: request_schema.json
-          response_schema: response_schema.json
-          workflow_integration:
-            id: 1b3989807fb24188a8f5e3fc7743cc55
-            disruptive: false
-            system_action: true
-            tags:
-                - 8271757288804f0ea5d1cdbb2c46b38d
-                - foundry-sample-collections
-          permissions: []
-      language: python
-    - id: 2f69defd471340aba0f969f6969f8d37
-      name: process-events
-      config: null
-      description: Process events with checkpointing
-      path: functions/process-events
-      environment_variables: {}
-      handlers:
-        - name: process_events_handler
-          description: Process events with checkpointing
-          method: POST
-          api_path: /process-events
-          payload_type: ""
-          request_schema: request_schema.json
-          response_schema: response_schema.json
-          workflow_integration:
-            id: 3d15beab072f4250a76cadd5e3f389b2
-            disruptive: false
-            system_action: true
-            tags:
-                - 8271757288804f0ea5d1cdbb2c46b38d
-                - foundry-sample-collections
-          permissions: []
-      language: python
+  - name: log-event
+    config: null
+    description: Store event data in collections
+    path: functions/log-event
+    environment_variables: {}
+    handlers:
+      - name: log_event_handler
+        description: Store event data in collections
+        method: POST
+        api_path: /log-event
+        payload_type: ""
+        request_schema: request_schema.json
+        response_schema: response_schema.json
+        workflow_integration:
+          disruptive: false
+          system_action: true
+          tags:
+            - 8271757288804f0ea5d1cdbb2c46b38d
+            - foundry-sample-collections
+        permissions: []
+    language: python
+  - name: process-events
+    config: null
+    description: Process events with checkpointing
+    path: functions/process-events
+    environment_variables: {}
+    handlers:
+      - name: process_events_handler
+        description: Process events with checkpointing
+        method: POST
+        api_path: /process-events
+        payload_type: ""
+        request_schema: request_schema.json
+        response_schema: response_schema.json
+        workflow_integration:
+          disruptive: false
+          system_action: true
+          tags:
+            - 8271757288804f0ea5d1cdbb2c46b38d
+            - foundry-sample-collections
+        permissions: []
+    language: python
 workflows:
-    - id: 0d2ccb8cd8be4484bb15b848d6611cea
-      name: Test user_preferences collection
-      path: workflows/Test_user_preferences_collection.yml
-      permissions: []
-    - id: f7781e0101714f3294aeddc66cb689cc
-      name: Test log-event function
-      path: workflows/Test_log-event_function.yml
-      permissions: []
-    - id: a98e8c6c3a5c4ff6a768b6d55659c9fc
-      name: Test process-events function
-      path: workflows/Test_process-events_function.yml
-      permissions: []
+  - name: Test user_preferences collection
+    path: workflows/Test_user_preferences_collection.yml
+    permissions: []
+  - name: Test log_event_handler function
+    path: workflows/Test_log_event_handler_function.yml
+    permissions: []
+  - name: Test process_events_handler function
+    path: workflows/Test_process_events_handler_function.yml
+    permissions: []
 parsers: []
 logscale:
-    saved_searches: []
+  saved_searches: []
 lookup_files: []
 docs: {}

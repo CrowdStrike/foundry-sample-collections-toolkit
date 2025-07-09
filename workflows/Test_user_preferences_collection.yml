@@ -1,36 +1,10 @@
-name: Test user_preferences workflow
+name: Test user_preferences collection
+description: Workflow for user_preferences collection to verify it works
 provision_on_install: true
 trigger:
     next:
-        - add_object_to_user_preferences_4925e816
-    name: On demand
-    parameters:
-        properties:
-            key:
-                type: string
-            last_updated:
-                type: string
-                default: ""
-            user_id:
-                type: string
-                format: email
-        required:
-            - last_updated
-            - user_id
-            - key
-        type: object
+        - list_objects_in_user_preferences_de4b804d
 actions:
-    add_object_to_user_preferences_4925e816:
-        next:
-            - list_objects_in_user_preferences_a263ca04
-        id: collections.user_preferences.create
-        properties:
-            custom_storage_object_key: ${key}
-            dashboardLayout: standard
-            lastUpdated: ${last_updated}
-            notificationsEnabled: true
-            theme: dark
-            userId: ${user_id}
-    list_objects_in_user_preferences_a263ca04:
+    list_objects_in_user_preferences_de4b804d:
         id: collections.user_preferences.list
         properties: {}

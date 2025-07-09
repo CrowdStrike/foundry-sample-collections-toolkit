@@ -1,0 +1,12 @@
+name: Test log_event_handler function
+description: Workflow to invoke log_event_handler function and verify it works
+provision_on_install: true
+trigger:
+    next:
+        - log_event_handler_96d0db80
+actions:
+    log_event_handler_96d0db80:
+        id: functions.log-event.log_event_handler
+        properties:
+            event_data:
+                quote: You have to let it all go, Neo. Fear, doubt, and disbelief. Free your mind.
