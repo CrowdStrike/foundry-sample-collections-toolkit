@@ -9,7 +9,6 @@ updates:
   - package-ecosystem: npm
     directories:
       - "/ui/extensions/user-preferences/"
-      - "/ui/pages/collections-dashboard/"
     open-pull-requests-limit: 10
     schedule:
       interval: weekly
