@@ -3,7 +3,7 @@ description: Workflow for user_preferences collection to verify it works
 provision_on_install: true
 trigger:
     next:
-        - list_objects_in_user_preferences_f3fa7b7d
+        - list_objects_in_user_preferences_e6b5c216
     name: On demand
     parameters:
         properties:
@@ -23,9 +23,9 @@ trigger:
                 format: email
         type: object
 actions:
-    add_object_to_user_preferences_fec330b2:
+    add_object_to_user_preferences_76cdf287:
         next:
-            - search_objects_in_user_preferences_d1a72623
+            - get_object_from_user_preferences_2cc1993a
         id: collections.user_preferences.create
         properties:
             custom_storage_object_key: ${object-key}
@@ -34,24 +34,24 @@ actions:
             notificationsEnabled: true
             theme: light
             userId: ${user-id}
-    delete_object_from_user_preferences_abee729e:
+    delete_object_from_user_preferences_2a25bbe5:
         id: collections.user_preferences.delete
         properties:
             custom_storage_object_key: ${object-key}
-    get_object_from_user_preferences_b7f65e7f:
+    get_object_from_user_preferences_2cc1993a:
         next:
-            - delete_object_from_user_preferences_abee729e
+            - delete_object_from_user_preferences_2a25bbe5
         id: collections.user_preferences.get
         properties:
             custom_storage_object_key: ${object-key}
-    list_objects_in_user_preferences_f3fa7b7d:
+    list_objects_in_user_preferences_e6b5c216:
         next:
-            - add_object_to_user_preferences_fec330b2
+            - add_object_to_user_preferences_76cdf287
         id: collections.user_preferences.list
         properties: {}
-    search_objects_in_user_preferences_d1a72623:
+    search_objects_in_user_preferences_b5ebc817:
         next:
-            - get_object_from_user_preferences_b7f65e7f
-        id: collections.user_preferences.search
+            - get_object_from_user_preferences_2cc1993a
+        id: fbba21e682a8436db4ccf06079bea0d0_user_preferences_Search
         properties:
             custom_storage_search_filter: userId:'email@example.com'
