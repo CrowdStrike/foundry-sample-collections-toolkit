@@ -11,6 +11,7 @@ ignored:
   - .+/venv$
   - .+/venv/.+
 ui:
+  homepage: ""
   extensions:
     - name: User Preferences
       description: Manage user preferences and settings
@@ -29,6 +30,9 @@ ui:
         object-src: []
       permissions: []
       is_ui_builder: false
+  pages: {}
+  dashboards: {}
+  navigation: {}
 api_integrations: []
 rtr_scripts: []
 collections:
