@@ -1,0 +1,57 @@
+name: Test user_preferences collection
+description: Workflow for user_preferences collection to verify it works
+provision_on_install: true
+trigger:
+    next:
+        - list_objects_in_user_preferences_f3fa7b7d
+    name: On demand
+    parameters:
+        properties:
+            last-updated:
+                type: integer
+                title: Last Updated
+                default: 50
+            object-key:
+                type: string
+                title: Object Key
+                default: "42"
+                format: foundryCustomStorageObjectKey
+            user-id:
+                type: string
+                title: Email
+                default: email@example.com
+                format: email
+        type: object
+actions:
+    add_object_to_user_preferences_fec330b2:
+        next:
+            - search_objects_in_user_preferences_d1a72623
+        id: collections.user_preferences.create
+        properties:
+            custom_storage_object_key: ${object-key}
+            dashboardLayout: standard
+            lastUpdated: ${last-updated}
+            notificationsEnabled: true
+            theme: light
+            userId: ${user-id}
+    delete_object_from_user_preferences_abee729e:
+        id: collections.user_preferences.delete
+        properties:
+            custom_storage_object_key: ${object-key}
+    get_object_from_user_preferences_b7f65e7f:
+        next:
+            - delete_object_from_user_preferences_abee729e
+        id: collections.user_preferences.get
+        properties:
+            custom_storage_object_key: ${object-key}
+    list_objects_in_user_preferences_f3fa7b7d:
+        next:
+            - add_object_to_user_preferences_fec330b2
+        id: collections.user_preferences.list
+        properties: {}
+    search_objects_in_user_preferences_d1a72623:
+        next:
+            - get_object_from_user_preferences_b7f65e7f
+        id: 3bc781c0acd842739bf9ab1b385bf32f_user_preferences_Search
+        properties:
+            custom_storage_search_filter: userId:'email@example.com'

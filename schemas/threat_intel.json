@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "x-cs-indexable-fields": [
+    { "field": "/userId", "type": "string", "fql_name": "user_id" },
+    { "field": "/confidenceThreshold", "type": "integer", "fql_name": "confidence_threshold" },
+    { "field": "/lastSync", "type": "string", "fql_name": "last_sync" }
+  ],
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Unique identifier for the user"
+    },
+    "iocSources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of threat intelligence sources to monitor",
+      "default": []
+    },
+    "confidenceThreshold": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Minimum confidence score for threat indicators",
+      "default": 70
+    },
+    "lastSync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last synchronization"
+    }
+  },
+  "required": ["userId", "confidenceThreshold"]
+}
