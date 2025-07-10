@@ -179,7 +179,7 @@ function Home() {
           <div className="card-header user-info" slot="header">
             <span>User preferences for: <strong
               style={{color: 'rgb(59, 130, 246)'}}>{falcon.data.user.username}</strong></span>
-            {preferences && (
+            {preferences?.lastUpdated && (
               <SlIconButton
                 name="trash"
                 label="Delete preferences"
@@ -296,7 +296,7 @@ function Home() {
               {saving ? "Saving..." : "Save Preferences"}
             </SlButton>
 
-            {preferences && (
+            {preferences?.lastUpdated && (
               <div style={{fontSize: '0.8rem', color: 'var(--sl-color-neutral-500)'}}>
                 Last updated: {new Date(preferences.lastUpdated).toLocaleString()}
               </div>

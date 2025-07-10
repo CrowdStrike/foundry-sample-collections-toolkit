@@ -28080,7 +28080,7 @@ function Home() {
     style: {
       color: 'rgb(59, 130, 246)'
     }
-  }, falcon.data.user.username)), preferences && /*#__PURE__*/React.createElement(icon_button_default, {
+  }, falcon.data.user.username)), preferences?.lastUpdated && /*#__PURE__*/React.createElement(icon_button_default, {
     name: "trash",
     label: "Delete preferences",
     className: "delete-button",
@@ -28199,7 +28199,7 @@ function Home() {
     size: "medium",
     loading: saving,
     onClick: handleSave
-  }, saving ? "Saving..." : "Save Preferences"), preferences && /*#__PURE__*/React.createElement("div", {
+  }, saving ? "Saving..." : "Save Preferences"), preferences?.lastUpdated && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '0.8rem',
       color: 'var(--sl-color-neutral-500)'
