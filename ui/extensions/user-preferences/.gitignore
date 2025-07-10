@@ -1,7 +1,3 @@
 node_modules/
 .DS_Store
 .idea/
-/.yarnrc.yml
-/.pnp.loader.mjs
-/.pnp.cjs
-/.yarn/
