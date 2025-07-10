@@ -51,12 +51,7 @@ jobs:
         working-directory: ${{ matrix.function }}
 
   build-ui:
-    strategy:
-      matrix:
-        ui:
-          - ui/extensions/user-preferences
-          - ui/pages/collections-dashboard
-    name: Build UI - ${{ matrix.ui }}
+    name: Build UI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -66,7 +61,7 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm ci
-        working-directory: ${{ matrix.ui }}
+        working-directory: ui/extensions/user-preferences
       - name: Build React app
         run: npm run build
-        working-directory: ${{ matrix.ui }}
+        working-directory: ui/extensions/user-preferences
