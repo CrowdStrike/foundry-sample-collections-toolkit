@@ -33,7 +33,7 @@ function Home() {
     notificationsEnabled: true
   });
 
-  useEffect(async () => {
+  useEffect(() => {
     const loadPreferences = async () => {
       if (!userId || !falcon) return;
 
@@ -68,7 +68,7 @@ function Home() {
       }
     };
 
-    await loadPreferences();
+    loadPreferences();
   }, [userId, falcon]);
 
   const handleSave = async () => {
