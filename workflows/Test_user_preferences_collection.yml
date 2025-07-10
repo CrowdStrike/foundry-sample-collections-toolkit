@@ -52,6 +52,6 @@ actions:
     search_objects_in_user_preferences_d1a72623:
         next:
             - get_object_from_user_preferences_b7f65e7f
-        id: 3bc781c0acd842739bf9ab1b385bf32f_user_preferences_Search
+        id: collections.user_preferences.search
         properties:
             custom_storage_search_filter: userId:'email@example.com'
