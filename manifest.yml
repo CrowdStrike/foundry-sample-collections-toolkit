@@ -122,6 +122,9 @@ functions:
         permissions: []
     language: python
 workflows:
+  - name: Test user_preferences collection
+    path: workflows/Test_user_preferences_collection.yml
+    permissions: []
   - name: Test log_event_handler function
     path: workflows/Test_log_event_handler_function.yml
     permissions: []
