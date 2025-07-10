@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Home } from './Home';
+import { Home } from './home';
 import { FalconApiContext } from '../contexts/falcon-api-context';
 
 // Mock Shoelace components
