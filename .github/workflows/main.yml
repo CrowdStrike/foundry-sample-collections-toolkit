@@ -50,8 +50,8 @@ jobs:
           exit 1
         working-directory: ${{ matrix.function }}
 
-  build-ui:
-    name: Build UI
+  test-ui:
+    name: Build and Test UI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -64,4 +64,7 @@ jobs:
         working-directory: ui/extensions/user-preferences
       - name: Build React app
         run: npm run build
+        working-directory: ui/extensions/user-preferences
+      - name: Test React app
+        run: npm run test:ci
         working-directory: ui/extensions/user-preferences
