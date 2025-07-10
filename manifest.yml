@@ -1,5 +1,5 @@
-name: Collections
-description: A comprehensive example that shows how to use Foundry Collections
+name: Collections Toolkit
+description: A complete reference implementation demonstrating Foundry Collections best practices, including schema design, CRUD operations, checkpointing patterns, and UI integration. Perfect for developers learning Collections or building production security workflows.
 logo: images/data-collection.png
 vendor: ""
 vendor_products: []
