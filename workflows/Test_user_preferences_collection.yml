@@ -49,9 +49,3 @@ actions:
             - add_object_to_user_preferences_76cdf287
         id: collections.user_preferences.list
         properties: {}
-    search_objects_in_user_preferences_b5ebc817:
-        next:
-            - get_object_from_user_preferences_2cc1993a
-        id: fbba21e682a8436db4ccf06079bea0d0_user_preferences_Search
-        properties:
-            custom_storage_search_filter: userId:'email@example.com'
