@@ -17,7 +17,6 @@ func = Function.instance()
 def import_csv_handler(request: Request, config: Dict[str, object] | None, logger: Logger) -> Response:
     """Import CSV data into a Foundry Collection."""
 
-    print("here")
     # Validate request
     if "csv_data" not in request.body and "csv_file_path" not in request.body:
         return Response(
@@ -33,7 +32,6 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
         if os.environ.get("APP_ID"):
             headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
 
-        logger.info(f"csv_data: {request.body['csv_data']}")
         # Read CSV data
         if "csv_data" in request.body:
             # CSV data provided as string
@@ -44,7 +42,6 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
             # CSV file path provided
             csv_file_path = request.body["csv_file_path"]
 
-            logger.debug(f"Before: {csv_file_path}")
             # If it's just a filename (no directory separators), prepend current directory
             if not os.path.dirname(csv_file_path):
                 csv_file_path = os.path.join(os.getcwd(), csv_file_path)
