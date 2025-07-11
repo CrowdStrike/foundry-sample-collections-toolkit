@@ -10,7 +10,7 @@ from falconpy import APIHarnessV2
 func = Function.instance()
 
 
-@func.handler(method='POST', path='/process-events')
+@func.handler(method="POST", path="/process-events")
 def process_events_handler(request: Request, config: Dict[str, object] | None, logger: Logger) -> Response:
     """Process events with checkpointing to prevent duplicate processing."""
 
@@ -21,7 +21,7 @@ def process_events_handler(request: Request, config: Dict[str, object] | None, l
             headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
 
         checkpoint_collection = "processing_checkpoints"
-        workflow_id = request.body.get('workflow_id', 'default')
+        workflow_id = request.body.get("workflow_id", "default")
 
         logger.info(f"Processing workflow ID: {workflow_id}")
 
@@ -47,7 +47,7 @@ def process_events_handler(request: Request, config: Dict[str, object] | None, l
                                                 headers=headers)
 
             # GetObject returns bytes; convert to JSON
-            json_response = json.loads(object_details.decode('utf-8'))
+            json_response = json.loads(object_details.decode("utf-8"))
             logger.debug(f"object_details response: {json_response}")
 
             last_timestamp = json_response["last_processed_timestamp"]
@@ -112,5 +112,5 @@ def process_single_event(event):
     print(f"Processing event: {event['id']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     func.run()
