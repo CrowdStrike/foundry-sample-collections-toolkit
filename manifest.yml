@@ -72,6 +72,14 @@ collections:
     workflow_integration:
       system_action: true
       tags: []
+  - name: security_events_csv
+    description: Security events imported from CSV files
+    schema: collections/security_events_csv.json
+    permissions: []
+    workflow_integration:
+      system_action: true
+      tags:
+        - CSV
 auth:
   scopes: []
   permissions:
@@ -124,6 +132,28 @@ functions:
           tags:
             - 8271757288804f0ea5d1cdbb2c46b38d
             - foundry-sample-collections
+        permissions: []
+    language: python
+  - name: csv-import
+    config: null
+    description: Import CSV data into Collections
+    path: functions/csv-import
+    environment_variables: {}
+    handlers:
+      - name: import_csv_handler
+        description: Import CSV data into Collections
+        method: POST
+        api_path: /import-csv
+        payload_type: ""
+        request_schema: request_schema.json
+        response_schema: response_schema.json
+        workflow_integration:
+          disruptive: false
+          system_action: true
+          tags:
+            - 9d01413156bf444697095b6d340bcd0a
+            - Collections Toolkit
+            - CSV
         permissions: []
     language: python
 workflows:

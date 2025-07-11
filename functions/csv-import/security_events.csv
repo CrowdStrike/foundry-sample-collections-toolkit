@@ -1,0 +1,4 @@
+event_id,timestamp,event_type,severity,source_ip,destination_ip,user,description
+EVT-001,2024-01-15T10:30:00Z,login_failure,medium,192.168.1.100,10.0.0.5,john.doe,Failed login attempt
+EVT-002,2024-01-15T10:31:15Z,malware_detected,high,192.168.1.105,external,alice.smith,Malware detected on endpoint
+EVT-003,2024-01-15T10:32:30Z,suspicious_network,low,10.0.0.10,external,system,Unusual network traffic pattern
