@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "x-cs-indexable-fields": [
+    { "field": "/event_id", "type": "string", "fql_name": "event_id" },
+    { "field": "/event_type", "type": "string", "fql_name": "event_type" },
+    { "field": "/severity", "type": "string", "fql_name": "severity" },
+    { "field": "/timestamp_unix", "type": "integer", "fql_name": "timestamp_unix" },
+    { "field": "/source_ip", "type": "string", "fql_name": "source_ip" },
+    { "field": "/user", "type": "string", "fql_name": "user" }
+  ],
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique event identifier from CSV"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original ISO timestamp from CSV"
+    },
+    "timestamp_unix": {
+      "type": "integer",
+      "description": "Unix timestamp for efficient querying"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["login_failure", "malware_detected", "suspicious_network", "data_exfiltration", "privilege_escalation"],
+      "description": "Type of security event"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "Event severity level"
+    },
+    "source_ip": {
+      "type": "string",
+      "description": "Source IP address"
+    },
+    "destination_ip": {
+      "type": "string",
+      "description": "Destination IP address"
+    },
+    "user": {
+      "type": "string",
+      "description": "Associated user account"
+    },
+    "description": {
+      "type": "string",
+      "description": "Event description"
+    },
+    "imported_at": {
+      "type": "integer",
+      "description": "Unix timestamp when record was imported"
+    },
+    "csv_source": {
+      "type": "string",
+      "description": "Source CSV filename"
+    }
+  },
+  "required": ["event_id", "timestamp", "event_type", "severity"]
+}

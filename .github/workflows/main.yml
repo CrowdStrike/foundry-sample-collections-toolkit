@@ -6,6 +6,7 @@ jobs:
     strategy:
       matrix:
         function:
+          - functions/csv-import
           - functions/log-event
           - functions/process-events
     name: Test Function - ${{ matrix.function }}
