@@ -133,6 +133,9 @@ workflows:
   - name: Test process_events_handler function
     path: workflows/Test_process_events_handler_function.yml
     permissions: []
+  - name: Test user_preferences collection
+    path: workflows/Test_user_preferences_collection.yml
+    permissions: []
 parsers: []
 logscale:
   saved_searches: []
