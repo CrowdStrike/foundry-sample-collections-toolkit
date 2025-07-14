@@ -88,28 +88,28 @@ jobs:
               cat security_events.csv
             fi
           
-            # Request 1 - Import CSV with file path (your original HTTPie command)
-            echo "=== Making first request (import with file path) ==="
+            # Request 1 - Import CSV with file path (with --ignore-stdin fix)
+            echo "=== Making first request (import-file) ==="
           
-            echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv'"
+            echo "Executing: http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv'"
           
             # Capture both stdout and stderr, and get exit code
             set +e
-            http POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > request1_output.log 2>&1
-            REQUEST1_EXIT_CODE=$?
+            http --ignore-stdin POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > import_file_output.log 2>&1
+            IMPORT_FILE_EXIT_CODE=$?
             set -e
           
-            echo "Request 1 exit code: $REQUEST1_EXIT_CODE"
-            echo "Request 1 full output:"
-            cat request1_output.log
+            echo "Import-file exit code: $IMPORT_FILE_EXIT_CODE"
+            echo "Import-file full output:"
+            cat import_file_output.log
           
-            if [ $REQUEST1_EXIT_CODE -eq 0 ]; then
-              echo "✅ First HTTPie request executed successfully"
+            if [ $IMPORT_FILE_EXIT_CODE -eq 0 ]; then
+              echo "✅ Import-file HTTPie request executed successfully"
           
               # Verify response structure
-              if grep -q '"success"' request1_output.log; then
+              if grep -q '"success"' import_file_output.log; then
                 echo "✅ Found 'success' field in response"
-                if grep -q '"success": true' request1_output.log; then
+                if grep -q '"success": true' import_file_output.log; then
                   echo "✅ Success is true"
                 else
                   echo "⚠️  Success is not true"
@@ -118,22 +118,22 @@ jobs:
                 echo "⚠️  'success' field not found in response"
               fi
           
-              if grep -q '"total_rows"' request1_output.log; then
+              if grep -q '"total_rows"' import_file_output.log; then
                 echo "✅ Found 'total_rows' field in response"
               else
                 echo "⚠️  'total_rows' field not found in response"
               fi
             else
-              echo "❌ First HTTPie request failed with exit code: $REQUEST1_EXIT_CODE"
+              echo "❌ Import-file HTTPie request failed with exit code: $IMPORT_FILE_EXIT_CODE"
               echo "=== HTTPie Error Details ==="
-              cat request1_output.log
+              cat import_file_output.log
               echo "=== End HTTPie Error Details ==="
               echo "=== Current application log (last 20 lines) ==="
               tail -20 output.log
               echo "=== End application log ==="
           
               # Check if it's the known HTTPie syntax issue
-              if grep -q "Request body.*and request data.*cannot be mixed" request1_output.log; then
+              if grep -q "Request body.*and request data.*cannot be mixed" import_file_output.log; then
                 echo "🔍 HTTPie syntax error detected - mixing body and key=value data"
                 echo "💡 This suggests the HTTPie command syntax needs to be adjusted"
               fi
@@ -142,44 +142,44 @@ jobs:
               TEST_FAILURES=$((TEST_FAILURES + 1))
             fi
           
-            # Request 2 - Import CSV with inline data (your original HTTPie command)
-            echo "=== Making second request (import with CSV data) ==="
+            # Request 2 - Import CSV with inline data (with --ignore-stdin fix)
+            echo "=== Making second request (import-data) ==="
           
-            echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_data]=\"\$(cat security_events.csv)\"'"
+            echo "Executing: http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_data]=\"\$(cat security_events.csv)\"'"
           
             # Capture both stdout and stderr, and get exit code
             set +e
-            http POST :8081 method=POST url=/import-csv 'body[csv_data]="$(cat security_events.csv)"' > request2_output.log 2>&1
-            REQUEST2_EXIT_CODE=$?
+            http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_data]="$(cat security_events.csv)"' > import_data_output.log 2>&1
+            IMPORT_DATA_EXIT_CODE=$?
             set -e
           
-            echo "Request 2 exit code: $REQUEST2_EXIT_CODE"
-            echo "Request 2 full output:"
-            cat request2_output.log
+            echo "Import-data exit code: $IMPORT_DATA_EXIT_CODE"
+            echo "Import-data full output:"
+            cat import_data_output.log
           
-            if [ $REQUEST2_EXIT_CODE -eq 0 ]; then
-              echo "✅ Second HTTPie request executed successfully"
+            if [ $IMPORT_DATA_EXIT_CODE -eq 0 ]; then
+              echo "✅ Import-data HTTPie request executed successfully"
           
               # Verify response structure
-              if grep -q '"success": true' request2_output.log; then
-                echo "✅ Success flag is true in second request response"
+              if grep -q '"success": true' import_data_output.log; then
+                echo "✅ Success flag is true in import-data response"
               else
-                echo "⚠️  Success flag not true in second request response"
+                echo "⚠️  Success flag not true in import-data response"
               fi
           
-              if grep -q '"processed_rows"' request2_output.log; then
+              if grep -q '"processed_rows"' import_data_output.log; then
                 echo "✅ Found 'processed_rows' field in response"
               else
                 echo "⚠️  'processed_rows' field not found in response"
               fi
             else
-              echo "❌ Second HTTPie request failed with exit code: $REQUEST2_EXIT_CODE"
+              echo "❌ Import-data HTTPie request failed with exit code: $IMPORT_DATA_EXIT_CODE"
               echo "=== HTTPie Error Details ==="
-              cat request2_output.log
+              cat import_data_output.log
               echo "=== End HTTPie Error Details ==="
           
               # Check if it's the known HTTPie syntax issue
-              if grep -q "Request body.*and request data.*cannot be mixed" request2_output.log; then
+              if grep -q "Request body.*and request data.*cannot be mixed" import_data_output.log; then
                 echo "🔍 HTTPie syntax error detected - mixing body and key=value data"
                 echo "💡 This suggests the HTTPie command syntax needs to be adjusted"
               fi
@@ -193,27 +193,27 @@ jobs:
               echo "=== Running third test (executing import.py script) ==="
           
               set +e
-              python import.py > import_output.log 2>&1
-              IMPORT_EXIT_CODE=$?
+              python import.py > import_script_output.log 2>&1
+              IMPORT_SCRIPT_EXIT_CODE=$?
               set -e
           
-              echo "Import script exit code: $IMPORT_EXIT_CODE"
+              echo "Import script exit code: $IMPORT_SCRIPT_EXIT_CODE"
               echo "Import script output:"
-              cat import_output.log
+              cat import_script_output.log
           
-              if [ $IMPORT_EXIT_CODE -eq 0 ]; then
+              if [ $IMPORT_SCRIPT_EXIT_CODE -eq 0 ]; then
                 echo "✅ import.py executed successfully"
           
                 # Check for expected response fields
-                if grep -q '"success"' import_output.log; then
+                if grep -q '"success"' import_script_output.log; then
                   echo "✅ Found 'success' field in import.py output"
                 else
                   echo "⚠️  'success' field not found in import.py output"
                 fi
               else
-                echo "❌ import.py failed with exit code: $IMPORT_EXIT_CODE"
+                echo "❌ import.py failed with exit code: $IMPORT_SCRIPT_EXIT_CODE"
                 echo "=== Import Script Error Details ==="
-                cat import_output.log
+                cat import_script_output.log
                 echo "=== End Import Script Error Details ==="
                 # Mark test as failed but continue
                 TEST_FAILURES=$((TEST_FAILURES + 1))
