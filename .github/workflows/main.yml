@@ -131,27 +131,21 @@ jobs:
             if [ $IMPORT_FILE_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-file HTTPie request executed successfully"
           
-              # Verify response structure
-              if grep -q '"success"' import_file_output.log; then
-                echo "✅ Found 'success' field in response"
-                if grep -q '"success": true' import_file_output.log; then
-                  echo "✅ Success is true"
-                else
-                  echo "⚠️  Success is not true"
-                fi
+              # Check the actual value of success field
+              if grep -q '"success": true' import_file_output.log; then
+                echo "✅ Import-file success is true"
+              elif grep -q '"success": false' import_file_output.log; then
+                echo "❌ Import-file success is false - import failed"
+                TEST_FAILURES=$((TEST_FAILURES + 1))
               else
-                echo "⚠️  'success' field not found in response"
+                echo "⚠️  'success' field not found or has unexpected value"
+                TEST_FAILURES=$((TEST_FAILURES + 1))
               fi
           
               if grep -q '"total_rows"' import_file_output.log; then
                 echo "✅ Found 'total_rows' field in response"
               else
                 echo "⚠️  'total_rows' field not found in response"
-              fi
-          
-              # Check for authentication errors
-              if grep -q '"imported_records": 0' import_file_output.log && grep -q '"failed_records"' import_file_output.log; then
-                echo "⚠️  No records were imported - check authentication"
               fi
             else
               echo "❌ Import-file HTTPie request failed with exit code: $IMPORT_FILE_EXIT_CODE"
@@ -190,22 +184,21 @@ jobs:
             if [ $IMPORT_DATA_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-data HTTPie request executed successfully"
           
-              # Verify response structure
+              # Check the actual value of success field
               if grep -q '"success": true' import_data_output.log; then
-                echo "✅ Success flag is true in import-data response"
+                echo "✅ Import-data success is true"
+              elif grep -q '"success": false' import_data_output.log; then
+                echo "❌ Import-data success is false - import failed"
+                TEST_FAILURES=$((TEST_FAILURES + 1))
               else
-                echo "⚠️  Success flag not true in import-data response"
+                echo "⚠️  'success' field not found or has unexpected value"
+                TEST_FAILURES=$((TEST_FAILURES + 1))
               fi
           
               if grep -q '"processed_rows"' import_data_output.log; then
                 echo "✅ Found 'processed_rows' field in response"
               else
                 echo "⚠️  'processed_rows' field not found in response"
-              fi
-          
-              # Check for authentication errors
-              if grep -q '"imported_records": 0' import_data_output.log && grep -q '"failed_records"' import_data_output.log; then
-                echo "⚠️  No records were imported - check authentication"
               fi
             else
               echo "❌ Import-data HTTPie request failed with exit code: $IMPORT_DATA_EXIT_CODE"
@@ -239,16 +232,15 @@ jobs:
               if [ $IMPORT_SCRIPT_EXIT_CODE -eq 0 ]; then
                 echo "✅ import.py executed successfully"
           
-                # Check for expected response fields
-                if grep -q '"success"' import_script_output.log; then
-                  echo "✅ Found 'success' field in import.py output"
+                # Check the actual value of success field
+                if grep -q '"success": true' import_script_output.log; then
+                  echo "✅ Import script success is true"
+                elif grep -q '"success": false' import_script_output.log; then
+                  echo "❌ Import script success is false - import failed"
+                  TEST_FAILURES=$((TEST_FAILURES + 1))
                 else
-                  echo "⚠️  'success' field not found in import.py output"
-                fi
-          
-                # Check for authentication issues in import.py
-                if grep -q '"imported_records": 0' import_script_output.log && grep -q '"failed_records"' import_script_output.log; then
-                  echo "⚠️  No records were imported via import.py - check authentication"
+                  echo "⚠️  'success' field not found or has unexpected value in import.py output"
+                  TEST_FAILURES=$((TEST_FAILURES + 1))
                 fi
               else
                 echo "❌ import.py failed with exit code: $IMPORT_SCRIPT_EXIT_CODE"
