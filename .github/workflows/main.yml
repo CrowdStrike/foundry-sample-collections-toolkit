@@ -22,8 +22,7 @@ jobs:
         run: pip install -r requirements.txt
         working-directory: ${{ matrix.function }}
       - name: Install HTTPie for API testing
-        run: |
-          pip install httpie
+        run: pip install httpie
         if: matrix.function == 'functions/csv-import'
       - name: Run tests if test_main.py exists
         run: |
@@ -133,6 +132,7 @@ jobs:
             echo "Import-file exit code: $IMPORT_FILE_EXIT_CODE"
             echo "Import-file full output:"
             cat import_file_output.log
+            echo "\n"
           
             if [ $IMPORT_FILE_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-file HTTPie request executed successfully"
@@ -186,6 +186,7 @@ jobs:
             echo "Import-data exit code: $IMPORT_DATA_EXIT_CODE"
             echo "Import-data full output:"
             cat import_data_output.log
+            echo "\n"
           
             if [ $IMPORT_DATA_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-data HTTPie request executed successfully"
@@ -234,6 +235,7 @@ jobs:
               echo "Import script exit code: $IMPORT_SCRIPT_EXIT_CODE"
               echo "Import script output:"
               cat import_script_output.log
+              echo "\n"
           
               if [ $IMPORT_SCRIPT_EXIT_CODE -eq 0 ]; then
                 echo "✅ import.py executed successfully"
