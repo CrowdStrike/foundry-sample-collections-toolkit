@@ -27,7 +27,7 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
     collection_name = request.body.get("collection_name", "security_events_csv")
 
     try:
-        api_client = APIHarnessV2(debug=True)
+        api_client = APIHarnessV2()
         headers = {}
         if os.environ.get("APP_ID"):
             headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
