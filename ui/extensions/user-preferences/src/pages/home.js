@@ -306,7 +306,6 @@ function Home() {
       </sl-card>
     </div>
   );
-
 }
 
 export { Home };
