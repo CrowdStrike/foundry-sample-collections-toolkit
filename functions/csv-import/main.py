@@ -3,6 +3,8 @@ import os
 import time
 import uuid
 from datetime import datetime
+from logging import Logger
+from typing import Dict
 
 import pandas as pd
 from crowdstrike.foundry.function import Function, Request, Response, APIError
@@ -12,7 +14,7 @@ func = Function.instance()
 
 
 @func.handler(method="POST", path="/import-csv")
-def import_csv_handler(request: Request) -> Response:
+def import_csv_handler(request: Request, config: Dict[str, object] | None, logger: Logger) -> Response:
     """Import CSV data into a Foundry Collection."""
 
     # Validate request
@@ -39,6 +41,12 @@ def import_csv_handler(request: Request) -> Response:
         else:
             # CSV file path provided
             csv_file_path = request.body["csv_file_path"]
+
+            # If it's just a filename (no directory separators), prepend current directory
+            if not os.path.dirname(csv_file_path):
+                csv_file_path = os.path.join(os.getcwd(), csv_file_path)
+                logger.debug(f"After: {csv_file_path}")
+
             df = pd.read_csv(csv_file_path)
             source_filename = os.path.basename(csv_file_path)
 
@@ -69,7 +77,7 @@ def import_csv_handler(request: Request) -> Response:
 
         return Response(
             body={
-                "success": True,
+                "success": import_results["success_count"] > 0,  # Only true if at least one record imported
                 "total_rows": len(df),
                 "processed_rows": len(transformed_records),
                 "imported_records": import_results["success_count"],
@@ -78,9 +86,8 @@ def import_csv_handler(request: Request) -> Response:
                 "source_file": source_filename,
                 "import_timestamp": import_timestamp
             },
-            code=200
+            code=200 if import_results["success_count"] > 0 else 207  # 207 Multi-Status for partial failures
         )
-
     except Exception as e:
         return Response(
             code=500,

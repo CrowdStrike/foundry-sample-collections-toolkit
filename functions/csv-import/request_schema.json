@@ -1,16 +1,17 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
+    "collection_name": {
+      "type": "string"
+    },
     "csv_data": {
-      "type": "object"
+      "type": "string"
     },
     "csv_file_path": {
       "type": "string"
     }
   },
-  "required": [
-    "name"
-  ],
+  "required": [],
   "type": "object",
   "description": "This generated sample schema should be updated to match the input of your function."
 }
