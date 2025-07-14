@@ -72,11 +72,6 @@ jobs:
             # Wait a moment for the service to be fully ready
             sleep 2
           
-            # Debug: Test basic connectivity
-            echo "=== Testing basic connectivity ==="
-            curl -v http://localhost:8081 || echo "Basic curl test failed"
-            echo "=== End connectivity test ==="
-          
             # Create sample CSV file if it doesn't exist
             if [ ! -f "security_events.csv" ]; then
               echo "Creating sample security_events.csv file..."
@@ -90,13 +85,11 @@ jobs:
               cat security_events.csv
             fi
           
-            # Request 1 - Import CSV with file path (with enhanced error handling)
+            # Request 1 - Import CSV with file path (your original HTTPie command)
             echo "=== Making first request (import with file path) ==="
-            set +e  # Don't exit on error
           
-            # Try the HTTPie request with verbose output
-            echo "Executing: http --print=HhBb --timeout=30 POST localhost:8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv'"
-            http --print=HhBb --timeout=30 POST localhost:8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv' > request1_output.log 2>&1
+            echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv'"
+            http POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > request1_output.log 2>&1
             REQUEST1_EXIT_CODE=$?
           
             echo "Request 1 exit code: $REQUEST1_EXIT_CODE"
@@ -106,75 +99,38 @@ jobs:
             if [ $REQUEST1_EXIT_CODE -eq 0 ]; then
               echo "✅ First HTTPie request executed successfully"
           
-              # Extract JSON response (skip HTTP headers)
-              if grep -q "^{" request1_output.log; then
-                echo "=== Request 1 JSON Response ==="
-                grep "^{" request1_output.log | tail -1 > request1_response.json
-                cat request1_response.json
-          
-                # Verify response structure
-                if grep -q '"success"' request1_response.json; then
-                  echo "✅ Found 'success' field in response"
+              # Verify response structure
+              if grep -q '"success"' request1_output.log; then
+                echo "✅ Found 'success' field in response"
+                if grep -q '"success": true' request1_output.log; then
+                  echo "✅ Success is true"
                 else
-                  echo "⚠️  'success' field not found in response"
-                fi
-          
-                if grep -q '"total_rows"' request1_response.json; then
-                  echo "✅ Found 'total_rows' field in response"
-                else
-                  echo "⚠️  'total_rows' field not found in response"
-                fi
-          
-                # Check for error indicators
-                if grep -qi '"code": 400\|"code": 500\|"errors"' request1_response.json; then
-                  echo "⚠️  Error response detected in first request"
-                  echo "Error details:"
-                  grep -i "error\|code.*[45][0-9][0-9]" request1_response.json || echo "No specific error details found"
-                else
-                  echo "✅ No error codes detected in first request response"
+                  echo "⚠️  Success is not true"
                 fi
               else
-                echo "⚠️  No JSON response found in output"
+                echo "⚠️  'success' field not found in response"
+              fi
+          
+              if grep -q '"total_rows"' request1_output.log; then
+                echo "✅ Found 'total_rows' field in response"
+              else
+                echo "⚠️  'total_rows' field not found in response"
               fi
             else
               echo "❌ First HTTPie request failed with exit code: $REQUEST1_EXIT_CODE"
-              echo "=== Detailed error analysis ==="
-          
-              # Check for common HTTPie errors
-              if grep -qi "connection.*refused\|connection.*failed" request1_output.log; then
-                echo "🔍 Connection refused - service may not be running on port 8081"
-              elif grep -qi "timeout" request1_output.log; then
-                echo "🔍 Request timeout - service may be slow to respond"
-              elif grep -qi "invalid.*json\|malformed" request1_output.log; then
-                echo "🔍 JSON parsing error - check request format"
-              elif grep -qi "404\|not found" request1_output.log; then
-                echo "🔍 404 Not Found - endpoint may not exist"
-              elif grep -qi "400\|bad request" request1_output.log; then
-                echo "🔍 400 Bad Request - check request parameters"
-              elif grep -qi "500\|internal server error" request1_output.log; then
-                echo "🔍 500 Internal Server Error - check server logs"
-              else
-                echo "🔍 Unknown error - see full output above"
-              fi
-          
-              # Show current application status
               echo "=== Current application log (last 20 lines) ==="
               tail -20 output.log
               echo "=== End application log ==="
+              # Fail the workflow if the first request fails
+              kill $PID 2>/dev/null || true
+              exit 1
             fi
           
-            set -e  # Re-enable exit on error
-          
-            # Request 2 - Import CSV with inline data (only if first request gives us insights)
+            # Request 2 - Import CSV with inline data (your original HTTPie command)
             echo "=== Making second request (import with CSV data) ==="
-            set +e  # Don't exit on error
           
-            CSV_CONTENT=$(cat security_events.csv)
-            echo "CSV content to send:"
-            echo "$CSV_CONTENT"
-          
-            echo "Executing: http --print=HhBb --timeout=30 POST localhost:8081 method=POST url=/import-csv"
-            http --print=HhBb --timeout=30 POST localhost:8081 method=POST url=/import-csv "body[csv_data]=$CSV_CONTENT" > request2_output.log 2>&1
+            echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_data]=\"\$(cat security_events.csv)\"'"
+            http POST :8081 method=POST url=/import-csv 'body[csv_data]="$(cat security_events.csv)"' > request2_output.log 2>&1
             REQUEST2_EXIT_CODE=$?
           
             echo "Request 2 exit code: $REQUEST2_EXIT_CODE"
@@ -184,28 +140,28 @@ jobs:
             if [ $REQUEST2_EXIT_CODE -eq 0 ]; then
               echo "✅ Second HTTPie request executed successfully"
           
-              # Extract and verify JSON response
-              if grep -q "^{" request2_output.log; then
-                echo "=== Request 2 JSON Response ==="
-                grep "^{" request2_output.log | tail -1 > request2_response.json
-                cat request2_response.json
+              # Verify response structure
+              if grep -q '"success": true' request2_output.log; then
+                echo "✅ Success flag is true in second request response"
+              else
+                echo "⚠️  Success flag not true in second request response"
+              fi
           
-                if grep -q '"success": true' request2_response.json; then
-                  echo "✅ Success flag is true in second request response"
-                else
-                  echo "⚠️  Success flag not true in second request response"
-                fi
+              if grep -q '"processed_rows"' request2_output.log; then
+                echo "✅ Found 'processed_rows' field in response"
+              else
+                echo "⚠️  'processed_rows' field not found in response"
               fi
             else
               echo "❌ Second HTTPie request failed with exit code: $REQUEST2_EXIT_CODE"
+              # Fail the workflow if the second request fails
+              kill $PID 2>/dev/null || true
+              exit 1
             fi
-          
-            set -e  # Re-enable exit on error
           
             # Request 3 - Execute import.py script (only if it exists)
             if [ -f "import.py" ]; then
               echo "=== Running third test (executing import.py script) ==="
-              set +e
               python import.py > import_output.log 2>&1
               IMPORT_EXIT_CODE=$?
           
@@ -215,10 +171,19 @@ jobs:
           
               if [ $IMPORT_EXIT_CODE -eq 0 ]; then
                 echo "✅ import.py executed successfully"
+          
+                # Check for expected response fields
+                if grep -q '"success"' import_output.log; then
+                  echo "✅ Found 'success' field in import.py output"
+                else
+                  echo "⚠️  'success' field not found in import.py output"
+                fi
               else
                 echo "❌ import.py failed with exit code: $IMPORT_EXIT_CODE"
+                # Fail the workflow if import.py fails
+                kill $PID 2>/dev/null || true
+                exit 1
               fi
-              set -e
             else
               echo "⚠️  import.py not found in function directory, skipping script test"
             fi
