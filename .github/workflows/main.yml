@@ -36,7 +36,32 @@ jobs:
           fi
         working-directory: ${{ matrix.function }}
       - name: Run Python function and verify output
+        env:
+          FALCON_CLIENT_ID: ${{ secrets.FALCON_CLIENT_ID }}
+          FALCON_CLIENT_SECRET: ${{ secrets.FALCON_CLIENT_SECRET }}
+          APP_ID: ${{ secrets.APP_ID }}
         run: |
+          # Debug: Show environment variables are set (without revealing values)
+          echo "=== Environment Variables Check ==="
+          if [ -n "$FALCON_CLIENT_ID" ]; then
+            echo "✅ FALCON_CLIENT_ID is set"
+          else
+            echo "⚠️  FALCON_CLIENT_ID is not set"
+          fi
+          
+          if [ -n "$FALCON_CLIENT_SECRET" ]; then
+            echo "✅ FALCON_CLIENT_SECRET is set"
+          else
+            echo "⚠️  FALCON_CLIENT_SECRET is not set"
+          fi
+          
+          if [ -n "$APP_ID" ]; then
+            echo "✅ APP_ID is set"
+          else
+            echo "⚠️  APP_ID is not set"
+          fi
+          echo "=== End Environment Variables Check ==="
+          
           python main.py > output.log 2>&1 &
           PID=$!
           timeout=30
@@ -123,6 +148,11 @@ jobs:
               else
                 echo "⚠️  'total_rows' field not found in response"
               fi
+          
+              # Check for authentication errors
+              if grep -q '"imported_records": 0' import_file_output.log && grep -q '"failed_records"' import_file_output.log; then
+                echo "⚠️  No records were imported - check authentication"
+              fi
             else
               echo "❌ Import-file HTTPie request failed with exit code: $IMPORT_FILE_EXIT_CODE"
               echo "=== HTTPie Error Details ==="
@@ -172,6 +202,11 @@ jobs:
               else
                 echo "⚠️  'processed_rows' field not found in response"
               fi
+          
+              # Check for authentication errors
+              if grep -q '"imported_records": 0' import_data_output.log && grep -q '"failed_records"' import_data_output.log; then
+                echo "⚠️  No records were imported - check authentication"
+              fi
             else
               echo "❌ Import-data HTTPie request failed with exit code: $IMPORT_DATA_EXIT_CODE"
               echo "=== HTTPie Error Details ==="
@@ -209,6 +244,11 @@ jobs:
                   echo "✅ Found 'success' field in import.py output"
                 else
                   echo "⚠️  'success' field not found in import.py output"
+                fi
+          
+                # Check for authentication issues in import.py
+                if grep -q '"imported_records": 0' import_script_output.log && grep -q '"failed_records"' import_script_output.log; then
+                  echo "⚠️  No records were imported via import.py - check authentication"
                 fi
               else
                 echo "❌ import.py failed with exit code: $IMPORT_SCRIPT_EXIT_CODE"
