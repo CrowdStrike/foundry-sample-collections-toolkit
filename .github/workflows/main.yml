@@ -59,6 +59,9 @@ jobs:
             exit 1
           fi
           
+          # Track if any tests failed (but don't exit immediately)
+          TEST_FAILURES=0
+          
           # Run additional requests for csv-import function
           if [[ "${{ matrix.function }}" == "functions/csv-import" ]]; then
             echo "Running additional requests for csv-import function..."
@@ -89,8 +92,12 @@ jobs:
             echo "=== Making first request (import with file path) ==="
           
             echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_file_path]=security_events.csv'"
+          
+            # Capture both stdout and stderr, and get exit code
+            set +e
             http POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > request1_output.log 2>&1
             REQUEST1_EXIT_CODE=$?
+            set -e
           
             echo "Request 1 exit code: $REQUEST1_EXIT_CODE"
             echo "Request 1 full output:"
@@ -118,20 +125,33 @@ jobs:
               fi
             else
               echo "❌ First HTTPie request failed with exit code: $REQUEST1_EXIT_CODE"
+              echo "=== HTTPie Error Details ==="
+              cat request1_output.log
+              echo "=== End HTTPie Error Details ==="
               echo "=== Current application log (last 20 lines) ==="
               tail -20 output.log
               echo "=== End application log ==="
-              # Fail the workflow if the first request fails
-              kill $PID 2>/dev/null || true
-              exit 1
+          
+              # Check if it's the known HTTPie syntax issue
+              if grep -q "Request body.*and request data.*cannot be mixed" request1_output.log; then
+                echo "🔍 HTTPie syntax error detected - mixing body and key=value data"
+                echo "💡 This suggests the HTTPie command syntax needs to be adjusted"
+              fi
+          
+              # Mark test as failed but continue
+              TEST_FAILURES=$((TEST_FAILURES + 1))
             fi
           
             # Request 2 - Import CSV with inline data (your original HTTPie command)
             echo "=== Making second request (import with CSV data) ==="
           
             echo "Executing: http POST :8081 method=POST url=/import-csv 'body[csv_data]=\"\$(cat security_events.csv)\"'"
+          
+            # Capture both stdout and stderr, and get exit code
+            set +e
             http POST :8081 method=POST url=/import-csv 'body[csv_data]="$(cat security_events.csv)"' > request2_output.log 2>&1
             REQUEST2_EXIT_CODE=$?
+            set -e
           
             echo "Request 2 exit code: $REQUEST2_EXIT_CODE"
             echo "Request 2 full output:"
@@ -154,16 +174,28 @@ jobs:
               fi
             else
               echo "❌ Second HTTPie request failed with exit code: $REQUEST2_EXIT_CODE"
-              # Fail the workflow if the second request fails
-              kill $PID 2>/dev/null || true
-              exit 1
+              echo "=== HTTPie Error Details ==="
+              cat request2_output.log
+              echo "=== End HTTPie Error Details ==="
+          
+              # Check if it's the known HTTPie syntax issue
+              if grep -q "Request body.*and request data.*cannot be mixed" request2_output.log; then
+                echo "🔍 HTTPie syntax error detected - mixing body and key=value data"
+                echo "💡 This suggests the HTTPie command syntax needs to be adjusted"
+              fi
+          
+              # Mark test as failed but continue
+              TEST_FAILURES=$((TEST_FAILURES + 1))
             fi
           
             # Request 3 - Execute import.py script (only if it exists)
             if [ -f "import.py" ]; then
               echo "=== Running third test (executing import.py script) ==="
+          
+              set +e
               python import.py > import_output.log 2>&1
               IMPORT_EXIT_CODE=$?
+              set -e
           
               echo "Import script exit code: $IMPORT_EXIT_CODE"
               echo "Import script output:"
@@ -180,9 +212,11 @@ jobs:
                 fi
               else
                 echo "❌ import.py failed with exit code: $IMPORT_EXIT_CODE"
-                # Fail the workflow if import.py fails
-                kill $PID 2>/dev/null || true
-                exit 1
+                echo "=== Import Script Error Details ==="
+                cat import_output.log
+                echo "=== End Import Script Error Details ==="
+                # Mark test as failed but continue
+                TEST_FAILURES=$((TEST_FAILURES + 1))
               fi
             else
               echo "⚠️  import.py not found in function directory, skipping script test"
@@ -201,8 +235,16 @@ jobs:
             echo "=== End final log ==="
           fi
           
-          # Clean up
+          # Clean up the process
           kill $PID 2>/dev/null || true
+          
+          # Exit with failure if any tests failed
+          if [ $TEST_FAILURES -gt 0 ]; then
+            echo "❌ $TEST_FAILURES test(s) failed"
+            exit 1
+          else
+            echo "✅ All tests passed"
+          fi
         working-directory: ${{ matrix.function }}
 
   test-ui:
