@@ -21,6 +21,9 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
         working-directory: ${{ matrix.function }}
+      - name: Install HTTPie for API testing
+        run: pip install httpie
+        if: matrix.function == 'functions/csv-import'
       - name: Run tests if test_main.py exists
         run: |
           if [ -f "test_main.py" ]; then
@@ -39,16 +42,181 @@ jobs:
           while [ $elapsed -lt $timeout ]; do
             if grep -q "running at port 8081" output.log; then
               echo "✅ Application started successfully"
-              kill $PID 2>/dev/null || true
-              exit 0
+              break
             fi
             sleep 1
             elapsed=$((elapsed+1))
           done
-          echo "❌ Application failed to start within $timeout seconds"
-          cat output.log
+          
+          if [ $elapsed -ge $timeout ]; then
+            echo "❌ Application failed to start within $timeout seconds"
+            cat output.log
+            kill $PID 2>/dev/null || true
+            exit 1
+          fi
+          
+          # Run additional requests for csv-import function
+          if [[ "${{ matrix.function }}" == "functions/csv-import" ]]; then
+            echo "Running additional requests for csv-import function..."
+          
+            # Wait a moment for the service to be fully ready
+            sleep 2
+          
+            # Request 1 - Import CSV with file path
+            echo "Making first request (import with file path)..."
+            http POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > request1_output.json 2>&1
+            REQUEST1_EXIT_CODE=$?
+          
+            echo "Request 1 output:"
+            cat request1_output.json
+          
+            if [ $REQUEST1_EXIT_CODE -eq 0 ]; then
+              echo "✅ First HTTPie request executed successfully"
+          
+              # Verify response structure for file path request
+              if grep -q '"success"' request1_output.json; then
+                echo "✅ Found 'success' field in response"
+              else
+                echo "⚠️  'success' field not found in response"
+              fi
+          
+              if grep -q '"total_rows"' request1_output.json; then
+                echo "✅ Found 'total_rows' field in response"
+              else
+                echo "⚠️  'total_rows' field not found in response"
+              fi
+          
+              if grep -q '"collection_name"' request1_output.json; then
+                echo "✅ Found 'collection_name' field in response"
+              else
+                echo "⚠️  'collection_name' field not found in response"
+              fi
+          
+              # Check for error indicators
+              if grep -qi '"code": 400\|"code": 500\|"errors"' request1_output.json; then
+                echo "⚠️  Error response detected in first request"
+              else
+                echo "✅ No error codes detected in first request response"
+              fi
+            else
+              echo "❌ First HTTPie request failed with exit code: $REQUEST1_EXIT_CODE"
+            fi
+          
+            # Request 2 - Import CSV with inline data
+            echo "Making second request (import with CSV data)..."
+            if [ -f "security_events.csv" ]; then
+              http POST :8081 method=POST url=/import-csv "body[csv_data]=$(cat security_events.csv)" > request2_output.json 2>&1
+            else
+              echo "security_events.csv not found, creating sample data..."
+              echo "timestamp,event_type,severity,description" > security_events.csv
+              echo "2025-07-11T14:14:08Z,login_failure,medium,Failed login from IP 192.168.1.100" >> security_events.csv
+              echo "2025-07-11T14:15:22Z,malware_detected,high,Malware detected on workstation" >> security_events.csv
+              http POST :8081 method=POST url=/import-csv "body[csv_data]=$(cat security_events.csv)" > request2_output.json 2>&1
+            fi
+            REQUEST2_EXIT_CODE=$?
+          
+            echo "Request 2 output:"
+            cat request2_output.json
+          
+            if [ $REQUEST2_EXIT_CODE -eq 0 ]; then
+              echo "✅ Second HTTPie request executed successfully"
+          
+              # Verify response structure for CSV data request
+              if grep -q '"success"' request2_output.json; then
+                echo "✅ Found 'success' field in response"
+              else
+                echo "⚠️  'success' field not found in response"
+              fi
+          
+              if grep -q '"processed_rows"' request2_output.json; then
+                echo "✅ Found 'processed_rows' field in response"
+              else
+                echo "⚠️  'processed_rows' field not found in response"
+              fi
+          
+              if grep -q '"imported_records"' request2_output.json; then
+                echo "✅ Found 'imported_records' field in response"
+              else
+                echo "⚠️  'imported_records' field not found in response"
+              fi
+          
+              if grep -q '"source_file"' request2_output.json; then
+                echo "✅ Found 'source_file' field in response"
+              else
+                echo "⚠️  'source_file' field not found in response"
+              fi
+          
+              # Check for success indicators
+              if grep -q '"success": true' request2_output.json; then
+                echo "✅ Success flag is true in second request response"
+              else
+                echo "⚠️  Success flag not true in second request response"
+              fi
+          
+              # Check for error indicators
+              if grep -qi '"code": 400\|"code": 500\|"errors"' request2_output.json; then
+                echo "⚠️  Error response detected in second request"
+              else
+                echo "✅ No error codes detected in second request response"
+              fi
+            else
+              echo "❌ Second HTTPie request failed with exit code: $REQUEST2_EXIT_CODE"
+            fi
+          
+            # Request 3 - Execute import.py script and verify output
+            echo "Running third test (executing import.py script)..."
+            if [ -f "import.py" ]; then
+              echo "Executing import.py script..."
+              python import.py > import_output.log 2>&1
+              IMPORT_EXIT_CODE=$?
+          
+              echo "Import script output:"
+              cat import_output.log
+          
+              # Verify the script executed successfully
+              if [ $IMPORT_EXIT_CODE -eq 0 ]; then
+                echo "✅ import.py executed successfully"
+          
+                # Verify expected output content
+                if grep -q "Import result:" import_output.log; then
+                  echo "✅ Found expected 'Import result:' in output"
+                else
+                  echo "⚠️  'Import result:' not found in output"
+                fi
+          
+                # Check for JSON response structure
+                if grep -q "{" import_output.log && grep -q "}" import_output.log; then
+                  echo "✅ JSON response structure detected in output"
+                else
+                  echo "⚠️  JSON response structure not detected in output"
+                fi
+          
+                # Check for successful HTTP response indicators
+                if grep -qi "error\|exception\|failed\|traceback" import_output.log; then
+                  echo "⚠️  Potential errors detected in import.py output"
+                else
+                  echo "✅ No obvious errors detected in import.py output"
+                fi
+          
+                # Check for expected response fields from import.py
+                if grep -q '"success"' import_output.log; then
+                  echo "✅ Found 'success' field in import.py output"
+                else
+                  echo "⚠️  'success' field not found in import.py output"
+                fi
+          
+              else
+                echo "❌ import.py failed with exit code: $IMPORT_EXIT_CODE"
+                echo "Script output:"
+                cat import_output.log
+              fi
+            else
+              echo "⚠️  import.py not found in function directory, skipping script test"
+            fi
+          fi
+          
+          # Clean up
           kill $PID 2>/dev/null || true
-          exit 1
         working-directory: ${{ matrix.function }}
 
   test-ui:
