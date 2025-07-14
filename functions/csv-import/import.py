@@ -38,7 +38,6 @@ response = requests.post(
         "url": "/import-csv",
         "body": {
             "csv_file_path": "security_events.csv",
-            "csv_data": csv_data,
             "collection_name": "security_events_csv"
         }
     }
