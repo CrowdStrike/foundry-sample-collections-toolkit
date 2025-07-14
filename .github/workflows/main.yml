@@ -132,7 +132,7 @@ jobs:
             echo "Import-file exit code: $IMPORT_FILE_EXIT_CODE"
             echo "Import-file full output:"
             cat import_file_output.log
-            echo "\n"
+            echo ""
           
             if [ $IMPORT_FILE_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-file HTTPie request executed successfully"
@@ -172,21 +172,31 @@ jobs:
               TEST_FAILURES=$((TEST_FAILURES + 1))
             fi
           
-            # Request 2 - Import CSV with inline data (with --ignore-stdin fix)
+            # Request 2 - Import CSV with inline data (with --ignore-stdin fix and debug)
             echo "=== Making second request (import-data) ==="
           
-            echo "Executing: http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_data]=\"\$(cat security_events.csv)\"'"
+            # Debug: Show what CSV data will be sent
+            echo "=== CSV Data Debug ==="
+            echo "Raw CSV file content:"
+            cat security_events.csv
+            echo ""
+            echo "CSV data that will be sent in request:"
+            CSV_DATA=$(cat security_events.csv)
+            echo "$CSV_DATA"
+            echo "=== End CSV Data Debug ==="
+          
+            echo "Executing: http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_data]=<CSV_CONTENT>'"
           
             # Capture both stdout and stderr, and get exit code
             set +e
-            http --ignore-stdin POST :8081 method=POST url=/import-csv 'body[csv_data]="$(cat security_events.csv)"' > import_data_output.log 2>&1
+            http --ignore-stdin POST :8081 method=POST url=/import-csv "body[csv_data]=$CSV_DATA" > import_data_output.log 2>&1
             IMPORT_DATA_EXIT_CODE=$?
             set -e
           
             echo "Import-data exit code: $IMPORT_DATA_EXIT_CODE"
             echo "Import-data full output:"
             cat import_data_output.log
-            echo "\n"
+            echo ""
           
             if [ $IMPORT_DATA_EXIT_CODE -eq 0 ]; then
               echo "✅ Import-data HTTPie request executed successfully"
@@ -196,6 +206,13 @@ jobs:
                 echo "✅ Import-data success is true"
               elif grep -q '"success": false' import_data_output.log; then
                 echo "❌ Import-data success is false - import failed"
+          
+                # Debug why it failed
+                if grep -q '"total_rows": 0' import_data_output.log; then
+                  echo "🔍 Debug: total_rows is 0 - CSV data may not be parsed correctly"
+                  echo "🔍 This suggests the CSV data format or encoding issue"
+                fi
+          
                 TEST_FAILURES=$((TEST_FAILURES + 1))
               else
                 echo "⚠️  'success' field not found or has unexpected value"
@@ -235,7 +252,7 @@ jobs:
               echo "Import script exit code: $IMPORT_SCRIPT_EXIT_CODE"
               echo "Import script output:"
               cat import_script_output.log
-              echo "\n"
+              echo ""
           
               if [ $IMPORT_SCRIPT_EXIT_CODE -eq 0 ]; then
                 echo "✅ import.py executed successfully"
