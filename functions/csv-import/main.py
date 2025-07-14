@@ -77,7 +77,7 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
 
         return Response(
             body={
-                "success": True,
+                "success": import_results["success_count"] > 0,  # Only true if at least one record imported
                 "total_rows": len(df),
                 "processed_rows": len(transformed_records),
                 "imported_records": import_results["success_count"],
@@ -86,9 +86,8 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
                 "source_file": source_filename,
                 "import_timestamp": import_timestamp
             },
-            code=200
+            code=200 if import_results["success_count"] > 0 else 207  # 207 Multi-Status for partial failures
         )
-
     except Exception as e:
         return Response(
             code=500,
