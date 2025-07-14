@@ -21,10 +21,9 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
         working-directory: ${{ matrix.function }}
-      - name: Install HTTPie and additional dependencies for API testing
+      - name: Install HTTPie for API testing
         run: |
           pip install httpie
-          pip install pandas requests
         if: matrix.function == 'functions/csv-import'
       - name: Run tests if test_main.py exists
         run: |
@@ -39,6 +38,7 @@ jobs:
         env:
           FALCON_CLIENT_ID: ${{ secrets.FALCON_CLIENT_ID }}
           FALCON_CLIENT_SECRET: ${{ secrets.FALCON_CLIENT_SECRET }}
+          FALCON_BASE_URL: ${{ secrets.FALCON_BASE_URL }}
           APP_ID: ${{ secrets.APP_ID }}
         run: |
           # Debug: Show environment variables are set (without revealing values)
@@ -53,6 +53,12 @@ jobs:
             echo "✅ FALCON_CLIENT_SECRET is set"
           else
             echo "⚠️  FALCON_CLIENT_SECRET is not set"
+          fi
+          
+          if [ -n "$FALCON_BASE_URL" ]; then
+            echo "✅ FALCON_BASE_URL is set"
+          else
+            echo "⚠️  FALCON_BASE_URL is not set (will use default)"
           fi
           
           if [ -n "$APP_ID" ]; then
