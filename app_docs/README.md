@@ -1,4 +1,4 @@
-# Foundry Sample with Python Functions
+# Foundry Sample with Collections
 
 This sample is designed to show how to use Collections in Falcon Foundry. It contains a few capabilities:
 
