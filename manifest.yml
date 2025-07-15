@@ -1,7 +1,7 @@
 app_id: ""
 name: Collections Toolkit
 description: A complete reference implementation demonstrating Foundry Collections best practices, including schema design, CRUD operations, checkpointing patterns, and UI integration. Perfect for developers learning Collections or building production security workflows.
-logo: images/data-collection.png
+logo: images/logo.png
 vendor: ""
 vendor_products: []
 use_case: Utilities
