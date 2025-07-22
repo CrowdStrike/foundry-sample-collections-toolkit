@@ -1,9 +1,17 @@
 {
   "name": "user-preferences",
   "version": "1.0.0",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
   "directories": {},
+  "scripts": {
+    "build": "rollup -c ./config/rollup.config.js",
+    "test": "jest",
+    "test:ci": "jest --coverage --watchAll=false",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "watch": "npm run build -- --watch"
+  },
   "dependencies": {
     "@crowdstrike/falcon-shoelace": "^0.4.0",
     "@crowdstrike/foundry-js": "^0.18.0",
@@ -34,30 +42,27 @@
     "rollup": "4.45.0",
     "rollup-plugin-postcss": "^4.0.2"
   },
-  "scripts": {
-    "build": "rollup -c ./config/rollup.config.js",
-    "watch": "npm run build -- --watch",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:ci": "jest --coverage --watchAll=false"
-  },
   "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy",
       "@crowdstrike/foundry-js": "<rootDir>/src/__mocks__/@crowdstrike/foundry-js.js"
     },
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "<rootDir>/src/**/*.{test,spec}.{js,jsx}"
+    ],
     "transform": {
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(@crowdstrike|@shoelace-style)/)"
-    ],
-    "moduleFileExtensions": ["js", "jsx"],
-    "testMatch": [
-      "<rootDir>/src/**/*.{test,spec}.{js,jsx}"
     ]
   },
   "engines": {
