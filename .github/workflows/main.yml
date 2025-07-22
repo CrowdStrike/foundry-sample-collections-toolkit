@@ -2,7 +2,27 @@ name: Sample CI
 on: [push, pull_request]
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      functions-changed: ${{ steps.changes.outputs.functions }}
+      ui-changed: ${{ steps.changes.outputs.ui }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            functions:
+              - 'functions/**'
+            ui:
+              - 'ui/**'
+
   test-functions:
+    needs: check-changes
+    if: needs.check-changes.outputs.functions-changed == 'true'
     strategy:
       matrix:
         function:
@@ -137,6 +157,8 @@ jobs:
         working-directory: ${{ matrix.function }}
 
   test-ui:
+    needs: check-changes
+    if: needs.check-changes.outputs.ui-changed == 'true'
     name: Build and Test UI
     runs-on: ubuntu-latest
     steps:
