@@ -37,6 +37,27 @@ ui:
             object-src: []
           permissions: []
           is_ui_builder: false
+        - id: ""
+          name: Collections CRUD
+          description: CRUD a Collection with foundry-js
+          path: ui/extensions/collections-crud/src
+          entrypoint: ui/extensions/collections-crud/src/index.html
+          sockets:
+            - hosts.host.panel
+          content_security_policy:
+            connect-src: []
+            style-src: []
+            style-src-elem:
+              - https://unpkg.com
+            script-src:
+              - https://cdn.jsdelivr.net
+              - https://unpkg.com
+            form-action: []
+            img-src: []
+            media-src: []
+            object-src: []
+          permissions: []
+          is_ui_builder: false
     pages: {}
     dashboards: {}
     navigation: {}

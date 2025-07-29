@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CRUD on Collections</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@crowdstrike/foundry-js": "https://unpkg.com/@crowdstrike/foundry-js"
+        }
+      }
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://assets.foundry.crowdstrike.com/tailwind-toucan-base@5.0.0/toucan.css"
+    />
+    <!-- Add Shoelace -->
+    <link rel="stylesheet" href="https://unpkg.com/@crowdstrike/falcon-shoelace/dist/style.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  </head>
+
+  <body class="bg-ground-floor">
+    <div id="app">
+      <sl-card class=card-footer">
+        Please check your browser console for log messages.
+        <div slot="footer">
+          <sl-button variant="primary" onclick="location.reload()">Reload</sl-button>
+        </div>
+      </sl-card>
+    </div>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
