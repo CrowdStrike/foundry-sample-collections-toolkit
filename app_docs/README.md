@@ -19,7 +19,7 @@ This sample is designed to show how to use Collections in Falcon Foundry. It con
 
 3. Test workflows to invoke the last two functions.
 4. Extensive integration testing for the CSV import via GitHub Actions.
-5. A UI extension on **Host setup and management** > **Host management** that can be used to do CRUD (Create, Read, Update, and Delete) on the `user_preferences` collection.
+5. UI extensions on **Host setup and management** > **Host management** that can be used to do CRUD (Create, Read, Update, and Delete) on the `user_preferences` collection.
 
 ## Usage
 
