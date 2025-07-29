@@ -48,6 +48,4 @@ import FalconApi from '@crowdstrike/foundry-js';
       console.error('Error performing collection operations:', error);
     }
   }
-)
-();
-
+)();
