@@ -429,36 +429,23 @@ var React$1 = /*#__PURE__*/_mergeNamespaces({
 	default: React
 }, [reactExports]);
 
-// Unique ID creation requires a high quality random # generator. In the browser we therefore
-// require the crypto API and do not support built-in fallback to lower quality random number
-// generators (like Math.random()).
-let getRandomValues;
-const rnds8 = new Uint8Array(16);
-function rng() {
-  // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues) {
-    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
-    if (!getRandomValues) {
-      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
-    }
-  }
-  return getRandomValues(rnds8);
-}
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-
 const byteToHex = [];
 for (let i = 0; i < 256; ++i) {
   byteToHex.push((i + 0x100).toString(16).slice(1));
 }
 function unsafeStringify(arr, offset = 0) {
-  // Note: Be careful editing this code!  It's been tuned for performance
-  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+  if (!getRandomValues) {
+    if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+    getRandomValues = crypto.getRandomValues.bind(crypto);
+  }
+  return getRandomValues(rnds8);
 }
 const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
 var native = {
@@ -469,11 +456,12 @@ function v4(options, buf, offset) {
     return native.randomUUID();
   }
   options = options || {};
-  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-
+  const rnds = options.random ?? options.rng?.() ?? rng();
+  if (rnds.length < 16) {
+    throw new Error('Random bytes length must be >= 16');
+  }
   rnds[6] = rnds[6] & 0x0f | 0x40;
-  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
+  rnds[8] = rnds[8] & 0x3f | 0x80;
   return unsafeStringify(rnds);
 }
 const VERSION = 'current';
@@ -611,7 +599,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol */
+/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
 
 function __decorate(decorators, target, key, desc) {
   var c = arguments.length,
@@ -765,13 +753,14 @@ function defaultMethodNamesOrAssert(methodNames) {
 }
 const isMetaEvent = eventName => eventName === listenerAdded || eventName === listenerRemoved;
 function emitMetaEvent(emitter, eventName, eventData) {
-  if (isMetaEvent(eventName)) {
-    try {
-      canEmitMetaEvents = true;
-      emitter.emit(eventName, eventData);
-    } finally {
-      canEmitMetaEvents = false;
-    }
+  if (!isMetaEvent(eventName)) {
+    return;
+  }
+  try {
+    canEmitMetaEvents = true;
+    emitter.emit(eventName, eventData);
+  } finally {
+    canEmitMetaEvents = false;
   }
 }
 class Emittery {
@@ -859,7 +848,9 @@ class Emittery {
       this.debug.logger(type, this.debug.name, eventName, eventData);
     }
   }
-  on(eventNames, listener) {
+  on(eventNames, listener, {
+    signal
+  } = {}) {
     assertListener(listener);
     eventNames = Array.isArray(eventNames) ? eventNames : [eventNames];
     for (const eventName of eventNames) {
@@ -879,7 +870,17 @@ class Emittery {
         });
       }
     }
-    return this.off.bind(this, eventNames, listener);
+    const off = () => {
+      this.off(eventNames, listener);
+      signal?.removeEventListener('abort', off);
+    };
+    signal?.addEventListener('abort', off, {
+      once: true
+    });
+    if (signal?.aborted) {
+      off();
+    }
+    return off;
   }
   off(eventNames, listener) {
     assertListener(listener);
@@ -903,10 +904,16 @@ class Emittery {
       }
     }
   }
-  once(eventNames) {
+  once(eventNames, predicate) {
+    if (predicate !== undefined && typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
     let off_;
     const promise = new Promise(resolve => {
       off_ = this.on(eventNames, data => {
+        if (predicate && !predicate(data)) {
+          return;
+        }
         off_();
         resolve(data);
       });
@@ -967,14 +974,26 @@ class Emittery {
     }
     /* eslint-enable no-await-in-loop */
   }
-  onAny(listener) {
+  onAny(listener, {
+    signal
+  } = {}) {
     assertListener(listener);
     this.logIfDebugEnabled('subscribeAny', undefined, undefined);
     anyMap.get(this).add(listener);
     emitMetaEvent(this, listenerAdded, {
       listener
     });
-    return this.offAny.bind(this, listener);
+    const offAny = () => {
+      this.offAny(listener);
+      signal?.removeEventListener('abort', offAny);
+    };
+    signal?.addEventListener('abort', offAny, {
+      once: true
+    });
+    if (signal?.aborted) {
+      offAny();
+    }
+    return offAny;
   }
   anyEvent() {
     return iterator(this);
@@ -1595,6 +1614,17 @@ class DevicesApiBridge {
     };
     return this.bridge.postMessage(message);
   }
+  async getEntitiesDevicesV1(urlParams) {
+    const message = {
+      type: 'api',
+      api: 'devices',
+      method: 'getEntitiesDevicesV1',
+      payload: {
+        params: urlParams
+      }
+    };
+    return this.bridge.postMessage(message);
+  }
   async getEntitiesFgaGroupsV1(urlParams) {
     const message = {
       type: 'api',
@@ -1695,6 +1725,18 @@ class DevicesApiBridge {
     };
     return this.bridge.postMessage(message);
   }
+  async patchEntitiesDevicesV1(postBody, urlParams) {
+    const message = {
+      type: 'api',
+      api: 'devices',
+      method: 'patchEntitiesDevicesV1',
+      payload: {
+        body: postBody,
+        params: urlParams
+      }
+    };
+    return this.bridge.postMessage(message);
+  }
   async patchEntitiesGroupsV1(postBody, urlParams = {}) {
     const message = {
       type: 'api',
@@ -1784,6 +1826,18 @@ class DevicesApiBridge {
       type: 'api',
       api: 'devices',
       method: 'postEntitiesDevicesReportsV1',
+      payload: {
+        body: postBody,
+        params: urlParams
+      }
+    };
+    return this.bridge.postMessage(message);
+  }
+  async postEntitiesDevicesV1(postBody, urlParams) {
+    const message = {
+      type: 'api',
+      api: 'devices',
+      method: 'postEntitiesDevicesV1',
       payload: {
         body: postBody,
         params: urlParams
@@ -27923,7 +27977,7 @@ function Home() {
     dashboardLayout: 'standard',
     notificationsEnabled: true
   });
-  reactExports.useEffect(async () => {
+  reactExports.useEffect(() => {
     const loadPreferences = async () => {
       if (!falcon) return;
       try {
@@ -27954,7 +28008,7 @@ function Home() {
         setLoading(false);
       }
     };
-    await loadPreferences();
+    loadPreferences();
   }, [userId, falcon]);
   const handleSave = async () => {
     try {
