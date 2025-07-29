@@ -74,7 +74,7 @@ function Home() {
   useEffect(() => {
     let timer;
     if (saveSuccess) {
-    // Hide success message after 3 seconds
+      // Hide success message after 3 seconds
       timer = setTimeout(() => setSaveSuccess(false), 3000);
     }
     return () => clearTimeout(timer);
