@@ -34,12 +34,12 @@ async function crud() {
     const darkThemeUsers = await userPreferences.search({
       filter: `theme:'dark'`
     });
-    console.log(`Dark theme users:`);
+    console.log('Dark theme users:');
     console.table(darkThemeUsers.resources);
 
     // List: Get all keys in the collection (with pagination)
     const keys = await userPreferences.list({limit: 10})
-    console.log("Collection keys:");
+    console.log('Collection keys:');
     console.table(keys.resources)
 
     // Delete: Remove a record
@@ -48,4 +48,9 @@ async function crud() {
     console.error('Error performing collection operations:', error);
   }
 }
+
+// Add event listener to Reload button
+document.getElementById('reloadBtn').addEventListener('click', crud);
+
+// Execute on load
 await crud();
