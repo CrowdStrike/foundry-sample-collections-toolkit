@@ -12,7 +12,7 @@ import FalconApi from '@crowdstrike/foundry-js';
       });
 
       // CRUD Operations
-      const userId = falcon?.data?.user?.uuid || 'user123';
+      const userId = 'user123';
 
       // Create/Update: Store user preferences
       const userData = {
