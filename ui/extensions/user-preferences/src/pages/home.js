@@ -71,6 +71,15 @@ function Home() {
     loadPreferences();
   }, [userId, falcon]);
 
+  useEffect(() => {
+    let timer;
+    if (saveSuccess) {
+      // Hide success message after 3 seconds
+      timer = setTimeout(() => setSaveSuccess(false), 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [saveSuccess]);
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -91,10 +100,6 @@ function Home() {
       await userPrefs.write(userId, updatedPreferences);
       setPreferences(updatedPreferences);
       setSaveSuccess(true);
-
-      // Hide success message after 3 seconds
-      setTimeout(() => setSaveSuccess(false), 3000);
-
     } catch (err) {
       console.error("Failed to save preferences:", err);
       setError("Failed to save preferences");
@@ -102,6 +107,15 @@ function Home() {
       setSaving(false);
     }
   };
+
+  useEffect(() => {
+    let timer;
+    if (deleteSuccess) {
+      // Hide success message after 3 seconds
+      timer = setTimeout(() => setDeleteSuccess(false), 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [deleteSuccess]);
 
   const handleDelete = async () => {
     try {
@@ -124,10 +138,6 @@ function Home() {
       setPreferences(null);
       setFormData(defaultPreferences);
       setDeleteSuccess(true);
-
-      // Hide success message after 3 seconds
-      setTimeout(() => setDeleteSuccess(false), 3000);
-
     } catch (err) {
       console.error("Failed to delete preferences:", err);
       setError("Failed to delete preferences");

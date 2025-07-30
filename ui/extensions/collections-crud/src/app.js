@@ -2,7 +2,7 @@ import FalconApi from '@crowdstrike/foundry-js';
 
 (async () => {
     try {
-      // Initialize and connect the SDK
+      // Initialize and connect
       const falcon = new FalconApi();
       await falcon.connect();
 
@@ -12,7 +12,7 @@ import FalconApi from '@crowdstrike/foundry-js';
       });
 
       // CRUD Operations
-      const userId = falcon?.data?.user?.uuid || 'user123';
+      const userId = 'user123';
 
       // Create/Update: Store user preferences
       const userData = {

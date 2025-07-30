@@ -1,6 +1,6 @@
 # Foundry Sample with Collections
 
-This sample is designed to show how to use Collections in Falcon Foundry. It contains a few capabilities:
+This sample is designed to show how to use collections in Falcon Foundry. It contains a few capabilities:
 
 1. Collections:
 
@@ -25,6 +25,8 @@ This sample is designed to show how to use Collections in Falcon Foundry. It con
 
 After installing the app, go to **Fusion SOAR** > **Workflows** to see the test workflows for functions. Execute the **Test log_event_handler function** workflow to ensure it works. You can also run the **Test process_events_handler function** to verify its functionality. The **Test user_preferences collection** workflow shows how you can use built-in Fusion SOAR actions to CRUD a collection. 
 
-To see the UI extension, go to **Host setup and management** > **Host management** and click on a host. Look for the **User Preferences** panel on the right. Click to expand, save your preferences, and click the **Save Preferences** button. Refresh your browser to confirm your preferences are saved. Use the 🗑️ icon to delete your preferences. 
+To see the UI extensions, go to **Host setup and management** > **Host management** and click on a host. Look for the **User Preferences** panel on the right. Click to expand, save your preferences, and click the **Save Preferences** button. Refresh your browser to confirm your preferences are saved. Use the 🗑️ icon to delete your preferences. 
+
+There's also a **Collections CRUD** UI extension that shows how to CRUD a collection with foundry-js. 
 
 The source code for this app can be found on GitHub: <https://github.com/CrowdStrike/foundry-sample-collections>. 
