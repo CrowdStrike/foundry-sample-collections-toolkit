@@ -2,7 +2,7 @@ import FalconApi from '@crowdstrike/foundry-js';
 
 (async () => {
     try {
-      // Initialize and connect the SDK
+      // Initialize and connect
       const falcon = new FalconApi();
       await falcon.connect();
 
