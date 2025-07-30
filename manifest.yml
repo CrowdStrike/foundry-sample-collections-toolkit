@@ -1,6 +1,6 @@
 app_id: ""
 name: Collections Toolkit
-description: A complete reference implementation demonstrating Foundry Collections best practices, including schema design, CRUD operations, checkpointing patterns, and UI integration. Perfect for developers learning Collections or building production security workflows.
+description: A complete reference implementation demonstrating Falcon Foundry collections best practices, including schema design, CRUD operations, checkpointing patterns, and UI integration. Perfect for developers learning collections or building production security workflows.
 logo: images/logo.png
 vendor: ""
 vendor_products: []
