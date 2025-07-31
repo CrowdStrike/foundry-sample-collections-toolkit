@@ -1,11 +1,11 @@
 import FalconApi from '@crowdstrike/foundry-js';
 
+// Initialize and connect
+const falcon = new FalconApi();
+await falcon.connect();
+
 async function crud() {
   try {
-    // Initialize and connect
-    const falcon = new FalconApi();
-    await falcon.connect();
-
     // Create a collection instance
     const userPreferences = falcon.collection({
       collection: 'user_preferences'
