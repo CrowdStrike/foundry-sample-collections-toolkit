@@ -2,7 +2,7 @@ app_id: ""
 name: Collections Toolkit
 description: A complete reference implementation demonstrating Falcon Foundry collections best practices, including schema design, CRUD operations, checkpointing patterns, and UI integration. Perfect for developers learning collections or building production security workflows.
 logo: images/logo.png
-vendor: ""
+vendor: CrowdStrike
 vendor_products: []
 use_case: Utilities
 manifest_version: "2023-05-09"

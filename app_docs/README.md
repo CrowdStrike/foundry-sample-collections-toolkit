@@ -29,4 +29,4 @@ To see the UI extensions, go to **Host setup and management** > **Host managemen
 
 There's also a **Collections CRUD** UI extension that shows how to CRUD a collection with foundry-js. 
 
-The source code for this app can be found on GitHub: <https://github.com/CrowdStrike/foundry-sample-collections>. 
+The source code for this app can be found on GitHub: <https://github.com/CrowdStrike/foundry-sample-collections-toolkit>. 
