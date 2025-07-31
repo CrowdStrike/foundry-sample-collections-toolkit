@@ -137,7 +137,7 @@ functions:
             system_action: true
             tags:
                 - 8271757288804f0ea5d1cdbb2c46b38d
-                - foundry-sample-collections
+                - foundry-sample-collections-toolkit
           permissions: []
       language: python
     - id: ""
@@ -160,7 +160,7 @@ functions:
             system_action: true
             tags:
                 - 8271757288804f0ea5d1cdbb2c46b38d
-                - foundry-sample-collections
+                - foundry-sample-collections-toolkit
           permissions: []
       language: python
     - id: ""

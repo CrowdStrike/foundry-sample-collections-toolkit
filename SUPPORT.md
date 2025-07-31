@@ -2,8 +2,8 @@
 
 # Repository Support
 
-`foundry-sample-collections` is a community-driven, open source project which serves as an example of an app which can be built using CrowdStrike's Foundry ecosystem.
-`foundry-sample-collections` is an open source project, not a CrowdStrike product. As such, it carries no formal support, expressed or implied.
+`foundry-sample-collections-toolkit` is a community-driven, open source project which serves as an example of an app which can be built using CrowdStrike's Foundry ecosystem.
+`foundry-sample-collections-toolkit` is an open source project, not a CrowdStrike product. As such, it carries no formal support, expressed or implied.
 
 ## Issue Reporting and Questions 🐛
 
@@ -33,7 +33,7 @@ MCVE formatted code examples provided within issues or questions should be:
 
 ### Support Escalation
 
-`foundry-sample-collections` is an open source project, not a CrowdStrike product. As such, it carries no formal support, expressed or implied.
+`foundry-sample-collections-toolkit` is an open source project, not a CrowdStrike product. As such, it carries no formal support, expressed or implied.
 
 #### Confidentiality
 

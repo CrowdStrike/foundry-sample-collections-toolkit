@@ -3,7 +3,7 @@
 # Collections Toolkit sample Foundry app
 
 The Collections Toolkit sample Foundry app is a community-driven, open source project which serves as an example of an
-app which can be built using CrowdStrike's Foundry ecosystem. `foundry-sample-collections` is an open source project,
+app which can be built using CrowdStrike's Foundry ecosystem. `foundry-sample-collections-toolkit` is an open source project,
 not a CrowdStrike product. As such, it carries no formal support, expressed or implied.
 
 This app is one of several App Templates included in Foundry that you can use to jumpstart your development. It comes
