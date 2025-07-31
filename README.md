@@ -61,7 +61,7 @@ import it into Foundry.
 
 ```shell
 git clone https://github.com/CrowdStrike/foundry-sample-collections-toolkit
-cd foundry-sample-collections
+cd foundry-sample-collections-toolkit
 ```
 
 Log in to Foundry:
