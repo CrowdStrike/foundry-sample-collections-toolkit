@@ -7,7 +7,7 @@
 
 ## Issue Reporting and Questions 🐛
 
-Issues may be reported [here](https://github.com/CrowdStrike/foundry-sample-collections/issues/new/choose) and are used to track bugs, documentation and link updates, enhancement requests and security concerns.
+Issues may be reported [here](https://github.com/CrowdStrike/foundry-sample-collections-toolkit/issues/new/choose) and are used to track bugs, documentation and link updates, enhancement requests and security concerns.
 
 ### Issue Formatting (MCVE)
 
@@ -29,7 +29,7 @@ MCVE formatted code examples provided within issues or questions should be:
 
 > To read more about _MCVE format_, review this post on [Stack Overflow](https://stackoverflow.com/help/minimal-reproducible-example). For tips on how to properly format questions, check out the blog post by [@mrocklin](https://github.com/mrocklin/) on [crafting minimal bug reports](https://matthewrocklin.com/minimal-bug-reports).
 
-### [Report an Issue →](https://github.com/CrowdStrike/foundry-sample-collections/issues/new/choose)
+### [Report an Issue →](https://github.com/CrowdStrike/foundry-sample-collections-toolkit/issues/new/choose)
 
 ### Support Escalation
 

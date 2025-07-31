@@ -56,11 +56,11 @@ Run `foundry version` to verify it's installed correctly.
 ## Getting Started
 
 Clone this sample to your local system,
-or [download as a zip file](https://github.com/CrowdStrike/foundry-sample-collections/archive/refs/heads/main.zip) and
+or [download as a zip file](https://github.com/CrowdStrike/foundry-sample-collections-toolkit/archive/refs/heads/main.zip) and
 import it into Foundry.
 
 ```shell
-git clone https://github.com/CrowdStrike/foundry-sample-collections
+git clone https://github.com/CrowdStrike/foundry-sample-collections-toolkit
 cd foundry-sample-collections
 ```
 
