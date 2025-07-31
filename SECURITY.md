@@ -2,7 +2,7 @@
 
 # Security Policy
 
-This document outlines security policy and procedures for the CrowdStrike `foundry-sample-collections` project.
+This document outlines security policy and procedures for the CrowdStrike `foundry-sample-collections-toolkit` project.
 
 ## Reporting a potential security vulnerability
 
