@@ -7,11 +7,15 @@ updates:
     schedule:
       interval: weekly
   - package-ecosystem: npm
-    directories:
-      - "/ui/extensions/user-preferences/"
+    directory: "/ui/extensions/user-preferences/"
     open-pull-requests-limit: 10
     schedule:
       interval: weekly
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
