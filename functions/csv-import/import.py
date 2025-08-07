@@ -1,3 +1,9 @@
+"""
+Module for importing CSV data to CrowdStrike Foundry Collections.
+
+This module provides functionality to prepare and send CSV data to the import function.
+"""
+
 import json
 
 import pandas as pd
@@ -40,7 +46,8 @@ response = requests.post(
             "csv_file_path": "security_events.csv",
             "collection_name": "security_events_csv"
         }
-    }
+    },
+    timeout=30
 )
 
 print("Import result:")
