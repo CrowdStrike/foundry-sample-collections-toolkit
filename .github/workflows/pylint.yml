@@ -17,6 +17,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Debug Python version
+        run: |
+          python --version
+          python -c "import sys; print(f'Python version: {sys.version_info}')"
+          pylint --version
       - name: Install global dependencies
         run: |
           python -m pip install --upgrade pip
