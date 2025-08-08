@@ -1,3 +1,5 @@
+"""Main module for the log-event function handler."""
+
 import os
 import time
 import uuid
@@ -5,13 +7,20 @@ import uuid
 from crowdstrike.foundry.function import Function, Request, Response, APIError
 from falconpy import APIHarnessV2
 
-func = Function.instance()
+FUNC = Function.instance()
 
 
-@func.handler(method="POST", path="/log-event")
-def log_event_handler(request: Request) -> Response:
-    """Store event data in the event_logs collection."""
+@FUNC.handler(method="POST", path="/log-event")
+def on_post(request: Request) -> Response:
+    """
+    Handle POST requests to /log-event endpoint.
 
+    Args:
+        request: The incoming request object containing the request body.
+
+    Returns:
+        Response: JSON response with event storage result or error message.
+    """
     # Validate request
     if "event_data" not in request.body:
         return Response(
@@ -22,10 +31,8 @@ def log_event_handler(request: Request) -> Response:
     event_data = request.body["event_data"]
 
     try:
-        # Initialize the API client
-        api_client = APIHarnessV2()
-
-        # Prepare data for storage
+        # Store data in a collection
+        # This assumes you've already created a collection named "event_logs"
         event_id = str(uuid.uuid4())
         json_data = {
             "event_id": event_id,
@@ -33,19 +40,22 @@ def log_event_handler(request: Request) -> Response:
             "timestamp": int(time.time())
         }
 
-        # Handle APP_ID for local testing
+        # Allow setting APP_ID as an env variable for local testing
         headers = {}
         if os.environ.get("APP_ID"):
-            headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
+            headers = {
+                "X-CS-APP-ID": os.environ.get("APP_ID")
+            }
 
+        api_client = APIHarnessV2()
         collection_name = "event_logs"
 
-        # Store data in the collection
         response = api_client.command("PutObject",
                                       body=json_data,
                                       collection_name=collection_name,
                                       object_key=event_id,
-                                      headers=headers)
+                                      headers=headers
+                                      )
 
         if response["status_code"] != 200:
             error_message = response.get("error", {}).get("message", "Unknown error")
@@ -57,28 +67,27 @@ def log_event_handler(request: Request) -> Response:
                 )]
             )
 
-        # Query the collection to verify storage
+        # Query the collection to retrieve the event by id
         query_response = api_client.command("SearchObjects",
                                             filter=f"event_id:'{event_id}'",
                                             collection_name=collection_name,
                                             limit=5,
-                                            headers=headers)
+                                            headers=headers
+                                            )
 
         return Response(
             body={
                 "stored": True,
-                "event_id": event_id,
-                "metadata": query_response.get("body", {}).get("resources", [])
+                "metadata": query_response.get("body").get("resources", [])
             },
             code=200
         )
-
-    except Exception as e:
+    except (ConnectionError, ValueError, KeyError) as e:
         return Response(
             code=500,
-            errors=[APIError(code=500, message=f"Error saving to collection: {str(e)}")]
+            errors=[APIError(code=500, message=f"Error saving collection: {str(e)}")]
         )
 
 
 if __name__ == "__main__":
-    func.run()
+    FUNC.run()
