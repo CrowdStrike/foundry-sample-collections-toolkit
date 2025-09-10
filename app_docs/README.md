@@ -23,7 +23,34 @@ This sample is designed to show how to use collections in Falcon Foundry. It con
 
 ## Usage
 
-After installing the app, go to **Fusion SOAR** > **Workflows** to see the test workflows for functions. Execute the **Test log_event_handler function** workflow to ensure it works. You can also run the **Test process_events_handler function** to verify its functionality. The **Test user_preferences collection** workflow shows how you can use built-in Fusion SOAR actions to CRUD a collection. 
+After installing the app, go to **Fusion SOAR** > **Workflows** to see the test workflows for functions. Execute the **Test log_event_handler function** workflow to ensure it works. You can also run the **Test process_events_handler function** to verify its functionality. The **Test user_preferences collection** workflow shows how you can use built-in Fusion SOAR actions to CRUD a collection.
+
+To test with larger datasets, you can generate and import 250 security events using the provided scripts. Navigate to the `functions` directory and run `python generate_security_events.py` to create a CSV file with sample security events. Then use the `csv-import` function with the `import-large-events.sh` script to import the data into your collection.
+
+```shell
+cd foundry-sample-collections-toolkit/functions
+
+# Generate a bunch of events in a CSV file
+python generate_security_events.py
+
+# Set env variables; app must be deployed for ID
+cd csv-import
+export APP_ID=...
+
+# Make sure your API client has CustomStorage scope
+export FALCON_CLIENT_ID=... 
+export FALCON_CLIENT_SECRET=...
+
+# Run function
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt --upgrade pip
+python main.py
+
+# Open a new terminal, and navigate to the functions directory 
+# Import the CSV file to your collection
+sh import-large-events.sh
+``` 
 
 To see the UI extensions, go to **Host setup and management** > **Host management** and click on a host. Look for the **User Preferences** panel on the right. Click to expand, save your preferences, and click the **Save Preferences** button. Refresh your browser to confirm your preferences are saved. Use the 🗑️ icon to delete your preferences. 
 
