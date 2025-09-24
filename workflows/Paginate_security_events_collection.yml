@@ -46,8 +46,8 @@ actions:
         version_constraint: ~0
     SearchObjectsInSecurityEventsCsv:
         next:
-            - UpdateVariable3
-        id: ""
+            - UpdateVariable4
+        id: 354399c413d84e1589e6f673b92ad83c_security_events_csv_Search
         properties:
             custom_storage_search_filter: event_type:'malware_detected'
             limit: 10
@@ -61,7 +61,7 @@ actions:
             WorkflowCustomVariable:
                 next: ${ListObjectsInSecurityEventsCsv.CustomStorage.Collection_security_events_csv.next}
         version_constraint: ~1
-    UpdateVariable3:
+    UpdateVariable4:
         next:
             - Loop1
         id: 6c6eab39063fa3b72d98c82af60deb8a
@@ -118,14 +118,14 @@ loops:
         actions:
             SearchObjectsInSecurityEventsCsv2:
                 next:
-                    - UpdateVariable4
-                id: ""
+                    - UpdateVariable5
+                id: 354399c413d84e1589e6f673b92ad83c_security_events_csv_Search
                 properties:
                     custom_storage_search_filter: event_type:'malware_detected'
                     limit: 10
                     offset: ${WorkflowCustomVariable.offset}
                 version_constraint: ~0
-            UpdateVariable4:
+            UpdateVariable5:
                 id: 6c6eab39063fa3b72d98c82af60deb8a
                 class: UpdateVariable
                 properties:
