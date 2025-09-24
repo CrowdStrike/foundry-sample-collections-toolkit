@@ -47,7 +47,7 @@ actions:
     SearchObjectsInSecurityEventsCsv:
         next:
             - UpdateVariable3
-        id: 2ee748f6c14a4fe0b94428abd4cb885d_security_events_csv_Search
+        id: ""
         properties:
             custom_storage_search_filter: event_type:'malware_detected'
             limit: 10
@@ -119,7 +119,7 @@ loops:
             SearchObjectsInSecurityEventsCsv2:
                 next:
                     - UpdateVariable4
-                id: 2ee748f6c14a4fe0b94428abd4cb885d_security_events_csv_Search
+                id: ""
                 properties:
                     custom_storage_search_filter: event_type:'malware_detected'
                     limit: 10
