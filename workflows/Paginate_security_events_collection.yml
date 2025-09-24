@@ -1,0 +1,129 @@
+name: Paginate security_events collection
+description: Workflow to paginate security_events_csv collection to show how it works
+parameters: {}
+provision_on_install: true
+trigger:
+    next:
+        - CreateVariable
+        - CreateVariable2
+actions:
+    CreateVariable:
+        next:
+            - ListObjectsInSecurityEventsCsv
+        class: CreateVariable
+        properties:
+            variable_schema:
+                properties:
+                    next:
+                        type: string
+                type: object
+        version_constraint: ~1
+    CreateVariable2:
+        next:
+            - SearchObjectsInSecurityEventsCsv
+        class: CreateVariable
+        properties:
+            variable_schema:
+                properties:
+                    keys:
+                        items:
+                            format: foundryCustomStorageObjectKey
+                            type: string
+                        type: array
+                    offset:
+                        type: integer
+                    total:
+                        type: integer
+                type: object
+        version_constraint: ~1
+    ListObjectsInSecurityEventsCsv:
+        next:
+            - UpdateVariable
+        id: collections.security_events_csv.list
+        properties: {}
+        version_constraint: ~0
+    SearchObjectsInSecurityEventsCsv:
+        next:
+            - UpdateVariable3
+        properties:
+            custom_storage_search_filter: event_type:'malware_detected'
+            limit: 10
+        version_constraint: ~0
+    UpdateVariable:
+        next:
+            - Loop
+        class: UpdateVariable
+        properties:
+            WorkflowCustomVariable:
+                next: ${ListObjectsInSecurityEventsCsv.CustomStorage.Collection_security_events_csv.next}
+        version_constraint: ~1
+    UpdateVariable3:
+        next:
+            - Loop1
+        class: UpdateVariable
+        properties:
+            WorkflowCustomVariable:
+                offset: ${SearchObjectsInSecurityEventsCsv.CustomStorage.Collection_security_events_csv.offset}
+                total: ${SearchObjectsInSecurityEventsCsv.CustomStorage.Collection_security_events_csv.total}
+        version_constraint: ~1
+loops:
+    Loop:
+        display: While Loop Iteration is less than 10 And next exists
+        for:
+            input: ""
+            condition: Loop.Iteration:<10+WorkflowCustomVariable.next:!null
+            condition_display:
+                - Loop Iteration is less than 10
+                - next exists
+            continue_on_partial_execution: false
+            sequential: true
+        trigger:
+            next:
+                - ListObjectsInSecurityEventsCsv2
+        actions:
+            ListObjectsInSecurityEventsCsv2:
+                next:
+                    - UpdateVariable2
+                id: collections.security_events_csv.list
+                properties:
+                    limit: 50
+                    start_key: ${WorkflowCustomVariable.next}
+                version_constraint: ~0
+            UpdateVariable2:
+                class: UpdateVariable
+                properties:
+                    WorkflowCustomVariable:
+                        next: ${ListObjectsInSecurityEventsCsv2.CustomStorage.Collection_security_events_csv.next}
+                version_constraint: ~1
+    Loop1:
+        display: While data['WorkflowCustomVariable.offset'] != null && data['WorkflowCustomVariable.offset'] != 0 && data['WorkflowCustomVariable.total'] != null && data['WorkflowCustomVariable.offset'] < data['WorkflowCustomVariable.total']; 5 iterations; 5 minute limit
+        for:
+            input: ""
+            cel_condition: data['WorkflowCustomVariable.offset'] != null && data['WorkflowCustomVariable.offset'] != 0 && data['WorkflowCustomVariable.total'] != null && data['WorkflowCustomVariable.offset'] < data['WorkflowCustomVariable.total']
+            condition_display:
+                - data['WorkflowCustomVariable.offset'] != null && data['WorkflowCustomVariable.offset'] != 0 && data['WorkflowCustomVariable.total'] != null && data['WorkflowCustomVariable.offset'] < data['WorkflowCustomVariable.total']
+            continue_on_partial_execution: false
+            max_execution_seconds: 300
+            max_iteration_count: 5
+            sequential: true
+        trigger:
+            next:
+                - SearchObjectsInSecurityEventsCsv2
+        actions:
+            SearchObjectsInSecurityEventsCsv2:
+                next:
+                    - UpdateVariable4
+                properties:
+                    custom_storage_search_filter: event_type:'malware_detected'
+                    limit: 10
+                    offset: ${WorkflowCustomVariable.offset}
+                version_constraint: ~0
+            UpdateVariable4:
+                class: UpdateVariable
+                properties:
+                    WorkflowCustomVariable:
+                        keys:
+                            - ${SearchObjectsInSecurityEventsCsv2.CustomStorage.Collection_security_events_csv.custom_storage_object_keys}
+                        offset: ${SearchObjectsInSecurityEventsCsv2.CustomStorage.Collection_security_events_csv.offset}
+                        total: ${SearchObjectsInSecurityEventsCsv.CustomStorage.Collection_security_events_csv.total}
+                version_constraint: ~1
