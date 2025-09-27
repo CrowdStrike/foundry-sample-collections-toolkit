@@ -189,6 +189,10 @@ functions:
       language: python
 workflows:
     - id: ""
+      name: Paginate security_events collection
+      path: workflows/Paginate_security_events_collection.yml
+      permissions: []
+    - id: ""
       name: Test log_event_handler function
       path: workflows/Test_log_event_handler_function.yml
       permissions: []
