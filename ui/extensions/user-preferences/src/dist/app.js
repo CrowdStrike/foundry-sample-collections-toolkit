@@ -28266,7 +28266,11 @@ function Home() {
     let timer;
     if (saveSuccess) {
       // Hide success message after 3 seconds
-      timer = setTimeout(() => setSaveSuccess(false), 3000);
+      timer = setTimeout(() => {
+        if (typeof setSaveSuccess === 'function') {
+          setSaveSuccess(false);
+        }
+      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [saveSuccess]);
@@ -28298,7 +28302,11 @@ function Home() {
     let timer;
     if (deleteSuccess) {
       // Hide success message after 3 seconds
-      timer = setTimeout(() => setDeleteSuccess(false), 3000);
+      timer = setTimeout(() => {
+        if (typeof setDeleteSuccess === 'function') {
+          setDeleteSuccess(false);
+        }
+      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [deleteSuccess]);
