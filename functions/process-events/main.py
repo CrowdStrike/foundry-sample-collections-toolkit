@@ -79,10 +79,11 @@ def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
     workflow_id = workflow_context["workflow_id"]
     logger = workflow_context["logger"]
 
-    # Retrieve last checkpoint
+    # Retrieve the most recent checkpoint for this workflow
     checkpoint_response = api_client.command("SearchObjects",
                                              filter=f"workflow_id:'{workflow_id}'",
                                              collection_name=checkpoint_collection,
+                                             sort="last_processed_timestamp.desc",
                                              limit=1,
                                              headers=headers)
 
