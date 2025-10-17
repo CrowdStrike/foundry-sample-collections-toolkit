@@ -1,4 +1,4 @@
-crowdstrike-foundry-function==1.1.1
+crowdstrike-foundry-function==1.1.2
 crowdstrike-falconpy
 requests
 # numpy and pandas are pinned to prevent "Error importing numpy"
