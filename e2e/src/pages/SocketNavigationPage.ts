@@ -86,12 +86,10 @@ export class SocketNavigationPage extends BasePage {
         await this.page.waitForLoadState('networkidle');
 
         // Click on the first detection - look for buttons with process/host information
-        // Based on the structure seen: gridcell with buttons like "REVIL.EXE on SE-MRA-WIN10-BL by demo"
         const firstDetectionButton = this.page.locator('[role="gridcell"] button').first();
         await firstDetectionButton.waitFor({ state: 'visible', timeout: 10000 });
         await firstDetectionButton.click();
 
-        // Wait for detection details to load
         await this.page.waitForLoadState('networkidle');
       },
       'Open first detection'
