@@ -255,30 +255,33 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Wait for status indicator to show "Installed"
-    // Try with a refresh if status doesn't update automatically
+    // Poll for status with exponential backoff: 2s, 4s, 8s, 16s (total ~30s)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
+    const delays = [2000, 4000, 8000, 16000];
 
-    try {
-      // First attempt: wait 10 seconds
-      await this.waiter.waitForVisible(statusText, {
-        description: `App '${appName}' status shows Installed`,
-        timeout: 10000
-      });
-    } catch (error) {
-      // Status didn't update, refresh page and try again
-      this.logger.info('Status not updated yet, refreshing page...');
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      const isVisible = await statusText.isVisible().catch(() => false);
+
+      if (isVisible) {
+        this.logger.success('Installation verified - app status shows Installed in catalog');
+        return;
+      }
+
+      const delay = delays[attempt];
+      this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
+      await this.waiter.delay(delay);
       await this.page.reload();
       await this.page.waitForLoadState('networkidle');
-
-      // Second attempt: wait up to 30 seconds after refresh
-      await this.waiter.waitForVisible(statusText, {
-        description: `App '${appName}' status shows Installed (after refresh)`,
-        timeout: 30000
-      });
     }
 
-    this.logger.success('Installation verified - app status shows Installed in catalog');
+    // Final check after last refresh
+    const isVisible = await statusText.isVisible().catch(() => false);
+    if (isVisible) {
+      this.logger.success('Installation verified - app status shows Installed in catalog');
+      return;
+    }
+
+    throw new Error(`Installation verification failed - status did not show 'Installed' after ~30 seconds`);
   }
 
   /**
@@ -327,30 +330,33 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Wait for "Install now" link to appear (indicates app is uninstalled)
-    // Try with a refresh if status doesn't update automatically
+    // Poll for status with exponential backoff: 2s, 4s, 8s, 16s (total ~30s)
     const installNowLink = this.page.getByRole('link', { name: 'Install now' });
+    const delays = [2000, 4000, 8000, 16000];
 
-    try {
-      // First attempt: wait 10 seconds
-      await this.waiter.waitForVisible(installNowLink, {
-        description: `App '${appName}' shows Install now link (uninstalled)`,
-        timeout: 10000
-      });
-    } catch (error) {
-      // Status didn't update, refresh page and try again
-      this.logger.info('Status not updated yet, refreshing page...');
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      const isVisible = await installNowLink.isVisible().catch(() => false);
+
+      if (isVisible) {
+        this.logger.success('Uninstallation verified - app shows Install now link in catalog');
+        return;
+      }
+
+      const delay = delays[attempt];
+      this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
+      await this.waiter.delay(delay);
       await this.page.reload();
       await this.page.waitForLoadState('networkidle');
-
-      // Second attempt: wait up to 30 seconds after refresh
-      await this.waiter.waitForVisible(installNowLink, {
-        description: `App '${appName}' shows Install now link (uninstalled, after refresh)`,
-        timeout: 30000
-      });
     }
 
-    this.logger.success('Uninstallation verified - app shows Install now link in catalog');
+    // Final check after last refresh
+    const isVisible = await installNowLink.isVisible().catch(() => false);
+    if (isVisible) {
+      this.logger.success('Uninstallation verified - app shows Install now link in catalog');
+      return;
+    }
+
+    throw new Error(`Uninstallation verification failed - 'Install now' link did not appear after ~30 seconds`);
   }
 
   /**
