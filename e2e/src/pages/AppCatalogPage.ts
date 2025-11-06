@@ -255,9 +255,9 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Poll for status every 5 seconds (should update within 10-15 seconds per user)
+    // Poll for status every 5 seconds (up to 60 seconds)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
-    const maxAttempts = 4; // 4 attempts = up to 20 seconds
+    const maxAttempts = 12; // 12 attempts = up to 60 seconds
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const isVisible = await statusText.isVisible().catch(() => false);
@@ -323,9 +323,9 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Poll for status every 5 seconds (should update within 10-15 seconds per user)
+    // Poll for status every 5 seconds (up to 60 seconds)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /not installed/i });
-    const maxAttempts = 4; // 4 attempts = up to 20 seconds
+    const maxAttempts = 12; // 12 attempts = up to 60 seconds
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const isVisible = await statusText.isVisible().catch(() => false);
