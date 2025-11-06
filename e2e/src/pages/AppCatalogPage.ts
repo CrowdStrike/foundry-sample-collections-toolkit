@@ -251,7 +251,8 @@ export class AppCatalogPage extends BasePage {
     this.logger.info('Verifying installation status in app catalog...');
 
     // Navigate directly to app catalog with search query
-    await this.page.goto(`${config.baseUrl}/foundry/app-catalog?q=${appName}`);
+    const baseUrl = new URL(this.page.url()).origin;
+    await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
     // Wait for status indicator to show "Installed"
@@ -306,7 +307,8 @@ export class AppCatalogPage extends BasePage {
     this.logger.info('Verifying uninstallation status in app catalog...');
 
     // Navigate directly to app catalog with search query
-    await this.page.goto(`${config.baseUrl}/foundry/app-catalog?q=${appName}`);
+    const baseUrl = new URL(this.page.url()).origin;
+    await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
     // Wait for "Install now" link to appear (indicates app is uninstalled)
