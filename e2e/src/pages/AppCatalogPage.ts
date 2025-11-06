@@ -332,14 +332,14 @@ export class AppCatalogPage extends BasePage {
     await this.page.waitForLoadState('networkidle');
 
     // Poll for status with exponential backoff: 2s, 4s, 8s, 16s (total ~30s)
-    const installNowLink = this.page.getByRole('link', { name: 'Install now' });
+    const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /not installed/i });
     const delays = [2000, 4000, 8000, 16000];
 
     for (let attempt = 0; attempt < delays.length; attempt++) {
-      const isVisible = await installNowLink.isVisible().catch(() => false);
+      const isVisible = await statusText.isVisible().catch(() => false);
 
       if (isVisible) {
-        this.logger.success('Uninstallation verified - app shows Install now link in catalog');
+        this.logger.success('Uninstallation verified - app status shows Not installed in catalog');
         return;
       }
 
@@ -352,13 +352,13 @@ export class AppCatalogPage extends BasePage {
     }
 
     // Final check after last delay
-    const isVisible = await installNowLink.isVisible().catch(() => false);
+    const isVisible = await statusText.isVisible().catch(() => false);
     if (isVisible) {
-      this.logger.success('Uninstallation verified - app shows Install now link in catalog');
+      this.logger.success('Uninstallation verified - app status shows Not installed in catalog');
       return;
     }
 
-    throw new Error(`Uninstallation verification failed - 'Install now' link did not appear after ~30 seconds`);
+    throw new Error(`Uninstallation verification failed - status did not show 'Not installed' after ~30 seconds`);
   }
 
   /**
