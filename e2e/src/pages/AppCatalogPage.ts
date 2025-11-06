@@ -270,11 +270,12 @@ export class AppCatalogPage extends BasePage {
       const delay = delays[attempt];
       this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
       await this.waiter.delay(delay);
-      await this.page.reload();
-      await this.page.waitForLoadState('networkidle');
+
+      // Reload and check immediately
+      await this.page.reload({ waitUntil: 'domcontentloaded' });
     }
 
-    // Final check after last refresh
+    // Final check after last delay
     const isVisible = await statusText.isVisible().catch(() => false);
     if (isVisible) {
       this.logger.success('Installation verified - app status shows Installed in catalog');
@@ -345,11 +346,12 @@ export class AppCatalogPage extends BasePage {
       const delay = delays[attempt];
       this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
       await this.waiter.delay(delay);
-      await this.page.reload();
-      await this.page.waitForLoadState('networkidle');
+
+      // Reload and check immediately
+      await this.page.reload({ waitUntil: 'domcontentloaded' });
     }
 
-    // Final check after last refresh
+    // Final check after last delay
     const isVisible = await installNowLink.isVisible().catch(() => false);
     if (isVisible) {
       this.logger.success('Uninstallation verified - app shows Install now link in catalog');
