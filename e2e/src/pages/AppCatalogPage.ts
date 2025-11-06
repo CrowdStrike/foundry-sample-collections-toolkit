@@ -248,6 +248,44 @@ export class AppCatalogPage extends BasePage {
   }
 
   /**
+   * Wait for uninstallation to complete
+   */
+  private async waitForUninstallation(appName: string): Promise<void> {
+    this.logger.info('Waiting for uninstallation to complete...');
+
+    // Look for first "uninstalling" message
+    const uninstallingMessage = this.page.getByText(/uninstalling/i).first();
+
+    try {
+      await uninstallingMessage.waitFor({ state: 'visible', timeout: 30000 });
+      this.logger.success('Uninstallation started - "uninstalling" message appeared');
+    } catch (error) {
+      throw new Error(`Uninstallation failed to start for app '${appName}' - "uninstalling" message never appeared. Uninstallation may have failed immediately.`);
+    }
+
+    // Wait for second toast with final status (uninstalled or error)
+    const uninstalledMessage = this.page.getByText(/uninstalled/i).first();
+    const errorMessage = this.page.getByText(/error.*uninstall/i).first();
+
+    try {
+      await Promise.race([
+        uninstalledMessage.waitFor({ state: 'visible', timeout: 60000 }).then(() => 'success'),
+        errorMessage.waitFor({ state: 'visible', timeout: 60000 }).then(() => 'error')
+      ]).then(result => {
+        if (result === 'error') {
+          throw new Error(`Uninstallation failed for app '${appName}' - error message appeared`);
+        }
+        this.logger.success('Uninstallation completed successfully - "uninstalled" message appeared');
+      });
+    } catch (error) {
+      if (error.message.includes('Uninstallation failed')) {
+        throw error;
+      }
+      throw new Error(`Uninstallation status unclear for app '${appName}' - timed out waiting for "uninstalled" or "error" message after 60 seconds`);
+    }
+  }
+
+  /**
    * Navigate to app via Custom Apps menu
    */
   async navigateToAppViaCustomApps(appName: string): Promise<void> {
@@ -317,12 +355,8 @@ export class AppCatalogPage extends BasePage {
       await this.waiter.waitForVisible(uninstallButton, { description: 'Uninstall confirmation button' });
       await this.smartClick(uninstallButton, 'Uninstall button');
 
-      // Wait for success message
-      const successMessage = this.page.getByText(/has been uninstalled/i);
-      await this.waiter.waitForVisible(successMessage, {
-        description: 'Uninstall success message',
-        timeout: 30000
-      });
+      // Wait for uninstallation to complete with sequential toast messages
+      await this.waitForUninstallation(appName);
 
       this.logger.success(`App '${appName}' uninstalled successfully`);
 
