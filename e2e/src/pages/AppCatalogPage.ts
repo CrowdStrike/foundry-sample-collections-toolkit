@@ -100,7 +100,7 @@ export class AppCatalogPage extends BasePage {
     // Handle permissions dialog
     await this.handlePermissionsDialog();
 
-    // Check for ServiceNow configuration screen
+    // Check for API integration configuration (none for Collections Toolkit)
     await this.configureApiIntegrationIfNeeded();
 
     // Click final Install app button
