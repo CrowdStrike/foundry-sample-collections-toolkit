@@ -255,11 +255,11 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Poll for status with exponential backoff: 2s, 4s, 8s, 16s (total ~30s)
+    // Poll for status every 5 seconds (should update within 10-15 seconds per user)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
-    const delays = [2000, 4000, 8000, 16000];
+    const maxAttempts = 4; // 4 attempts = up to 20 seconds
 
-    for (let attempt = 0; attempt < delays.length; attempt++) {
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const isVisible = await statusText.isVisible().catch(() => false);
 
       if (isVisible) {
@@ -267,22 +267,14 @@ export class AppCatalogPage extends BasePage {
         return;
       }
 
-      const delay = delays[attempt];
-      this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
-      await this.waiter.delay(delay);
-
-      // Reload and check immediately
-      await this.page.reload({ waitUntil: 'domcontentloaded' });
+      if (attempt < maxAttempts - 1) {
+        this.logger.info(`Status not yet updated, waiting 5s before refresh (attempt ${attempt + 1}/${maxAttempts})...`);
+        await this.waiter.delay(5000);
+        await this.page.reload({ waitUntil: 'domcontentloaded' });
+      }
     }
 
-    // Final check after last delay
-    const isVisible = await statusText.isVisible().catch(() => false);
-    if (isVisible) {
-      this.logger.success('Installation verified - app status shows Installed in catalog');
-      return;
-    }
-
-    throw new Error(`Installation verification failed - status did not show 'Installed' after ~30 seconds`);
+    throw new Error(`Installation verification failed - status did not show 'Installed' after ${maxAttempts * 5} seconds`);
   }
 
   /**
@@ -331,11 +323,11 @@ export class AppCatalogPage extends BasePage {
     await this.page.goto(`${baseUrl}/foundry/app-catalog?q=${appName}`);
     await this.page.waitForLoadState('networkidle');
 
-    // Poll for status with exponential backoff: 2s, 4s, 8s, 16s (total ~30s)
+    // Poll for status every 5 seconds (should update within 10-15 seconds per user)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /not installed/i });
-    const delays = [2000, 4000, 8000, 16000];
+    const maxAttempts = 4; // 4 attempts = up to 20 seconds
 
-    for (let attempt = 0; attempt < delays.length; attempt++) {
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const isVisible = await statusText.isVisible().catch(() => false);
 
       if (isVisible) {
@@ -343,22 +335,14 @@ export class AppCatalogPage extends BasePage {
         return;
       }
 
-      const delay = delays[attempt];
-      this.logger.info(`Status not yet updated, waiting ${delay / 1000}s before refresh (attempt ${attempt + 1}/${delays.length})...`);
-      await this.waiter.delay(delay);
-
-      // Reload and check immediately
-      await this.page.reload({ waitUntil: 'domcontentloaded' });
+      if (attempt < maxAttempts - 1) {
+        this.logger.info(`Status not yet updated, waiting 5s before refresh (attempt ${attempt + 1}/${maxAttempts})...`);
+        await this.waiter.delay(5000);
+        await this.page.reload({ waitUntil: 'domcontentloaded' });
+      }
     }
 
-    // Final check after last delay
-    const isVisible = await statusText.isVisible().catch(() => false);
-    if (isVisible) {
-      this.logger.success('Uninstallation verified - app status shows Not installed in catalog');
-      return;
-    }
-
-    throw new Error(`Uninstallation verification failed - status did not show 'Not installed' after ~30 seconds`);
+    throw new Error(`Uninstallation verification failed - status did not show 'Not installed' after ${maxAttempts * 5} seconds`);
   }
 
   /**
