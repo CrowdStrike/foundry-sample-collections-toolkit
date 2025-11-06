@@ -256,11 +256,27 @@ export class AppCatalogPage extends BasePage {
     await this.page.waitForLoadState('networkidle');
 
     // Wait for status indicator to show "Installed"
+    // Try with a refresh if status doesn't update automatically
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
-    await this.waiter.waitForVisible(statusText, {
-      description: `App '${appName}' status shows Installed`,
-      timeout: 30000
-    });
+
+    try {
+      // First attempt: wait 10 seconds
+      await this.waiter.waitForVisible(statusText, {
+        description: `App '${appName}' status shows Installed`,
+        timeout: 10000
+      });
+    } catch (error) {
+      // Status didn't update, refresh page and try again
+      this.logger.info('Status not updated yet, refreshing page...');
+      await this.page.reload();
+      await this.page.waitForLoadState('networkidle');
+
+      // Second attempt: wait up to 30 seconds after refresh
+      await this.waiter.waitForVisible(statusText, {
+        description: `App '${appName}' status shows Installed (after refresh)`,
+        timeout: 30000
+      });
+    }
 
     this.logger.success('Installation verified - app status shows Installed in catalog');
   }
@@ -312,11 +328,27 @@ export class AppCatalogPage extends BasePage {
     await this.page.waitForLoadState('networkidle');
 
     // Wait for "Install now" link to appear (indicates app is uninstalled)
+    // Try with a refresh if status doesn't update automatically
     const installNowLink = this.page.getByRole('link', { name: 'Install now' });
-    await this.waiter.waitForVisible(installNowLink, {
-      description: `App '${appName}' shows Install now link (uninstalled)`,
-      timeout: 30000
-    });
+
+    try {
+      // First attempt: wait 10 seconds
+      await this.waiter.waitForVisible(installNowLink, {
+        description: `App '${appName}' shows Install now link (uninstalled)`,
+        timeout: 10000
+      });
+    } catch (error) {
+      // Status didn't update, refresh page and try again
+      this.logger.info('Status not updated yet, refreshing page...');
+      await this.page.reload();
+      await this.page.waitForLoadState('networkidle');
+
+      // Second attempt: wait up to 30 seconds after refresh
+      await this.waiter.waitForVisible(installNowLink, {
+        description: `App '${appName}' shows Install now link (uninstalled, after refresh)`,
+        timeout: 30000
+      });
+    }
 
     this.logger.success('Uninstallation verified - app shows Install now link in catalog');
   }
