@@ -33,8 +33,10 @@ export class SocketNavigationPage extends BasePage {
       async () => {
         this.logger.info('Navigating to Endpoint Detections page');
 
-        // Open the hamburger menu
-        const menuButton = this.page.getByRole('button', { name: 'Menu' });
+        // Open the hamburger menu - use data-test-selector="nav-trigger" to target the specific menu
+        // (not other Menu buttons that may appear on the page)
+        const menuButton = this.page.locator('[data-test-selector="nav-trigger"]');
+        await menuButton.waitFor({ state: 'visible', timeout: 30000 });
         await menuButton.click();
         await this.page.waitForLoadState('networkidle');
 
@@ -82,8 +84,10 @@ export class SocketNavigationPage extends BasePage {
         await this.navigateToPath('/foundry/home', 'Foundry home');
         await this.page.waitForLoadState('networkidle');
 
-        // Open the hamburger menu
-        const menuButton = this.page.getByRole('button', { name: 'Menu' });
+        // Open the hamburger menu - use data-test-selector="nav-trigger" to target the specific menu
+        // (not other Menu buttons that may appear on the page)
+        const menuButton = this.page.locator('[data-test-selector="nav-trigger"]');
+        await menuButton.waitFor({ state: 'visible', timeout: 30000 });
         await menuButton.click();
         await this.page.waitForLoadState('networkidle');
 
@@ -121,8 +125,10 @@ export class SocketNavigationPage extends BasePage {
         await this.navigateToPath('/foundry/home', 'Foundry home');
         await this.page.waitForLoadState('networkidle');
 
-        // Open the hamburger menu
-        const menuButton = this.page.getByRole('button', { name: 'Menu' });
+        // Open the hamburger menu - use data-test-selector="nav-trigger" to target the specific menu
+        // (not other Menu buttons that may appear on the page)
+        const menuButton = this.page.locator('[data-test-selector="nav-trigger"]');
+        await menuButton.waitFor({ state: 'visible', timeout: 30000 });
         await menuButton.click();
         await this.page.waitForLoadState('networkidle');
 
@@ -192,8 +198,10 @@ export class SocketNavigationPage extends BasePage {
       async () => {
         this.logger.info('Navigating to Host Management page');
 
-        // Open the hamburger menu
-        const menuButton = this.page.getByRole('button', { name: 'Menu' });
+        // Open the hamburger menu - use data-test-selector="nav-trigger" to target the specific menu
+        // (not other Menu buttons that may appear on the page)
+        const menuButton = this.page.locator('[data-test-selector="nav-trigger"]');
+        await menuButton.waitFor({ state: 'visible', timeout: 30000 });
         await menuButton.click();
         await this.page.waitForLoadState('networkidle');
 
