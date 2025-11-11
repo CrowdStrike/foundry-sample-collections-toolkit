@@ -16,6 +16,8 @@ ignored:
     - .+/__mocks__/.+
     - .+\.test\.js$
     - .+/setupTests\.js$
+    - e2e
+    - e2e/.+
 ui:
     homepage: ""
     extensions:
