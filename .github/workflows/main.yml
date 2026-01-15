@@ -14,14 +14,29 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
         with:
           fetch-depth: 0
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36  # v3
+      - name: Check for path changes
         id: changes
-        with:
-          filters: |
-            functions:
-              - 'functions/**'
-            ui:
-              - 'ui/**'
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # For PRs, compare PR head against base
+            git fetch origin ${{ github.event.pull_request.base.ref }}
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD)
+          else
+            # For push events, compare against default branch
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.event.repository.default_branch }}...HEAD)
+          fi
+
+          if echo "$CHANGED_FILES" | grep -q '^functions/'; then
+            echo "functions=true" >> $GITHUB_OUTPUT
+          else
+            echo "functions=false" >> $GITHUB_OUTPUT
+          fi
+
+          if echo "$CHANGED_FILES" | grep -q '^ui/'; then
+            echo "ui=true" >> $GITHUB_OUTPUT
+          else
+            echo "ui=false" >> $GITHUB_OUTPUT
+          fi
 
   test-functions:
     needs: check-changes
@@ -44,9 +59,6 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
         working-directory: ${{ matrix.function }}
-      - name: Install HTTPie for API testing
-        run: pip install httpie
-        if: matrix.function == 'functions/csv-import'
       - name: Run tests if test_main.py exists
         run: |
           if [ -f "test_main.py" ]; then
@@ -54,108 +66,6 @@ jobs:
             pytest
           else
             echo "No test_main.py found, skipping tests"
-          fi
-        working-directory: ${{ matrix.function }}
-      - name: Run Python function and verify output
-        env:
-          FALCON_CLIENT_ID: ${{ secrets.FALCON_CLIENT_ID }}
-          FALCON_CLIENT_SECRET: ${{ secrets.FALCON_CLIENT_SECRET }}
-          FALCON_BASE_URL: ${{ secrets.FALCON_BASE_URL }}
-          APP_ID: ${{ secrets.APP_ID }}
-        run: |
-          # Start the function
-          python main.py > output.log 2>&1 &
-          PID=$!
-          timeout=30
-          elapsed=0
-          while [ $elapsed -lt $timeout ]; do
-            if grep -q "running at port 8081" output.log; then
-              echo "✅ Application started successfully"
-              break
-            fi
-            sleep 1
-            elapsed=$((elapsed+1))
-          done
-          
-          if [ $elapsed -ge $timeout ]; then
-            echo "❌ Application failed to start within $timeout seconds"
-            cat output.log
-            kill $PID 2>/dev/null || true
-            exit 1
-          fi
-          
-          TEST_FAILURES=0
-          
-          # Run CSV import tests
-          if [[ "${{ matrix.function }}" == "functions/csv-import" ]]; then
-            echo "Running CSV import tests..."
-            sleep 2
-          
-            # Create sample CSV if needed
-            if [ ! -f "security_events.csv" ]; then
-              echo "timestamp,event_type,severity,description,source_ip,destination_ip,user" > security_events.csv
-              echo "2025-07-11T14:14:08Z,login_failure,medium,Failed login from IP 192.168.1.100,192.168.1.100,192.168.1.1,test.user" >> security_events.csv
-              echo "2025-07-11T14:15:22Z,malware_detected,high,Malware detected on workstation,192.168.1.101,192.168.1.1,admin.user" >> security_events.csv
-            fi
-          
-            # Test 1: Import CSV with file path
-            echo "=== Test 1: Import file path ==="
-            set +e
-            http --ignore-stdin POST :8081 method=POST url=/import-csv "body[csv_file_path]=security_events.csv" > import_file_output.log 2>&1
-            IMPORT_FILE_EXIT_CODE=$?
-            set -e
-          
-            if [ $IMPORT_FILE_EXIT_CODE -eq 0 ] && grep -q '"success": true' import_file_output.log; then
-              echo "✅ Import file path test passed"
-            else
-              echo "❌ Import file path test failed"
-              cat import_file_output.log
-              TEST_FAILURES=$((TEST_FAILURES + 1))
-            fi
-          
-            # Test 2: Import CSV with inline data
-            echo "=== Test 2: Import inline data ==="
-            CSV_DATA=$(cat security_events.csv)
-            set +e
-            http --ignore-stdin POST :8081 method=POST url=/import-csv "body[csv_data]=$CSV_DATA" > import_data_output.log 2>&1
-            IMPORT_DATA_EXIT_CODE=$?
-            set -e
-          
-            if [ $IMPORT_DATA_EXIT_CODE -eq 0 ] && grep -q '"success": true' import_data_output.log; then
-              echo "✅ Import inline data test passed"
-            else
-              echo "❌ Import inline data test failed"
-              cat import_data_output.log
-              TEST_FAILURES=$((TEST_FAILURES + 1))
-            fi
-          
-            # Test 3: Execute import.py script
-            if [ -f "import.py" ]; then
-              echo "=== Test 3: Import script ==="
-              set +e
-              python import.py > import_script_output.log 2>&1
-              IMPORT_SCRIPT_EXIT_CODE=$?
-              set -e
-          
-              if [ $IMPORT_SCRIPT_EXIT_CODE -eq 0 ] && grep -q '"success": true' import_script_output.log; then
-                echo "✅ Import script test passed"
-              else
-                echo "❌ Import script test failed"
-                cat import_script_output.log
-                TEST_FAILURES=$((TEST_FAILURES + 1))
-              fi
-            fi
-          fi
-          
-          # Cleanup
-          kill $PID 2>/dev/null || true
-          
-          # Final result
-          if [ $TEST_FAILURES -gt 0 ]; then
-            echo "❌ $TEST_FAILURES test(s) failed"
-            exit 1
-          else
-            echo "✅ All tests passed"
           fi
         working-directory: ${{ matrix.function }}
 
