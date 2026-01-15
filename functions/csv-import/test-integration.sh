@@ -4,20 +4,42 @@
 # This script starts the function server and tests the import endpoints.
 #
 # Prerequisites:
-#   - Python 3.x with dependencies installed (pip install -r requirements.txt)
-#   - HTTPie installed (pip install httpie)
-#   - Falcon API credentials configured
+#   - Python 3.x
+#   - Collections Toolkit app deployed (install from Foundry > Templates, or run `foundry apps deploy`)
 #
 # Usage:
 #   ./test-integration.sh
 #
 # Environment variables (will prompt if not set):
-#   FALCON_CLIENT_ID     - Your Falcon API client ID
-#   FALCON_CLIENT_SECRET - Your Falcon API client secret
-#   FALCON_BASE_URL      - Falcon API base URL (e.g., https://api.crowdstrike.com)
+#   FALCON_CLIENT_ID     - API client ID (requires Custom Storage Read and Write scopes)
+#   FALCON_CLIENT_SECRET - API client secret
 #   APP_ID               - Your Foundry app ID
 
 set -e
+
+# Detect Python command
+if command -v python3 &> /dev/null; then
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null; then
+    PYTHON_CMD="python"
+else
+    echo "Error: Python not found. Please install Python 3.x"
+    exit 1
+fi
+
+# Create and activate virtual environment
+if [ ! -d ".venv" ]; then
+    echo "Creating virtual environment..."
+    $PYTHON_CMD -m venv .venv
+fi
+
+echo "Activating virtual environment..."
+source .venv/bin/activate
+
+# Install dependencies
+echo "Installing dependencies..."
+pip install -q --upgrade pip -r requirements.txt
+pip install -q httpie
 
 # Prompt for credentials if not set
 if [ -z "$FALCON_CLIENT_ID" ]; then
@@ -31,11 +53,6 @@ if [ -z "$FALCON_CLIENT_SECRET" ]; then
     export FALCON_CLIENT_SECRET
 fi
 
-if [ -z "$FALCON_BASE_URL" ]; then
-    read -p "Enter FALCON_BASE_URL (e.g., https://api.crowdstrike.com): " FALCON_BASE_URL
-    export FALCON_BASE_URL
-fi
-
 if [ -z "$APP_ID" ]; then
     read -p "Enter APP_ID: " APP_ID
     export APP_ID
@@ -44,7 +61,7 @@ fi
 echo "Starting integration tests..."
 
 # Start the function
-python main.py > output.log 2>&1 &
+$PYTHON_CMD main.py > output.log 2>&1 &
 PID=$!
 
 # Wait for server to start
@@ -113,7 +130,7 @@ fi
 if [ -f "import.py" ]; then
     echo "=== Test 3: Import script ==="
     set +e
-    python import.py > import_script_output.log 2>&1
+    $PYTHON_CMD import.py > import_script_output.log 2>&1
     IMPORT_SCRIPT_EXIT_CODE=$?
     set -e
 
