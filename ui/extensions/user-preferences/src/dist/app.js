@@ -3909,7 +3909,7 @@ function useFalconApiContext() {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const t$4 = globalThis,
-  e$b = t$4.ShadowRoot && (void 0 === t$4.ShadyCSS || t$4.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype,
+  e$a = t$4.ShadowRoot && (void 0 === t$4.ShadyCSS || t$4.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype,
   s$3 = Symbol(),
   o$d = new WeakMap();
 let n$9 = class n {
@@ -3920,7 +3920,7 @@ let n$9 = class n {
   get styleSheet() {
     let t = this.o;
     const s = this.t;
-    if (e$b && void 0 === t) {
+    if (e$a && void 0 === t) {
       const e = void 0 !== s && 1 === s.length;
       e && (t = o$d.get(s)), void 0 === t && ((this.o = t = new CSSStyleSheet()).replaceSync(this.cssText), e && o$d.set(s, t));
     }
@@ -3930,7 +3930,7 @@ let n$9 = class n {
     return this.cssText;
   }
 };
-const r$7 = t => new n$9("string" == typeof t ? t : t + "", void 0, s$3),
+const r$8 = t => new n$9("string" == typeof t ? t : t + "", void 0, s$3),
   i$7 = (t, ...e) => {
     const o = 1 === t.length ? t[0] : e.reduce((e, s, o) => e + (t => {
       if (true === t._$cssResult$) return t.cssText;
@@ -3940,16 +3940,16 @@ const r$7 = t => new n$9("string" == typeof t ? t : t + "", void 0, s$3),
     return new n$9(o, t, s$3);
   },
   S$1 = (s, o) => {
-    if (e$b) s.adoptedStyleSheets = o.map(t => t instanceof CSSStyleSheet ? t : t.styleSheet);else for (const e of o) {
+    if (e$a) s.adoptedStyleSheets = o.map(t => t instanceof CSSStyleSheet ? t : t.styleSheet);else for (const e of o) {
       const o = document.createElement("style"),
         n = t$4.litNonce;
       void 0 !== n && o.setAttribute("nonce", n), o.textContent = e.cssText, s.appendChild(o);
     }
   },
-  c$3 = e$b ? t => t : t => t instanceof CSSStyleSheet ? (t => {
+  c$3 = e$a ? t => t : t => t instanceof CSSStyleSheet ? (t => {
     let e = "";
     for (const s of t.cssRules) e += s.cssText;
-    return r$7(e);
+    return r$8(e);
   })(t) : t;
 
 /**
@@ -3959,22 +3959,22 @@ const r$7 = t => new n$9("string" == typeof t ? t : t + "", void 0, s$3),
  */
 const {
     is: i$6,
-    defineProperty: e$a,
+    defineProperty: e$9,
     getOwnPropertyDescriptor: h$3,
-    getOwnPropertyNames: r$6,
+    getOwnPropertyNames: r$7,
     getOwnPropertySymbols: o$c,
     getPrototypeOf: n$8
   } = Object,
   a$2 = globalThis,
   c$2 = a$2.trustedTypes,
-  l$3 = c$2 ? c$2.emptyScript : "",
-  p$1 = a$2.reactiveElementPolyfillSupport,
+  l$4 = c$2 ? c$2.emptyScript : "",
+  p$2 = a$2.reactiveElementPolyfillSupport,
   d$1 = (t, s) => t,
-  u$3 = {
+  u$2 = {
     toAttribute(t, s) {
       switch (s) {
         case Boolean:
-          t = t ? l$3 : null;
+          t = t ? l$4 : null;
           break;
         case Object:
         case Array:
@@ -4002,14 +4002,14 @@ const {
       return i;
     }
   },
-  f$3 = (t, s) => !i$6(t, s),
-  b = {
+  f$2 = (t, s) => !i$6(t, s),
+  b$1 = {
     attribute: true,
     type: String,
-    converter: u$3,
+    converter: u$2,
     reflect: false,
     useDefault: false,
-    hasChanged: f$3
+    hasChanged: f$2
   };
 Symbol.metadata ??= Symbol("metadata"), a$2.litPropertyMetadata ??= new WeakMap();
 let y$1 = class y extends HTMLElement {
@@ -4019,11 +4019,11 @@ let y$1 = class y extends HTMLElement {
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(t, s = b) {
+  static createProperty(t, s = b$1) {
     if (s.state && (s.attribute = false), this._$Ei(), this.prototype.hasOwnProperty(t) && ((s = Object.create(s)).wrapped = true), this.elementProperties.set(t, s), !s.noAccessor) {
       const i = Symbol(),
         h = this.getPropertyDescriptor(t, i, s);
-      void 0 !== h && e$a(this.prototype, t, h);
+      void 0 !== h && e$9(this.prototype, t, h);
     }
   }
   static getPropertyDescriptor(t, s, i) {
@@ -4049,7 +4049,7 @@ let y$1 = class y extends HTMLElement {
     };
   }
   static getPropertyOptions(t) {
-    return this.elementProperties.get(t) ?? b;
+    return this.elementProperties.get(t) ?? b$1;
   }
   static _$Ei() {
     if (this.hasOwnProperty(d$1("elementProperties"))) return;
@@ -4060,7 +4060,7 @@ let y$1 = class y extends HTMLElement {
     if (this.hasOwnProperty(d$1("finalized"))) return;
     if (this.finalized = true, this._$Ei(), this.hasOwnProperty(d$1("properties"))) {
       const t = this.properties,
-        s = [...r$6(t), ...o$c(t)];
+        s = [...r$7(t), ...o$c(t)];
       for (const i of s) this.createProperty(i, t[i]);
     }
     const t = this[Symbol.metadata];
@@ -4123,7 +4123,7 @@ let y$1 = class y extends HTMLElement {
     const i = this.constructor.elementProperties.get(t),
       e = this.constructor._$Eu(t, i);
     if (void 0 !== e && true === i.reflect) {
-      const h = (void 0 !== i.converter?.toAttribute ? i.converter : u$3).toAttribute(s, i.type);
+      const h = (void 0 !== i.converter?.toAttribute ? i.converter : u$2).toAttribute(s, i.type);
       this._$Em = t, null == h ? this.removeAttribute(e) : this.setAttribute(e, h), this._$Em = null;
     }
   }
@@ -4134,15 +4134,16 @@ let y$1 = class y extends HTMLElement {
       const t = i.getPropertyOptions(e),
         h = "function" == typeof t.converter ? {
           fromAttribute: t.converter
-        } : void 0 !== t.converter?.fromAttribute ? t.converter : u$3;
-      this._$Em = e, this[e] = h.fromAttribute(s, t.type) ?? this._$Ej?.get(e) ?? null, this._$Em = null;
+        } : void 0 !== t.converter?.fromAttribute ? t.converter : u$2;
+      this._$Em = e;
+      const r = h.fromAttribute(s, t.type);
+      this[e] = r ?? this._$Ej?.get(e) ?? r, this._$Em = null;
     }
   }
-  requestUpdate(t, s, i) {
+  requestUpdate(t, s, i, e = false, h) {
     if (void 0 !== t) {
-      const e = this.constructor,
-        h = this[t];
-      if (i ??= e.getPropertyOptions(t), !((i.hasChanged ?? f$3)(h, s) || i.useDefault && i.reflect && h === this._$Ej?.get(t) && !this.hasAttribute(e._$Eu(t, i)))) return;
+      const r = this.constructor;
+      if (false === e && (h = this[t]), i ??= r.getPropertyOptions(t), !((i.hasChanged ?? f$2)(h, s) || i.useDefault && i.reflect && h === this._$Ej?.get(t) && !this.hasAttribute(r._$Eu(t, i)))) return;
       this.C(t, s, i);
     }
     false === this.isUpdatePending && (this._$ES = this._$EP());
@@ -4216,9 +4217,9 @@ let y$1 = class y extends HTMLElement {
 };
 y$1.elementStyles = [], y$1.shadowRootOptions = {
   mode: "open"
-}, y$1[d$1("elementProperties")] = new Map(), y$1[d$1("finalized")] = new Map(), p$1?.({
+}, y$1[d$1("elementProperties")] = new Map(), y$1[d$1("finalized")] = new Map(), p$2?.({
   ReactiveElement: y$1
-}), (a$2.reactiveElementVersions ??= []).push("2.1.0");
+}), (a$2.reactiveElementVersions ??= []).push("2.1.2");
 
 /**
  * @license
@@ -4226,129 +4227,130 @@ y$1.elementStyles = [], y$1.shadowRootOptions = {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const t$3 = globalThis,
-  i$5 = t$3.trustedTypes,
-  s$2 = i$5 ? i$5.createPolicy("lit-html", {
+  i$5 = t => t,
+  s$2 = t$3.trustedTypes,
+  e$8 = s$2 ? s$2.createPolicy("lit-html", {
     createHTML: t => t
   }) : void 0,
-  e$9 = "$lit$",
-  h$2 = `lit$${Math.random().toFixed(9).slice(2)}$`,
-  o$b = "?" + h$2,
-  n$7 = `<${o$b}>`,
-  r$5 = document,
-  l$2 = () => r$5.createComment(""),
-  c$1 = t => null === t || "object" != typeof t && "function" != typeof t,
-  a$1 = Array.isArray,
-  u$2 = t => a$1(t) || "function" == typeof t?.[Symbol.iterator],
-  d = "[ \t\n\f\r]",
-  f$2 = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,
-  v = /-->/g,
-  _ = />/g,
-  m$1 = RegExp(`>|${d}(?:([^\\s"'>=/]+)(${d}*=${d}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"),
-  p = /'/g,
-  g = /"/g,
-  $ = /^(?:script|style|textarea|title)$/i,
-  y = t => (i, ...s) => ({
+  h$2 = "$lit$",
+  o$b = `lit$${Math.random().toFixed(9).slice(2)}$`,
+  n$7 = "?" + o$b,
+  r$6 = `<${n$7}>`,
+  l$3 = document,
+  c$1 = () => l$3.createComment(""),
+  a$1 = t => null === t || "object" != typeof t && "function" != typeof t,
+  u$1 = Array.isArray,
+  d = t => u$1(t) || "function" == typeof t?.[Symbol.iterator],
+  f$1 = "[ \t\n\f\r]",
+  v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,
+  _ = /-->/g,
+  m$1 = />/g,
+  p$1 = RegExp(`>|${f$1}(?:([^\\s"'>=/]+)(${f$1}*=${f$1}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"),
+  g = /'/g,
+  $ = /"/g,
+  y = /^(?:script|style|textarea|title)$/i,
+  x = t => (i, ...s) => ({
     _$litType$: t,
     strings: i,
     values: s
   }),
-  x = y(1),
-  T = Symbol.for("lit-noChange"),
-  E = Symbol.for("lit-nothing"),
-  A = new WeakMap(),
-  C = r$5.createTreeWalker(r$5, 129);
-function P(t, i) {
-  if (!a$1(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return void 0 !== s$2 ? s$2.createHTML(i) : i;
+  b = x(1),
+  E = Symbol.for("lit-noChange"),
+  A = Symbol.for("lit-nothing"),
+  C = new WeakMap(),
+  P = l$3.createTreeWalker(l$3, 129);
+function V(t, i) {
+  if (!u$1(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return void 0 !== e$8 ? e$8.createHTML(i) : i;
 }
-const V = (t, i) => {
+const N = (t, i) => {
   const s = t.length - 1,
-    o = [];
-  let r,
+    e = [];
+  let n,
     l = 2 === i ? "<svg>" : 3 === i ? "<math>" : "",
-    c = f$2;
+    c = v;
   for (let i = 0; i < s; i++) {
     const s = t[i];
     let a,
       u,
       d = -1,
-      y = 0;
-    for (; y < s.length && (c.lastIndex = y, u = c.exec(s), null !== u);) y = c.lastIndex, c === f$2 ? "!--" === u[1] ? c = v : void 0 !== u[1] ? c = _ : void 0 !== u[2] ? ($.test(u[2]) && (r = RegExp("</" + u[2], "g")), c = m$1) : void 0 !== u[3] && (c = m$1) : c === m$1 ? ">" === u[0] ? (c = r ?? f$2, d = -1) : void 0 === u[1] ? d = -2 : (d = c.lastIndex - u[2].length, a = u[1], c = void 0 === u[3] ? m$1 : '"' === u[3] ? g : p) : c === g || c === p ? c = m$1 : c === v || c === _ ? c = f$2 : (c = m$1, r = void 0);
-    const x = c === m$1 && t[i + 1].startsWith("/>") ? " " : "";
-    l += c === f$2 ? s + n$7 : d >= 0 ? (o.push(a), s.slice(0, d) + e$9 + s.slice(d) + h$2 + x) : s + h$2 + (-2 === d ? i : x);
+      f = 0;
+    for (; f < s.length && (c.lastIndex = f, u = c.exec(s), null !== u);) f = c.lastIndex, c === v ? "!--" === u[1] ? c = _ : void 0 !== u[1] ? c = m$1 : void 0 !== u[2] ? (y.test(u[2]) && (n = RegExp("</" + u[2], "g")), c = p$1) : void 0 !== u[3] && (c = p$1) : c === p$1 ? ">" === u[0] ? (c = n ?? v, d = -1) : void 0 === u[1] ? d = -2 : (d = c.lastIndex - u[2].length, a = u[1], c = void 0 === u[3] ? p$1 : '"' === u[3] ? $ : g) : c === $ || c === g ? c = p$1 : c === _ || c === m$1 ? c = v : (c = p$1, n = void 0);
+    const x = c === p$1 && t[i + 1].startsWith("/>") ? " " : "";
+    l += c === v ? s + r$6 : d >= 0 ? (e.push(a), s.slice(0, d) + h$2 + s.slice(d) + o$b + x) : s + o$b + (-2 === d ? i : x);
   }
-  return [P(t, l + (t[s] || "<?>") + (2 === i ? "</svg>" : 3 === i ? "</math>" : "")), o];
+  return [V(t, l + (t[s] || "<?>") + (2 === i ? "</svg>" : 3 === i ? "</math>" : "")), e];
 };
-class N {
+class S {
   constructor({
     strings: t,
-    _$litType$: s
-  }, n) {
+    _$litType$: i
+  }, e) {
     let r;
     this.parts = [];
-    let c = 0,
+    let l = 0,
       a = 0;
     const u = t.length - 1,
       d = this.parts,
-      [f, v] = V(t, s);
-    if (this.el = N.createElement(f, n), C.currentNode = this.el.content, 2 === s || 3 === s) {
+      [f, v] = N(t, i);
+    if (this.el = S.createElement(f, e), P.currentNode = this.el.content, 2 === i || 3 === i) {
       const t = this.el.content.firstChild;
       t.replaceWith(...t.childNodes);
     }
-    for (; null !== (r = C.nextNode()) && d.length < u;) {
+    for (; null !== (r = P.nextNode()) && d.length < u;) {
       if (1 === r.nodeType) {
-        if (r.hasAttributes()) for (const t of r.getAttributeNames()) if (t.endsWith(e$9)) {
+        if (r.hasAttributes()) for (const t of r.getAttributeNames()) if (t.endsWith(h$2)) {
           const i = v[a++],
-            s = r.getAttribute(t).split(h$2),
+            s = r.getAttribute(t).split(o$b),
             e = /([.?@])?(.*)/.exec(i);
           d.push({
             type: 1,
-            index: c,
+            index: l,
             name: e[2],
             strings: s,
-            ctor: "." === e[1] ? H$1 : "?" === e[1] ? I : "@" === e[1] ? L : k
+            ctor: "." === e[1] ? I : "?" === e[1] ? L : "@" === e[1] ? z : H$1
           }), r.removeAttribute(t);
-        } else t.startsWith(h$2) && (d.push({
+        } else t.startsWith(o$b) && (d.push({
           type: 6,
-          index: c
+          index: l
         }), r.removeAttribute(t));
-        if ($.test(r.tagName)) {
-          const t = r.textContent.split(h$2),
-            s = t.length - 1;
-          if (s > 0) {
-            r.textContent = i$5 ? i$5.emptyScript : "";
-            for (let i = 0; i < s; i++) r.append(t[i], l$2()), C.nextNode(), d.push({
+        if (y.test(r.tagName)) {
+          const t = r.textContent.split(o$b),
+            i = t.length - 1;
+          if (i > 0) {
+            r.textContent = s$2 ? s$2.emptyScript : "";
+            for (let s = 0; s < i; s++) r.append(t[s], c$1()), P.nextNode(), d.push({
               type: 2,
-              index: ++c
+              index: ++l
             });
-            r.append(t[s], l$2());
+            r.append(t[i], c$1());
           }
         }
-      } else if (8 === r.nodeType) if (r.data === o$b) d.push({
+      } else if (8 === r.nodeType) if (r.data === n$7) d.push({
         type: 2,
-        index: c
+        index: l
       });else {
         let t = -1;
-        for (; -1 !== (t = r.data.indexOf(h$2, t + 1));) d.push({
+        for (; -1 !== (t = r.data.indexOf(o$b, t + 1));) d.push({
           type: 7,
-          index: c
-        }), t += h$2.length - 1;
+          index: l
+        }), t += o$b.length - 1;
       }
-      c++;
+      l++;
     }
   }
   static createElement(t, i) {
-    const s = r$5.createElement("template");
+    const s = l$3.createElement("template");
     return s.innerHTML = t, s;
   }
 }
-function S(t, i, s = t, e) {
-  if (i === T) return i;
+function M(t, i, s = t, e) {
+  if (i === E) return i;
   let h = void 0 !== e ? s._$Co?.[e] : s._$Cl;
-  const o = c$1(i) ? void 0 : i._$litDirective$;
-  return h?.constructor !== o && (h?._$AO?.(false), void 0 === o ? h = void 0 : (h = new o(t), h._$AT(t, s, e)), void 0 !== e ? (s._$Co ??= [])[e] = h : s._$Cl = h), void 0 !== h && (i = S(t, h._$AS(t, i.values), h, e)), i;
+  const o = a$1(i) ? void 0 : i._$litDirective$;
+  return h?.constructor !== o && (h?._$AO?.(false), void 0 === o ? h = void 0 : (h = new o(t), h._$AT(t, s, e)), void 0 !== e ? (s._$Co ??= [])[e] = h : s._$Cl = h), void 0 !== h && (i = M(t, h._$AS(t, i.values), h, e)), i;
 }
-class M {
+class R {
   constructor(t, i) {
     this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = i;
   }
@@ -4365,32 +4367,32 @@ class M {
         },
         parts: s
       } = this._$AD,
-      e = (t?.creationScope ?? r$5).importNode(i, true);
-    C.currentNode = e;
-    let h = C.nextNode(),
+      e = (t?.creationScope ?? l$3).importNode(i, true);
+    P.currentNode = e;
+    let h = P.nextNode(),
       o = 0,
       n = 0,
-      l = s[0];
-    for (; void 0 !== l;) {
-      if (o === l.index) {
+      r = s[0];
+    for (; void 0 !== r;) {
+      if (o === r.index) {
         let i;
-        2 === l.type ? i = new R(h, h.nextSibling, this, t) : 1 === l.type ? i = new l.ctor(h, l.name, l.strings, this, t) : 6 === l.type && (i = new z(h, this, t)), this._$AV.push(i), l = s[++n];
+        2 === r.type ? i = new k(h, h.nextSibling, this, t) : 1 === r.type ? i = new r.ctor(h, r.name, r.strings, this, t) : 6 === r.type && (i = new Z(h, this, t)), this._$AV.push(i), r = s[++n];
       }
-      o !== l?.index && (h = C.nextNode(), o++);
+      o !== r?.index && (h = P.nextNode(), o++);
     }
-    return C.currentNode = r$5, e;
+    return P.currentNode = l$3, e;
   }
   p(t) {
     let i = 0;
     for (const s of this._$AV) void 0 !== s && (void 0 !== s.strings ? (s._$AI(t, s, i), i += s.strings.length - 2) : s._$AI(t[i])), i++;
   }
 }
-class R {
+class k {
   get _$AU() {
     return this._$AM?._$AU ?? this._$Cv;
   }
   constructor(t, i, s, e) {
-    this.type = 2, this._$AH = E, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cv = e?.isConnected ?? true;
+    this.type = 2, this._$AH = A, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cv = e?.isConnected ?? true;
   }
   get parentNode() {
     let t = this._$AA.parentNode;
@@ -4404,7 +4406,7 @@ class R {
     return this._$AB;
   }
   _$AI(t, i = this) {
-    t = S(this, t, i), c$1(t) ? t === E || null == t || "" === t ? (this._$AH !== E && this._$AR(), this._$AH = E) : t !== this._$AH && t !== T && this._(t) : void 0 !== t._$litType$ ? this.$(t) : void 0 !== t.nodeType ? this.T(t) : u$2(t) ? this.k(t) : this._(t);
+    t = M(this, t, i), a$1(t) ? t === A || null == t || "" === t ? (this._$AH !== A && this._$AR(), this._$AH = A) : t !== this._$AH && t !== E && this._(t) : void 0 !== t._$litType$ ? this.$(t) : void 0 !== t.nodeType ? this.T(t) : d(t) ? this.k(t) : this._(t);
   }
   O(t) {
     return this._$AA.parentNode.insertBefore(t, this._$AB);
@@ -4413,43 +4415,43 @@ class R {
     this._$AH !== t && (this._$AR(), this._$AH = this.O(t));
   }
   _(t) {
-    this._$AH !== E && c$1(this._$AH) ? this._$AA.nextSibling.data = t : this.T(r$5.createTextNode(t)), this._$AH = t;
+    this._$AH !== A && a$1(this._$AH) ? this._$AA.nextSibling.data = t : this.T(l$3.createTextNode(t)), this._$AH = t;
   }
   $(t) {
     const {
         values: i,
         _$litType$: s
       } = t,
-      e = "number" == typeof s ? this._$AC(t) : (void 0 === s.el && (s.el = N.createElement(P(s.h, s.h[0]), this.options)), s);
+      e = "number" == typeof s ? this._$AC(t) : (void 0 === s.el && (s.el = S.createElement(V(s.h, s.h[0]), this.options)), s);
     if (this._$AH?._$AD === e) this._$AH.p(i);else {
-      const t = new M(e, this),
+      const t = new R(e, this),
         s = t.u(this.options);
       t.p(i), this.T(s), this._$AH = t;
     }
   }
   _$AC(t) {
-    let i = A.get(t.strings);
-    return void 0 === i && A.set(t.strings, i = new N(t)), i;
+    let i = C.get(t.strings);
+    return void 0 === i && C.set(t.strings, i = new S(t)), i;
   }
   k(t) {
-    a$1(this._$AH) || (this._$AH = [], this._$AR());
+    u$1(this._$AH) || (this._$AH = [], this._$AR());
     const i = this._$AH;
     let s,
       e = 0;
-    for (const h of t) e === i.length ? i.push(s = new R(this.O(l$2()), this.O(l$2()), this, this.options)) : s = i[e], s._$AI(h), e++;
+    for (const h of t) e === i.length ? i.push(s = new k(this.O(c$1()), this.O(c$1()), this, this.options)) : s = i[e], s._$AI(h), e++;
     e < i.length && (this._$AR(s && s._$AB.nextSibling, e), i.length = e);
   }
-  _$AR(t = this._$AA.nextSibling, i) {
-    for (this._$AP?.(false, true, i); t && t !== this._$AB;) {
-      const i = t.nextSibling;
-      t.remove(), t = i;
+  _$AR(t = this._$AA.nextSibling, s) {
+    for (this._$AP?.(false, true, s); t !== this._$AB;) {
+      const s = i$5(t).nextSibling;
+      i$5(t).remove(), t = s;
     }
   }
   setConnected(t) {
     void 0 === this._$AM && (this._$Cv = t, this._$AP?.(t));
   }
 }
-class k {
+let H$1 = class H {
   get tagName() {
     return this.element.tagName;
   }
@@ -4457,54 +4459,54 @@ class k {
     return this._$AM._$AU;
   }
   constructor(t, i, s, e, h) {
-    this.type = 1, this._$AH = E, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = h, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(new String()), this.strings = s) : this._$AH = E;
+    this.type = 1, this._$AH = A, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = h, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(new String()), this.strings = s) : this._$AH = A;
   }
   _$AI(t, i = this, s, e) {
     const h = this.strings;
     let o = false;
-    if (void 0 === h) t = S(this, t, i, 0), o = !c$1(t) || t !== this._$AH && t !== T, o && (this._$AH = t);else {
+    if (void 0 === h) t = M(this, t, i, 0), o = !a$1(t) || t !== this._$AH && t !== E, o && (this._$AH = t);else {
       const e = t;
       let n, r;
-      for (t = h[0], n = 0; n < h.length - 1; n++) r = S(this, e[s + n], i, n), r === T && (r = this._$AH[n]), o ||= !c$1(r) || r !== this._$AH[n], r === E ? t = E : t !== E && (t += (r ?? "") + h[n + 1]), this._$AH[n] = r;
+      for (t = h[0], n = 0; n < h.length - 1; n++) r = M(this, e[s + n], i, n), r === E && (r = this._$AH[n]), o ||= !a$1(r) || r !== this._$AH[n], r === A ? t = A : t !== A && (t += (r ?? "") + h[n + 1]), this._$AH[n] = r;
     }
     o && !e && this.j(t);
   }
   j(t) {
-    t === E ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
+    t === A ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
   }
-}
-let H$1 = class H extends k {
+};
+class I extends H$1 {
   constructor() {
     super(...arguments), this.type = 3;
   }
   j(t) {
-    this.element[this.name] = t === E ? void 0 : t;
+    this.element[this.name] = t === A ? void 0 : t;
   }
-};
-class I extends k {
+}
+class L extends H$1 {
   constructor() {
     super(...arguments), this.type = 4;
   }
   j(t) {
-    this.element.toggleAttribute(this.name, !!t && t !== E);
+    this.element.toggleAttribute(this.name, !!t && t !== A);
   }
 }
-class L extends k {
+class z extends H$1 {
   constructor(t, i, s, e, h) {
     super(t, i, s, e, h), this.type = 5;
   }
   _$AI(t, i = this) {
-    if ((t = S(this, t, i, 0) ?? E) === T) return;
+    if ((t = M(this, t, i, 0) ?? A) === E) return;
     const s = this._$AH,
-      e = t === E && s !== E || t.capture !== s.capture || t.once !== s.once || t.passive !== s.passive,
-      h = t !== E && (s === E || e);
+      e = t === A && s !== A || t.capture !== s.capture || t.once !== s.once || t.passive !== s.passive,
+      h = t !== A && (s === A || e);
     e && this.element.removeEventListener(this.name, this, s), h && this.element.addEventListener(this.name, this, t), this._$AH = t;
   }
   handleEvent(t) {
     "function" == typeof this._$AH ? this._$AH.call(this.options?.host ?? this.element, t) : this._$AH.handleEvent(t);
   }
 }
-class z {
+class Z {
   constructor(t, i, s) {
     this.element = t, this.type = 6, this._$AN = void 0, this._$AM = i, this.options = s;
   }
@@ -4512,17 +4514,17 @@ class z {
     return this._$AM._$AU;
   }
   _$AI(t) {
-    S(this, t);
+    M(this, t);
   }
 }
-const j = t$3.litHtmlPolyfillSupport;
-j?.(N, R), (t$3.litHtmlVersions ??= []).push("3.3.0");
-const B = (t, i, s) => {
+const B = t$3.litHtmlPolyfillSupport;
+B?.(S, k), (t$3.litHtmlVersions ??= []).push("3.3.2");
+const D = (t, i, s) => {
   const e = s?.renderBefore ?? i;
   let h = e._$litPart$;
   if (void 0 === h) {
     const t = s?.renderBefore ?? null;
-    e._$litPart$ = h = new R(i.insertBefore(l$2(), t), t, void 0, s ?? {});
+    e._$litPart$ = h = new k(i.insertBefore(c$1(), t), t, void 0, s ?? {});
   }
   return h._$AI(t), h;
 };
@@ -4545,7 +4547,7 @@ let i$4 = class i extends y$1 {
   }
   update(t) {
     const r = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = B(r, this.renderRoot, this.renderOptions);
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = D(r, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     super.connectedCallback(), this._$Do?.setConnected(true);
@@ -4554,7 +4556,7 @@ let i$4 = class i extends y$1 {
     super.disconnectedCallback(), this._$Do?.setConnected(false);
   }
   render() {
-    return T;
+    return E;
   }
 };
 i$4._$litElement$ = true, i$4["finalized"] = true, s$1.litElementHydrateSupport?.({
@@ -4564,7 +4566,7 @@ const o$a = s$1.litElementPolyfillSupport;
 o$a?.({
   LitElement: i$4
 });
-(s$1.litElementVersions ??= []).push("4.2.0");
+(s$1.litElementVersions ??= []).push("4.2.2");
 
 // src/components/card/card.styles.ts
 var card_styles_default = i$7`
@@ -4790,11 +4792,11 @@ var __yieldStar = value => {
 const o$9 = {
     attribute: true,
     type: String,
-    converter: u$3,
+    converter: u$2,
     reflect: false,
-    hasChanged: f$3
+    hasChanged: f$2
   },
-  r$4 = (t = o$9, e, r) => {
+  r$5 = (t = o$9, e, r) => {
     const {
       kind: n,
       metadata: i
@@ -4807,7 +4809,7 @@ const o$9 = {
       return {
         set(r) {
           const n = e.get.call(this);
-          e.set.call(this, r), this.requestUpdate(o, n, t);
+          e.set.call(this, r), this.requestUpdate(o, n, t, true, r);
         },
         init(e) {
           return void 0 !== e && this.C(o, void 0, t, e), e;
@@ -4820,13 +4822,13 @@ const o$9 = {
       } = r;
       return function (r) {
         const n = this[o];
-        e.call(this, r), this.requestUpdate(o, n, t);
+        e.call(this, r), this.requestUpdate(o, n, t, true, r);
       };
     }
     throw Error("Unsupported decorator location: " + n);
   };
 function n$6(t) {
-  return (e, o) => "object" == typeof o ? r$4(t, e, o) : ((t, e, o) => {
+  return (e, o) => "object" == typeof o ? r$5(t, e, o) : ((t, e, o) => {
     const r = e.hasOwnProperty(o);
     return e.constructor.createProperty(o, t), r ? Object.getOwnPropertyDescriptor(e, o) : void 0;
   })(t, e, o);
@@ -4837,7 +4839,7 @@ function n$6(t) {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function r$3(r) {
+function r$4(r) {
   return n$6({
     ...r,
     state: true,
@@ -4862,17 +4864,17 @@ function t$2(t) {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const e$8 = (e, t, c) => (c.configurable = true, c.enumerable = true, Reflect.decorate && "object" != typeof t && Object.defineProperty(e, t, c), c);
+const e$7 = (e, t, c) => (c.configurable = true, c.enumerable = true, Reflect.decorate && "object" != typeof t && Object.defineProperty(e, t, c), c);
 
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function e$7(e, r) {
+function e$6(e, r) {
   return (n, s, i) => {
     const o = t => t.renderRoot?.querySelector(e) ?? null;
-    return e$8(n, s, {
+    return e$7(n, s, {
       get() {
         return o(this);
       }
@@ -4885,8 +4887,8 @@ function e$7(e, r) {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function r$2(r) {
-  return (n, e) => e$8(n, e, {
+function r$3(r) {
+  return (n, e) => e$7(n, e, {
     async get() {
       return await this.updateComplete, this.renderRoot?.querySelector(r) ?? null;
     }
@@ -4976,7 +4978,7 @@ const t$1 = {
     CHILD: 2,
     PROPERTY: 3,
     BOOLEAN_ATTRIBUTE: 4},
-  e$6 = t => (...e) => ({
+  e$5 = t => (...e) => ({
     _$litDirective$: t,
     values: e
   });
@@ -5001,7 +5003,7 @@ let i$3 = class i {
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const e$5 = e$6(class extends i$3 {
+const e$4 = e$5(class extends i$3 {
   constructor(t) {
     if (super(t), t.type !== t$1.ATTRIBUTE || "class" !== t.name || t.strings?.length > 2) throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.");
   }
@@ -5020,7 +5022,7 @@ const e$5 = e$6(class extends i$3 {
       const s = !!i[t];
       s === this.st.has(t) || this.nt?.has(t) || (s ? (r.add(t), this.st.add(t)) : (r.remove(t), this.st.delete(t)));
     }
-    return T;
+    return E;
   }
 });
 
@@ -5030,10 +5032,10 @@ var SlCard = class extends ShoelaceElement {
     this.hasSlotController = new HasSlotController(this, "footer", "header", "image");
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       card: true,
       "card--has-footer": this.hasSlotController.test("footer"),
       "card--has-image": this.hasSlotController.test("image"),
@@ -5436,10 +5438,10 @@ function watch(propertyName, options) {
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const e$4 = (o, t) => void 0 !== o?._$litType$ ,
-  f$1 = o => void 0 === o.strings,
-  u$1 = {},
-  m = (o, t = u$1) => o._$AH = t;
+const l$2 = (o, t) => void 0 !== o?._$litType$ ,
+  r$2 = o => void 0 === o.strings,
+  m = {},
+  p = (o, t = m) => o._$AH = t;
 
 var CACHEABLE_ERROR = Symbol();
 var RETRYABLE_ERROR = Symbol();
@@ -5458,7 +5460,7 @@ var SlIcon = class extends ShoelaceElement {
     var _a;
     let fileData;
     if (library == null ? void 0 : library.spriteSheet) {
-      this.svg = x`<svg part="svg">
+      this.svg = b`<svg part="svg">
         <use part="use" href="${url}"></use>
       </svg>`;
       return this.svg;
@@ -5549,7 +5551,7 @@ var SlIcon = class extends ShoelaceElement {
     if (url !== this.getIconSource().url) {
       return;
     }
-    if (e$4(svg)) {
+    if (l$2(svg)) {
       this.svg = svg;
       if (library) {
         await this.updateComplete;
@@ -5577,7 +5579,7 @@ var SlIcon = class extends ShoelaceElement {
   }
 };
 SlIcon.styles = [component_styles_default, icon_styles_default];
-__decorateClass([r$3()], SlIcon.prototype, "svg", 2);
+__decorateClass([r$4()], SlIcon.prototype, "svg", 2);
 __decorateClass([n$6({
   reflect: true
 })], SlIcon.prototype, "name", 2);
@@ -5624,14 +5626,14 @@ const a = Symbol.for(""),
     }
     return t(r, ...e);
   },
-  u = n$5(x);
+  u = n$5(b);
 
 /**
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const o$7 = o => o ?? E;
+const o$7 = o => o ?? A;
 
 var SlIconButton = class extends ShoelaceElement {
   constructor() {
@@ -5672,7 +5674,7 @@ var SlIconButton = class extends ShoelaceElement {
     return u`
       <${tag}
         part="base"
-        class=${e$5({
+        class=${e$4({
       "icon-button": true,
       "icon-button--disabled": !isLink && this.disabled,
       "icon-button--focused": this.hasFocus
@@ -5706,8 +5708,8 @@ SlIconButton.styles = [component_styles_default, icon_button_styles_default];
 SlIconButton.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".icon-button")], SlIconButton.prototype, "button", 2);
-__decorateClass([r$3()], SlIconButton.prototype, "hasFocus", 2);
+__decorateClass([e$6(".icon-button")], SlIconButton.prototype, "button", 2);
+__decorateClass([r$4()], SlIconButton.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlIconButton.prototype, "name", 2);
 __decorateClass([n$6()], SlIconButton.prototype, "library", 2);
 __decorateClass([n$6()], SlIconButton.prototype, "src", 2);
@@ -5891,10 +5893,10 @@ var SlTag = class extends ShoelaceElement {
     this.emit("sl-remove");
   }
   render() {
-    return x`
+    return b`
       <span
         part="base"
-        class=${e$5({
+        class=${e$4({
       tag: true,
       // Types
       "tag--primary": this.variant === "primary",
@@ -5914,7 +5916,7 @@ var SlTag = class extends ShoelaceElement {
       >
         <slot part="content" class="tag__content"></slot>
 
-        ${this.removable ? x`
+        ${this.removable ? b`
               <sl-icon-button
                 part="remove-button"
                 exportparts="base:remove-button__base"
@@ -6512,10 +6514,6 @@ const oppositeSideMap = {
   bottom: 'top',
   top: 'bottom'
 };
-const oppositeAlignmentMap = {
-  start: 'end',
-  end: 'start'
-};
 function clamp$1(start, value, end) {
   return max(start, min(value, end));
 }
@@ -6535,7 +6533,8 @@ function getAxisLength(axis) {
   return axis === 'y' ? 'height' : 'width';
 }
 function getSideAxis(placement) {
-  return ['top', 'bottom'].includes(getSide(placement)) ? 'y' : 'x';
+  const firstChar = placement[0];
+  return firstChar === 't' || firstChar === 'b' ? 'y' : 'x';
 }
 function getAlignmentAxis(placement) {
   return getOppositeAxis(getSideAxis(placement));
@@ -6558,21 +6557,21 @@ function getExpandedPlacements(placement) {
   return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
 }
 function getOppositeAlignmentPlacement(placement) {
-  return placement.replace(/start|end/g, alignment => oppositeAlignmentMap[alignment]);
+  return placement.includes('start') ? placement.replace('start', 'end') : placement.replace('end', 'start');
 }
+const lrPlacement = ['left', 'right'];
+const rlPlacement = ['right', 'left'];
+const tbPlacement = ['top', 'bottom'];
+const btPlacement = ['bottom', 'top'];
 function getSideList(side, isStart, rtl) {
-  const lr = ['left', 'right'];
-  const rl = ['right', 'left'];
-  const tb = ['top', 'bottom'];
-  const bt = ['bottom', 'top'];
   switch (side) {
     case 'top':
     case 'bottom':
-      if (rtl) return isStart ? rl : lr;
-      return isStart ? lr : rl;
+      if (rtl) return isStart ? rlPlacement : lrPlacement;
+      return isStart ? lrPlacement : rlPlacement;
     case 'left':
     case 'right':
-      return isStart ? tb : bt;
+      return isStart ? tbPlacement : btPlacement;
     default:
       return [];
   }
@@ -6589,7 +6588,8 @@ function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
   return list;
 }
 function getOppositePlacement(placement) {
-  return placement.replace(/left|right|bottom|top/g, side => oppositeSideMap[side]);
+  const side = getSide(placement);
+  return oppositeSideMap[side] + placement.slice(side.length);
 }
 function expandPaddingObject(padding) {
   return {
@@ -6684,97 +6684,6 @@ function computeCoordsFromPlacement(_ref, placement, rtl) {
 }
 
 /**
- * Computes the `x` and `y` coordinates that will place the floating element
- * next to a given reference element.
- *
- * This export does not have any `platform` interface logic. You will need to
- * write one for the platform you are using Floating UI with.
- */
-const computePosition$1 = async (reference, floating, config) => {
-  const {
-    placement = 'bottom',
-    strategy = 'absolute',
-    middleware = [],
-    platform
-  } = config;
-  const validMiddleware = middleware.filter(Boolean);
-  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(floating));
-  let rects = await platform.getElementRects({
-    reference,
-    floating,
-    strategy
-  });
-  let {
-    x,
-    y
-  } = computeCoordsFromPlacement(rects, placement, rtl);
-  let statefulPlacement = placement;
-  let middlewareData = {};
-  let resetCount = 0;
-  for (let i = 0; i < validMiddleware.length; i++) {
-    const {
-      name,
-      fn
-    } = validMiddleware[i];
-    const {
-      x: nextX,
-      y: nextY,
-      data,
-      reset
-    } = await fn({
-      x,
-      y,
-      initialPlacement: placement,
-      placement: statefulPlacement,
-      strategy,
-      middlewareData,
-      rects,
-      platform,
-      elements: {
-        reference,
-        floating
-      }
-    });
-    x = nextX != null ? nextX : x;
-    y = nextY != null ? nextY : y;
-    middlewareData = {
-      ...middlewareData,
-      [name]: {
-        ...middlewareData[name],
-        ...data
-      }
-    };
-    if (reset && resetCount <= 50) {
-      resetCount++;
-      if (typeof reset === 'object') {
-        if (reset.placement) {
-          statefulPlacement = reset.placement;
-        }
-        if (reset.rects) {
-          rects = reset.rects === true ? await platform.getElementRects({
-            reference,
-            floating,
-            strategy
-          }) : reset.rects;
-        }
-        ({
-          x,
-          y
-        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
-      }
-      i = -1;
-    }
-  }
-  return {
-    x,
-    y,
-    placement: statefulPlacement,
-    strategy,
-    middlewareData
-  };
-};
-
-/**
  * Resolves with an object of overflow side offsets that determine how much the
  * element is overflowing a given clipping boundary on each side.
  * - positive = overflowing the boundary by that number of pixels
@@ -6838,6 +6747,104 @@ async function detectOverflow(state, options) {
     right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
   };
 }
+
+// Maximum number of resets that can occur before bailing to avoid infinite reset loops.
+const MAX_RESET_COUNT = 50;
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a given reference element.
+ *
+ * This export does not have any `platform` interface logic. You will need to
+ * write one for the platform you are using Floating UI with.
+ */
+const computePosition$1 = async (reference, floating, config) => {
+  const {
+    placement = 'bottom',
+    strategy = 'absolute',
+    middleware = [],
+    platform
+  } = config;
+  const platformWithDetectOverflow = platform.detectOverflow ? platform : {
+    ...platform,
+    detectOverflow
+  };
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(floating));
+  let rects = await platform.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x,
+    y
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let resetCount = 0;
+  const middlewareData = {};
+  for (let i = 0; i < middleware.length; i++) {
+    const currentMiddleware = middleware[i];
+    if (!currentMiddleware) {
+      continue;
+    }
+    const {
+      name,
+      fn
+    } = currentMiddleware;
+    const {
+      x: nextX,
+      y: nextY,
+      data,
+      reset
+    } = await fn({
+      x,
+      y,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform: platformWithDetectOverflow,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x = nextX != null ? nextX : x;
+    y = nextY != null ? nextY : y;
+    middlewareData[name] = {
+      ...middlewareData[name],
+      ...data
+    };
+    if (reset && resetCount < MAX_RESET_COUNT) {
+      resetCount++;
+      if (typeof reset === 'object') {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+        ({
+          x,
+          y
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i = -1;
+    }
+  }
+  return {
+    x,
+    y,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
 
 /**
  * Provides data to position an inner element of the floating element so that it
@@ -6971,7 +6978,7 @@ const flip$2 = function (options) {
         fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
       }
       const placements = [initialPlacement, ...fallbackPlacements];
-      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const overflow = await platform.detectOverflow(state, detectOverflowOptions);
       const overflows = [];
       let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
       if (checkMainAxis) {
@@ -6996,7 +7003,7 @@ const flip$2 = function (options) {
           if (!ignoreCrossAxisOverflow ||
           // We leave the current main axis only if every placement on that axis
           // overflows the main axis.
-          overflowsData.every(d => d.overflows[0] > 0 && getSideAxis(d.placement) === initialSideAxis)) {
+          overflowsData.every(d => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
             // Try next placement and re-run the lifecycle.
             return {
               data: {
@@ -7052,6 +7059,7 @@ const flip$2 = function (options) {
     }
   };
 };
+const originSides = /*#__PURE__*/new Set(['left', 'top']);
 
 // For type backwards-compatibility, the `OffsetOptions` type was also
 // Derivable.
@@ -7066,7 +7074,7 @@ async function convertValueToCoords(state, options) {
   const side = getSide(placement);
   const alignment = getAlignment(placement);
   const isVertical = getSideAxis(placement) === 'y';
-  const mainAxisMulti = ['left', 'top'].includes(side) ? -1 : 1;
+  const mainAxisMulti = originSides.has(side) ? -1 : 1;
   const crossAxisMulti = rtl && isVertical ? -1 : 1;
   const rawValue = evaluate(options, state);
 
@@ -7153,7 +7161,8 @@ const shift$1 = function (options) {
       const {
         x,
         y,
-        placement
+        placement,
+        platform
       } = state;
       const {
         mainAxis: checkMainAxis = true,
@@ -7176,7 +7185,7 @@ const shift$1 = function (options) {
         x,
         y
       };
-      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const overflow = await platform.detectOverflow(state, detectOverflowOptions);
       const crossAxis = getSideAxis(getSide(placement));
       const mainAxis = getOppositeAxis(crossAxis);
       let mainAxisCoord = coords[mainAxis];
@@ -7240,7 +7249,7 @@ const size$1 = function (options) {
         apply = () => {},
         ...detectOverflowOptions
       } = evaluate(options, state);
-      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const overflow = await platform.detectOverflow(state, detectOverflowOptions);
       const side = getSide(placement);
       const alignment = getAlignment(placement);
       const isYAxis = getSideAxis(placement) === 'y';
@@ -7350,27 +7359,35 @@ function isOverflowElement(element) {
     overflowY,
     display
   } = getComputedStyle$1(element);
-  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !['inline', 'contents'].includes(display);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && display !== 'inline' && display !== 'contents';
 }
 function isTableElement(element) {
-  return ['table', 'td', 'th'].includes(getNodeName(element));
+  return /^(table|td|th)$/.test(getNodeName(element));
 }
 function isTopLayer(element) {
-  return [':popover-open', ':modal'].some(selector => {
-    try {
-      return element.matches(selector);
-    } catch (e) {
-      return false;
+  try {
+    if (element.matches(':popover-open')) {
+      return true;
     }
-  });
+  } catch (_e) {
+    // no-op
+  }
+  try {
+    return element.matches(':modal');
+  } catch (_e) {
+    return false;
+  }
 }
+const willChangeRe = /transform|translate|scale|rotate|perspective|filter/;
+const containRe = /paint|layout|strict|content/;
+const isNotNone = value => !!value && value !== 'none';
+let isWebKitValue;
 function isContainingBlock(elementOrCss) {
-  const webkit = isWebKit();
   const css = isElement(elementOrCss) ? getComputedStyle$1(elementOrCss) : elementOrCss;
 
   // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
   // https://drafts.csswg.org/css-transforms-2/#individual-transforms
-  return ['transform', 'translate', 'scale', 'rotate', 'perspective'].some(value => css[value] ? css[value] !== 'none' : false) || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'translate', 'scale', 'rotate', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
+  return isNotNone(css.transform) || isNotNone(css.translate) || isNotNone(css.scale) || isNotNone(css.rotate) || isNotNone(css.perspective) || !isWebKit() && (isNotNone(css.backdropFilter) || isNotNone(css.filter)) || willChangeRe.test(css.willChange || '') || containRe.test(css.contain || '');
 }
 function getContainingBlock(element) {
   let currentNode = getParentNode(element);
@@ -7385,11 +7402,13 @@ function getContainingBlock(element) {
   return null;
 }
 function isWebKit() {
-  if (typeof CSS === 'undefined' || !CSS.supports) return false;
-  return CSS.supports('-webkit-backdrop-filter', 'none');
+  if (isWebKitValue == null) {
+    isWebKitValue = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('-webkit-backdrop-filter', 'none');
+  }
+  return isWebKitValue;
 }
 function isLastTraversableNode(node) {
-  return ['html', 'body', '#document'].includes(getNodeName(node));
+  return /^(html|body|#document)$/.test(getNodeName(node));
 }
 function getComputedStyle$1(element) {
   return getWindow(element).getComputedStyle(element);
@@ -7445,8 +7464,9 @@ function getOverflowAncestors(node, list, traverseIframes) {
   if (isBody) {
     const frameElement = getFrameElement(win);
     return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  } else {
+    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
   }
-  return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
 }
 function getFrameElement(win) {
   return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
@@ -7584,14 +7604,9 @@ function getWindowScrollBarX(element, rect) {
   }
   return rect.left + leftScroll;
 }
-function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
-  if (ignoreScrollbarX === void 0) {
-    ignoreScrollbarX = false;
-  }
+function getHTMLOffset(documentElement, scroll) {
   const htmlRect = documentElement.getBoundingClientRect();
-  const x = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 :
-  // RTL <body> scrollbar.
-  getWindowScrollBarX(documentElement, htmlRect));
+  const x = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
   const y = htmlRect.top + scroll.scrollTop;
   return {
     x,
@@ -7622,14 +7637,14 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
     if (getNodeName(offsetParent) !== 'body' || isOverflowElement(documentElement)) {
       scroll = getNodeScroll(offsetParent);
     }
-    if (isHTMLElement(offsetParent)) {
+    if (isOffsetParentAnElement) {
       const offsetRect = getBoundingClientRect(offsetParent);
       scale = getScale(offsetParent);
       offsets.x = offsetRect.x + offsetParent.clientLeft;
       offsets.y = offsetRect.y + offsetParent.clientTop;
     }
   }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : createCoords(0);
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
   return {
     width: rect.width * scale.x,
     height: rect.height * scale.y,
@@ -7661,6 +7676,11 @@ function getDocumentRect(element) {
     y
   };
 }
+
+// Safety check: ensure the scrollbar space is reasonable in case this
+// calculation is affected by unusual styles.
+// Most scrollbars leave 15-18px of space.
+const SCROLLBAR_MAX = 25;
 function getViewportRect(element, strategy) {
   const win = getWindow(element);
   const html = getDocumentElement(element);
@@ -7677,6 +7697,24 @@ function getViewportRect(element, strategy) {
       x = visualViewport.offsetLeft;
       y = visualViewport.offsetTop;
     }
+  }
+  const windowScrollbarX = getWindowScrollBarX(html);
+  // <html> `overflow: hidden` + `scrollbar-gutter: stable` reduces the
+  // visual width of the <html> but this is not considered in the size
+  // of `html.clientWidth`.
+  if (windowScrollbarX <= 0) {
+    const doc = html.ownerDocument;
+    const body = doc.body;
+    const bodyStyles = getComputedStyle(body);
+    const bodyMarginInline = doc.compatMode === 'CSS1Compat' ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
+    const clippingStableScrollbarWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
+    if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
+      width -= clippingStableScrollbarWidth;
+    }
+  } else if (windowScrollbarX <= SCROLLBAR_MAX) {
+    // If the <body> scrollbar is on the left, the width needs to be extended
+    // by the scrollbar amount so there isn't extra space on the right.
+    width += windowScrollbarX;
   }
   return {
     width,
@@ -7750,7 +7788,7 @@ function getClippingElementAncestors(element, cache) {
     if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
       currentContainingBlockComputedStyle = null;
     }
-    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && (currentContainingBlockComputedStyle.position === 'absolute' || currentContainingBlockComputedStyle.position === 'fixed') || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
     if (shouldDropCurrentNode) {
       // Drop non-containing blocks.
       result = result.filter(ancestor => ancestor !== currentNode);
@@ -7775,20 +7813,23 @@ function getClippingRect(_ref) {
   } = _ref;
   const elementClippingAncestors = boundary === 'clippingAncestors' ? isTopLayer(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
   const clippingAncestors = [...elementClippingAncestors, rootBoundary];
-  const firstClippingAncestor = clippingAncestors[0];
-  const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
-    const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
-    accRect.top = max(rect.top, accRect.top);
-    accRect.right = min(rect.right, accRect.right);
-    accRect.bottom = min(rect.bottom, accRect.bottom);
-    accRect.left = max(rect.left, accRect.left);
-    return accRect;
-  }, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
+  const firstRect = getClientRectFromClippingAncestor(element, clippingAncestors[0], strategy);
+  let top = firstRect.top;
+  let right = firstRect.right;
+  let bottom = firstRect.bottom;
+  let left = firstRect.left;
+  for (let i = 1; i < clippingAncestors.length; i++) {
+    const rect = getClientRectFromClippingAncestor(element, clippingAncestors[i], strategy);
+    top = max(rect.top, top);
+    right = min(rect.right, right);
+    bottom = min(rect.bottom, bottom);
+    left = max(rect.left, left);
+  }
   return {
-    width: clippingRect.right - clippingRect.left,
-    height: clippingRect.bottom - clippingRect.top,
-    x: clippingRect.left,
-    y: clippingRect.top
+    width: right - left,
+    height: bottom - top,
+    x: left,
+    y: top
   };
 }
 function getDimensions(element) {
@@ -8031,7 +8072,7 @@ function autoUpdate(reference, floating, update, options) {
     animationFrame = false
   } = options;
   const referenceEl = unwrapElement(reference);
-  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? getOverflowAncestors(referenceEl) : []), ...getOverflowAncestors(floating)] : [];
+  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? getOverflowAncestors(referenceEl) : []), ...(floating ? getOverflowAncestors(floating) : [])] : [];
   ancestors.forEach(ancestor => {
     ancestorScroll && ancestor.addEventListener('scroll', update, {
       passive: true
@@ -8044,7 +8085,7 @@ function autoUpdate(reference, floating, update, options) {
   if (elementResize) {
     resizeObserver = new ResizeObserver(_ref => {
       let [firstEntry] = _ref;
-      if (firstEntry && firstEntry.target === referenceEl && resizeObserver) {
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
         // Prevent update loops when using the `size` middleware.
         // https://github.com/floating-ui/floating-ui/issues/1740
         resizeObserver.unobserve(floating);
@@ -8059,7 +8100,9 @@ function autoUpdate(reference, floating, update, options) {
     if (referenceEl && !animationFrame) {
       resizeObserver.observe(referenceEl);
     }
-    resizeObserver.observe(floating);
+    if (floating) {
+      resizeObserver.observe(floating);
+    }
   }
   let frameId;
   let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
@@ -8460,12 +8503,12 @@ var SlPopup = class extends ShoelaceElement {
     this.emit("sl-reposition");
   }
   render() {
-    return x`
+    return b`
       <slot name="anchor" @slotchange=${this.handleAnchorChange}></slot>
 
       <span
         part="hover-bridge"
-        class=${e$5({
+        class=${e$4({
       "popup-hover-bridge": true,
       "popup-hover-bridge--visible": this.hoverBridge && this.active
     })}
@@ -8473,7 +8516,7 @@ var SlPopup = class extends ShoelaceElement {
 
       <div
         part="popup"
-        class=${e$5({
+        class=${e$4({
       popup: true,
       "popup--active": this.active,
       "popup--fixed": this.strategy === "fixed",
@@ -8481,14 +8524,14 @@ var SlPopup = class extends ShoelaceElement {
     })}
       >
         <slot></slot>
-        ${this.arrow ? x`<div part="arrow" class="popup__arrow" role="presentation"></div>` : ""}
+        ${this.arrow ? b`<div part="arrow" class="popup__arrow" role="presentation"></div>` : ""}
       </div>
     `;
   }
 };
 SlPopup.styles = [component_styles_default, popup_styles_default];
-__decorateClass([e$7(".popup")], SlPopup.prototype, "popup", 2);
-__decorateClass([e$7(".popup__arrow")], SlPopup.prototype, "arrowEl", 2);
+__decorateClass([e$6(".popup")], SlPopup.prototype, "popup", 2);
+__decorateClass([e$6(".popup__arrow")], SlPopup.prototype, "arrowEl", 2);
 __decorateClass([n$6()], SlPopup.prototype, "anchor", 2);
 __decorateClass([n$6({
   type: Boolean,
@@ -8961,11 +9004,11 @@ function shimKeyframesHeightAuto(keyframes, calculatedHeight) {
  */
 let e$2 = class e extends i$3 {
   constructor(i) {
-    if (super(i), this.it = E, i.type !== t$1.CHILD) throw Error(this.constructor.directiveName + "() can only be used in child bindings");
+    if (super(i), this.it = A, i.type !== t$1.CHILD) throw Error(this.constructor.directiveName + "() can only be used in child bindings");
   }
   render(r) {
-    if (r === E || null == r) return this._t = void 0, this.it = r;
-    if (r === T) return r;
+    if (r === A || null == r) return this._t = void 0, this.it = r;
+    if (r === E) return r;
     if ("string" != typeof r) throw Error(this.constructor.directiveName + "() called with a non-string value");
     if (r === this.it) return this._t;
     this.it = r;
@@ -8978,7 +9021,7 @@ let e$2 = class e extends i$3 {
   }
 };
 e$2.directiveName = "unsafeHTML", e$2.resultType = 1;
-const o$6 = e$6(e$2);
+const o$6 = e$5(e$2);
 
 var SlSelect = class extends ShoelaceElement {
   constructor() {
@@ -9012,7 +9055,7 @@ var SlSelect = class extends ShoelaceElement {
     this.form = "";
     this.required = false;
     this.getTag = option => {
-      return x`
+      return b`
       <sl-tag
         part="tag"
         exportparts="
@@ -9370,13 +9413,13 @@ var SlSelect = class extends ShoelaceElement {
     return this.selectedOptions.map((option, index) => {
       if (index < this.maxOptionsVisible || this.maxOptionsVisible <= 0) {
         const tag = this.getTag(option, index);
-        return x`<div @sl-remove=${e => this.handleTagRemove(e, option)}>
+        return b`<div @sl-remove=${e => this.handleTagRemove(e, option)}>
           ${typeof tag === "string" ? o$6(tag) : tag}
         </div>`;
       } else if (index === this.maxOptionsVisible) {
-        return x`<sl-tag size=${this.size}>+${this.selectedOptions.length - index}</sl-tag>`;
+        return b`<sl-tag size=${this.size}>+${this.selectedOptions.length - index}</sl-tag>`;
       }
-      return x``;
+      return b``;
     });
   }
   handleInvalid(event) {
@@ -9495,10 +9538,10 @@ var SlSelect = class extends ShoelaceElement {
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
     const hasClearIcon = this.clearable && !this.disabled && this.value.length > 0;
     const isPlaceholderVisible = this.placeholder && this.value && this.value.length <= 0;
-    return x`
+    return b`
       <div
         part="form-control"
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -9519,7 +9562,7 @@ var SlSelect = class extends ShoelaceElement {
 
         <div part="form-control-input" class="form-control-input">
           <sl-popup
-            class=${e$5({
+            class=${e$4({
       select: true,
       "select--standard": true,
       "select--filled": this.filled,
@@ -9575,7 +9618,7 @@ var SlSelect = class extends ShoelaceElement {
                 @blur=${this.handleBlur}
               />
 
-              ${this.multiple ? x`<div part="tags" class="select__tags">${this.tags}</div>` : ""}
+              ${this.multiple ? b`<div part="tags" class="select__tags">${this.tags}</div>` : ""}
 
               <input
                 class="select__value-input"
@@ -9589,7 +9632,7 @@ var SlSelect = class extends ShoelaceElement {
                 @invalid=${this.handleInvalid}
               />
 
-              ${hasClearIcon ? x`
+              ${hasClearIcon ? b`
                     <button
                       part="clear-button"
                       class="select__clear"
@@ -9647,18 +9690,18 @@ SlSelect.dependencies = {
   "sl-popup": SlPopup,
   "sl-tag": SlTag
 };
-__decorateClass([e$7(".select")], SlSelect.prototype, "popup", 2);
-__decorateClass([e$7(".select__combobox")], SlSelect.prototype, "combobox", 2);
-__decorateClass([e$7(".select__display-input")], SlSelect.prototype, "displayInput", 2);
-__decorateClass([e$7(".select__value-input")], SlSelect.prototype, "valueInput", 2);
-__decorateClass([e$7(".select__listbox")], SlSelect.prototype, "listbox", 2);
-__decorateClass([r$3()], SlSelect.prototype, "hasFocus", 2);
-__decorateClass([r$3()], SlSelect.prototype, "displayLabel", 2);
-__decorateClass([r$3()], SlSelect.prototype, "currentOption", 2);
-__decorateClass([r$3()], SlSelect.prototype, "selectedOptions", 2);
-__decorateClass([r$3()], SlSelect.prototype, "valueHasChanged", 2);
+__decorateClass([e$6(".select")], SlSelect.prototype, "popup", 2);
+__decorateClass([e$6(".select__combobox")], SlSelect.prototype, "combobox", 2);
+__decorateClass([e$6(".select__display-input")], SlSelect.prototype, "displayInput", 2);
+__decorateClass([e$6(".select__value-input")], SlSelect.prototype, "valueInput", 2);
+__decorateClass([e$6(".select__listbox")], SlSelect.prototype, "listbox", 2);
+__decorateClass([r$4()], SlSelect.prototype, "hasFocus", 2);
+__decorateClass([r$4()], SlSelect.prototype, "displayLabel", 2);
+__decorateClass([r$4()], SlSelect.prototype, "currentOption", 2);
+__decorateClass([r$4()], SlSelect.prototype, "selectedOptions", 2);
+__decorateClass([r$4()], SlSelect.prototype, "valueHasChanged", 2);
 __decorateClass([n$6()], SlSelect.prototype, "name", 2);
-__decorateClass([r$3()], SlSelect.prototype, "value", 1);
+__decorateClass([r$4()], SlSelect.prototype, "value", 1);
 __decorateClass([n$6({
   attribute: "value"
 })], SlSelect.prototype, "defaultValue", 2);
@@ -9903,10 +9946,10 @@ var SlOption = class extends ShoelaceElement {
     return label.trim();
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       option: true,
       "option--current": this.current,
       "option--disabled": this.disabled,
@@ -9928,10 +9971,10 @@ SlOption.styles = [component_styles_default, option_styles_default];
 SlOption.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".option__label")], SlOption.prototype, "defaultSlot", 2);
-__decorateClass([r$3()], SlOption.prototype, "current", 2);
-__decorateClass([r$3()], SlOption.prototype, "selected", 2);
-__decorateClass([r$3()], SlOption.prototype, "hasHover", 2);
+__decorateClass([e$6(".option__label")], SlOption.prototype, "defaultSlot", 2);
+__decorateClass([r$4()], SlOption.prototype, "current", 2);
+__decorateClass([r$4()], SlOption.prototype, "selected", 2);
+__decorateClass([r$4()], SlOption.prototype, "hasHover", 2);
 __decorateClass([n$6({
   reflect: true
 })], SlOption.prototype, "value", 2);
@@ -10122,8 +10165,8 @@ var defaultValue = (propertyName = "value") => (proto, key) => {
     const options = ctor.getPropertyOptions(propertyName);
     const attributeName = typeof options.attribute === "string" ? options.attribute : propertyName;
     if (name === attributeName) {
-      const converter = options.converter || u$3;
-      const fromAttribute = typeof converter === "function" ? converter : (_a = converter == null ? void 0 : converter.fromAttribute) != null ? _a : u$3.fromAttribute;
+      const converter = options.converter || u$2;
+      const fromAttribute = typeof converter === "function" ? converter : (_a = converter == null ? void 0 : converter.fromAttribute) != null ? _a : u$2.fromAttribute;
       const newValue = fromAttribute(value, options.type);
       if (this[propertyName] !== newValue) {
         this[key] = newValue;
@@ -10138,24 +10181,24 @@ var defaultValue = (propertyName = "value") => (proto, key) => {
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const l = e$6(class extends i$3 {
+const l = e$5(class extends i$3 {
   constructor(r) {
     if (super(r), r.type !== t$1.PROPERTY && r.type !== t$1.ATTRIBUTE && r.type !== t$1.BOOLEAN_ATTRIBUTE) throw Error("The `live` directive is not allowed on child or event bindings");
-    if (!f$1(r)) throw Error("`live` bindings can only contain a single expression");
+    if (!r$2(r)) throw Error("`live` bindings can only contain a single expression");
   }
   render(r) {
     return r;
   }
   update(i, [t]) {
-    if (t === T || t === E) return t;
+    if (t === E || t === A) return t;
     const o = i.element,
       l = i.name;
     if (i.type === t$1.PROPERTY) {
-      if (t === o[l]) return T;
+      if (t === o[l]) return E;
     } else if (i.type === t$1.BOOLEAN_ATTRIBUTE) {
-      if (!!t === o.hasAttribute(l)) return T;
-    } else if (i.type === t$1.ATTRIBUTE && o.getAttribute(l) === t + "") return T;
-    return m(i), t;
+      if (!!t === o.hasAttribute(l)) return E;
+    } else if (i.type === t$1.ATTRIBUTE && o.getAttribute(l) === t + "") return E;
+    return p(i), t;
   }
 });
 
@@ -10262,9 +10305,9 @@ var SlSwitch = class extends ShoelaceElement {
   render() {
     const hasHelpTextSlot = this.hasSlotController.test("help-text");
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
-    return x`
+    return b`
       <div
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -10274,7 +10317,7 @@ var SlSwitch = class extends ShoelaceElement {
       >
         <label
           part="base"
-          class=${e$5({
+          class=${e$4({
       switch: true,
       "switch--checked": this.checked,
       "switch--disabled": this.disabled,
@@ -10326,8 +10369,8 @@ var SlSwitch = class extends ShoelaceElement {
   }
 };
 SlSwitch.styles = [component_styles_default, form_control_styles_default, switch_styles_default];
-__decorateClass([e$7('input[type="checkbox"]')], SlSwitch.prototype, "input", 2);
-__decorateClass([r$3()], SlSwitch.prototype, "hasFocus", 2);
+__decorateClass([e$6('input[type="checkbox"]')], SlSwitch.prototype, "input", 2);
+__decorateClass([r$4()], SlSwitch.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlSwitch.prototype, "title", 2);
 __decorateClass([n$6()], SlSwitch.prototype, "name", 2);
 __decorateClass([n$6()], SlSwitch.prototype, "value", 2);
@@ -10428,7 +10471,7 @@ var SlSpinner = class extends ShoelaceElement {
     this.localize = new LocalizeController(this);
   }
   render() {
-    return x`
+    return b`
       <svg part="base" class="spinner" role="progressbar" aria-label=${this.localize.term("loading")}>
         <circle class="spinner__track"></circle>
         <circle class="spinner__indicator"></circle>
@@ -11152,7 +11195,7 @@ var SlButton = class extends ShoelaceElement {
     return u`
       <${tag}
         part="base"
-        class=${e$5({
+        class=${e$4({
       button: true,
       "button--default": this.variant === "default",
       "button--primary": this.variant === "primary",
@@ -11208,9 +11251,9 @@ SlButton.dependencies = {
   "sl-icon": SlIcon,
   "sl-spinner": SlSpinner
 };
-__decorateClass([e$7(".button")], SlButton.prototype, "button", 2);
-__decorateClass([r$3()], SlButton.prototype, "hasFocus", 2);
-__decorateClass([r$3()], SlButton.prototype, "invalid", 2);
+__decorateClass([e$6(".button")], SlButton.prototype, "button", 2);
+__decorateClass([r$4()], SlButton.prototype, "hasFocus", 2);
+__decorateClass([r$4()], SlButton.prototype, "invalid", 2);
 __decorateClass([n$6()], SlButton.prototype, "title", 2);
 __decorateClass([n$6({
   reflect: true
@@ -11580,10 +11623,10 @@ var _SlAlert = class _SlAlert extends ShoelaceElement {
     });
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       alert: true,
       "alert--open": this.open,
       "alert--closable": this.closable,
@@ -11608,7 +11651,7 @@ var _SlAlert = class _SlAlert extends ShoelaceElement {
           <slot></slot>
         </div>
 
-        ${this.closable ? x`
+        ${this.closable ? b`
               <sl-icon-button
                 part="close-button"
                 exportparts="base:close-button__base"
@@ -11622,9 +11665,9 @@ var _SlAlert = class _SlAlert extends ShoelaceElement {
 
         <div role="timer" class="alert__timer">${this.remainingTime}</div>
 
-        ${this.countdown ? x`
+        ${this.countdown ? b`
               <div
-                class=${e$5({
+                class=${e$4({
       alert__countdown: true,
       "alert__countdown--ltr": this.countdown === "ltr"
     })}
@@ -11640,8 +11683,8 @@ _SlAlert.styles = [component_styles_default, alert_styles_default];
 _SlAlert.dependencies = {
   "sl-icon-button": SlIconButton
 };
-__decorateClass([e$7('[part~="base"]')], _SlAlert.prototype, "base", 2);
-__decorateClass([e$7(".alert__countdown-elapsed")], _SlAlert.prototype, "countdownElement", 2);
+__decorateClass([e$6('[part~="base"]')], _SlAlert.prototype, "base", 2);
+__decorateClass([e$6(".alert__countdown-elapsed")], _SlAlert.prototype, "countdownElement", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -11660,7 +11703,7 @@ __decorateClass([n$6({
   type: String,
   reflect: true
 })], _SlAlert.prototype, "countdown", 2);
-__decorateClass([r$3()], _SlAlert.prototype, "remainingTime", 2);
+__decorateClass([r$4()], _SlAlert.prototype, "remainingTime", 2);
 __decorateClass([watch("open", {
   waitUntilFirstUpdate: true
 })], _SlAlert.prototype, "handleOpenChange", 1);
@@ -11808,10 +11851,10 @@ var SlSkeleton = class extends ShoelaceElement {
     this.effect = "none";
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       skeleton: true,
       "skeleton--pulse": this.effect === "pulse",
       "skeleton--sheen": this.effect === "sheen"
@@ -11844,7 +11887,7 @@ var visually_hidden_styles_default = i$7`
 
 var SlVisuallyHidden = class extends ShoelaceElement {
   render() {
-    return x` <slot></slot> `;
+    return b` <slot></slot> `;
   }
 };
 SlVisuallyHidden.styles = [component_styles_default, visually_hidden_styles_default];
@@ -12011,10 +12054,10 @@ var SlTab = class extends ShoelaceElement {
   }
   render() {
     this.id = this.id.length > 0 ? this.id : this.componentId;
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       tab: true,
       "tab--active": this.active,
       "tab--closable": this.closable,
@@ -12022,7 +12065,7 @@ var SlTab = class extends ShoelaceElement {
     })}
       >
         <slot></slot>
-        ${this.closable ? x`
+        ${this.closable ? b`
               <sl-icon-button
                 part="close-button"
                 exportparts="base:close-button__base"
@@ -12042,7 +12085,7 @@ SlTab.styles = [component_styles_default, tab_styles_default];
 SlTab.dependencies = {
   "sl-icon-button": SlIconButton
 };
-__decorateClass([e$7(".tab")], SlTab.prototype, "tab", 2);
+__decorateClass([e$6(".tab")], SlTab.prototype, "tab", 2);
 __decorateClass([n$6({
   reflect: true
 })], SlTab.prototype, "panel", 2);
@@ -12374,7 +12417,7 @@ var SlResizeObserver = class extends ShoelaceElement {
     }
   }
   render() {
-    return x` <slot @slotchange=${this.handleSlotChange}></slot> `;
+    return b` <slot @slotchange=${this.handleSlotChange}></slot> `;
   }
 };
 SlResizeObserver.styles = [component_styles_default, resize_observer_styles_default];
@@ -12705,10 +12748,10 @@ var SlTabGroup = class extends ShoelaceElement {
   }
   render() {
     const isRtl = this.localize.dir() === "rtl";
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       "tab-group": true,
       "tab-group--top": this.placement === "top",
       "tab-group--bottom": this.placement === "bottom",
@@ -12721,11 +12764,11 @@ var SlTabGroup = class extends ShoelaceElement {
         @keydown=${this.handleKeyDown}
       >
         <div class="tab-group__nav-container" part="nav">
-          ${this.hasScrollControls ? x`
+          ${this.hasScrollControls ? b`
                 <sl-icon-button
                   part="scroll-button scroll-button--start"
                   exportparts="base:scroll-button__base"
-                  class=${e$5({
+                  class=${e$4({
       "tab-group__scroll-button": true,
       "tab-group__scroll-button--start": true,
       "tab-group__scroll-button--start--hidden": this.shouldHideScrollStartButton
@@ -12748,11 +12791,11 @@ var SlTabGroup = class extends ShoelaceElement {
             </div>
           </div>
 
-          ${this.hasScrollControls ? x`
+          ${this.hasScrollControls ? b`
                 <sl-icon-button
                   part="scroll-button scroll-button--end"
                   exportparts="base:scroll-button__base"
-                  class=${e$5({
+                  class=${e$4({
       "tab-group__scroll-button": true,
       "tab-group__scroll-button--end": true,
       "tab-group__scroll-button--end--hidden": this.shouldHideScrollEndButton
@@ -12777,13 +12820,13 @@ SlTabGroup.dependencies = {
   "sl-icon-button": SlIconButton,
   "sl-resize-observer": SlResizeObserver
 };
-__decorateClass([e$7(".tab-group")], SlTabGroup.prototype, "tabGroup", 2);
-__decorateClass([e$7(".tab-group__body")], SlTabGroup.prototype, "body", 2);
-__decorateClass([e$7(".tab-group__nav")], SlTabGroup.prototype, "nav", 2);
-__decorateClass([e$7(".tab-group__indicator")], SlTabGroup.prototype, "indicator", 2);
-__decorateClass([r$3()], SlTabGroup.prototype, "hasScrollControls", 2);
-__decorateClass([r$3()], SlTabGroup.prototype, "shouldHideScrollStartButton", 2);
-__decorateClass([r$3()], SlTabGroup.prototype, "shouldHideScrollEndButton", 2);
+__decorateClass([e$6(".tab-group")], SlTabGroup.prototype, "tabGroup", 2);
+__decorateClass([e$6(".tab-group__body")], SlTabGroup.prototype, "body", 2);
+__decorateClass([e$6(".tab-group__nav")], SlTabGroup.prototype, "nav", 2);
+__decorateClass([e$6(".tab-group__indicator")], SlTabGroup.prototype, "indicator", 2);
+__decorateClass([r$4()], SlTabGroup.prototype, "hasScrollControls", 2);
+__decorateClass([r$4()], SlTabGroup.prototype, "shouldHideScrollStartButton", 2);
+__decorateClass([r$4()], SlTabGroup.prototype, "shouldHideScrollEndButton", 2);
 __decorateClass([n$6()], SlTabGroup.prototype, "placement", 2);
 __decorateClass([n$6()], SlTabGroup.prototype, "activation", 2);
 __decorateClass([n$6({
@@ -12853,10 +12896,10 @@ var SlTabPanel = class extends ShoelaceElement {
     this.setAttribute("aria-hidden", this.active ? "false" : "true");
   }
   render() {
-    return x`
+    return b`
       <slot
         part="base"
-        class=${e$5({
+        class=${e$4({
       "tab-panel": true,
       "tab-panel--active": this.active
     })}
@@ -13226,10 +13269,10 @@ var SlTextarea = class extends ShoelaceElement {
     const hasHelpTextSlot = this.hasSlotController.test("help-text");
     const hasLabel = this.label ? true : !!hasLabelSlot;
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
-    return x`
+    return b`
       <div
         part="form-control"
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -13250,7 +13293,7 @@ var SlTextarea = class extends ShoelaceElement {
         <div part="form-control-input" class="form-control-input">
           <div
             part="base"
-            class=${e$5({
+            class=${e$4({
       textarea: true,
       "textarea--small": this.size === "small",
       "textarea--medium": this.size === "medium",
@@ -13310,9 +13353,9 @@ var SlTextarea = class extends ShoelaceElement {
   }
 };
 SlTextarea.styles = [component_styles_default, form_control_styles_default, textarea_styles_default];
-__decorateClass([e$7(".textarea__control")], SlTextarea.prototype, "input", 2);
-__decorateClass([e$7(".textarea__size-adjuster")], SlTextarea.prototype, "sizeAdjuster", 2);
-__decorateClass([r$3()], SlTextarea.prototype, "hasFocus", 2);
+__decorateClass([e$6(".textarea__control")], SlTextarea.prototype, "input", 2);
+__decorateClass([e$6(".textarea__size-adjuster")], SlTextarea.prototype, "sizeAdjuster", 2);
+__decorateClass([r$4()], SlTextarea.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlTextarea.prototype, "title", 2);
 __decorateClass([n$6()], SlTextarea.prototype, "name", 2);
 __decorateClass([n$6()], SlTextarea.prototype, "value", 2);
@@ -13604,14 +13647,14 @@ var SlTooltip = class extends ShoelaceElement {
   // element, otherwise positioning is incorrect.
   //
   render() {
-    return x`
+    return b`
       <sl-popup
         part="base"
         exportparts="
           popup:base__popup,
           arrow:base__arrow
         "
-        class=${e$5({
+        class=${e$4({
       tooltip: true,
       "tooltip--open": this.open
     })}
@@ -13639,9 +13682,9 @@ SlTooltip.styles = [component_styles_default, tooltip_styles_default];
 SlTooltip.dependencies = {
   "sl-popup": SlPopup
 };
-__decorateClass([e$7("slot:not([name])")], SlTooltip.prototype, "defaultSlot", 2);
-__decorateClass([e$7(".tooltip__body")], SlTooltip.prototype, "body", 2);
-__decorateClass([e$7("sl-popup")], SlTooltip.prototype, "popup", 2);
+__decorateClass([e$6("slot:not([name])")], SlTooltip.prototype, "defaultSlot", 2);
+__decorateClass([e$6(".tooltip__body")], SlTooltip.prototype, "body", 2);
+__decorateClass([e$6("sl-popup")], SlTooltip.prototype, "popup", 2);
 __decorateClass([n$6()], SlTooltip.prototype, "content", 2);
 __decorateClass([n$6()], SlTooltip.prototype, "placement", 2);
 __decorateClass([n$6({
@@ -14080,9 +14123,9 @@ var SlCheckbox = class extends ShoelaceElement {
   render() {
     const hasHelpTextSlot = this.hasSlotController.test("help-text");
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
-    return x`
+    return b`
       <div
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -14092,7 +14135,7 @@ var SlCheckbox = class extends ShoelaceElement {
       >
         <label
           part="base"
-          class=${e$5({
+          class=${e$4({
       checkbox: true,
       "checkbox--checked": this.checked,
       "checkbox--disabled": this.disabled,
@@ -14126,10 +14169,10 @@ var SlCheckbox = class extends ShoelaceElement {
             part="control${this.checked ? " control--checked" : ""}${this.indeterminate ? " control--indeterminate" : ""}"
             class="checkbox__control"
           >
-            ${this.checked ? x`
+            ${this.checked ? b`
                   <sl-icon part="checked-icon" class="checkbox__checked-icon" library="system" name="check"></sl-icon>
                 ` : ""}
-            ${!this.checked && this.indeterminate ? x`
+            ${!this.checked && this.indeterminate ? b`
                   <sl-icon
                     part="indeterminate-icon"
                     class="checkbox__indeterminate-icon"
@@ -14160,8 +14203,8 @@ SlCheckbox.styles = [component_styles_default, form_control_styles_default, chec
 SlCheckbox.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7('input[type="checkbox"]')], SlCheckbox.prototype, "input", 2);
-__decorateClass([r$3()], SlCheckbox.prototype, "hasFocus", 2);
+__decorateClass([e$6('input[type="checkbox"]')], SlCheckbox.prototype, "input", 2);
+__decorateClass([r$4()], SlCheckbox.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlCheckbox.prototype, "title", 2);
 __decorateClass([n$6()], SlCheckbox.prototype, "name", 2);
 __decorateClass([n$6()], SlCheckbox.prototype, "value", 2);
@@ -14323,10 +14366,10 @@ var _SlTreeItem = class _SlTreeItem extends ShoelaceElement {
   render() {
     const isRtl = this.localize.dir() === "rtl";
     const showExpandButton = !this.loading && (!this.isLeaf || this.lazy);
-    return x`
+    return b`
       <div
         part="base"
-        class="${e$5({
+        class="${e$4({
       "tree-item": true,
       "tree-item--expanded": this.expanded,
       "tree-item--selected": this.selected,
@@ -14350,13 +14393,13 @@ var _SlTreeItem = class _SlTreeItem extends ShoelaceElement {
 
           <div
             part="expand-button"
-            class=${e$5({
+            class=${e$4({
       "tree-item__expand-button": true,
       "tree-item__expand-button--visible": showExpandButton
     })}
             aria-hidden="true"
           >
-            ${n$3(this.loading, () => x` <sl-spinner part="spinner" exportparts="base:spinner__base"></sl-spinner> `)}
+            ${n$3(this.loading, () => b` <sl-spinner part="spinner" exportparts="base:spinner__base"></sl-spinner> `)}
             <slot class="tree-item__expand-icon-slot" name="expand-icon">
               <sl-icon library="system" name=${isRtl ? "chevron-left" : "chevron-right"}></sl-icon>
             </slot>
@@ -14365,7 +14408,7 @@ var _SlTreeItem = class _SlTreeItem extends ShoelaceElement {
             </slot>
           </div>
 
-          ${n$3(this.selectable, () => x`
+          ${n$3(this.selectable, () => b`
               <sl-checkbox
                 part="checkbox"
                 exportparts="
@@ -14401,10 +14444,10 @@ _SlTreeItem.dependencies = {
   "sl-icon": SlIcon,
   "sl-spinner": SlSpinner
 };
-__decorateClass([r$3()], _SlTreeItem.prototype, "indeterminate", 2);
-__decorateClass([r$3()], _SlTreeItem.prototype, "isLeaf", 2);
-__decorateClass([r$3()], _SlTreeItem.prototype, "loading", 2);
-__decorateClass([r$3()], _SlTreeItem.prototype, "selectable", 2);
+__decorateClass([r$4()], _SlTreeItem.prototype, "indeterminate", 2);
+__decorateClass([r$4()], _SlTreeItem.prototype, "isLeaf", 2);
+__decorateClass([r$4()], _SlTreeItem.prototype, "loading", 2);
+__decorateClass([r$4()], _SlTreeItem.prototype, "selectable", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -14421,11 +14464,11 @@ __decorateClass([n$6({
   type: Boolean,
   reflect: true
 })], _SlTreeItem.prototype, "lazy", 2);
-__decorateClass([e$7("slot:not([name])")], _SlTreeItem.prototype, "defaultSlot", 2);
-__decorateClass([e$7("slot[name=children]")], _SlTreeItem.prototype, "childrenSlot", 2);
-__decorateClass([e$7(".tree-item__item")], _SlTreeItem.prototype, "itemElement", 2);
-__decorateClass([e$7(".tree-item__children")], _SlTreeItem.prototype, "childrenContainer", 2);
-__decorateClass([e$7(".tree-item__expand-button slot")], _SlTreeItem.prototype, "expandButtonSlot", 2);
+__decorateClass([e$6("slot:not([name])")], _SlTreeItem.prototype, "defaultSlot", 2);
+__decorateClass([e$6("slot[name=children]")], _SlTreeItem.prototype, "childrenSlot", 2);
+__decorateClass([e$6(".tree-item__item")], _SlTreeItem.prototype, "itemElement", 2);
+__decorateClass([e$6(".tree-item__children")], _SlTreeItem.prototype, "childrenContainer", 2);
+__decorateClass([e$6(".tree-item__expand-button slot")], _SlTreeItem.prototype, "expandButtonSlot", 2);
 __decorateClass([watch("loading", {
   waitUntilFirstUpdate: true
 })], _SlTreeItem.prototype, "handleLoadingChange", 1);
@@ -14780,7 +14823,7 @@ var SlTree = class extends ShoelaceElement {
     });
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
         class="tree"
@@ -14796,9 +14839,9 @@ var SlTree = class extends ShoelaceElement {
   }
 };
 SlTree.styles = [component_styles_default, tree_styles_default];
-__decorateClass([e$7("slot:not([name])")], SlTree.prototype, "defaultSlot", 2);
-__decorateClass([e$7("slot[name=expand-icon]")], SlTree.prototype, "expandedIconSlot", 2);
-__decorateClass([e$7("slot[name=collapse-icon]")], SlTree.prototype, "collapsedIconSlot", 2);
+__decorateClass([e$6("slot:not([name])")], SlTree.prototype, "defaultSlot", 2);
+__decorateClass([e$6("slot[name=expand-icon]")], SlTree.prototype, "expandedIconSlot", 2);
+__decorateClass([e$6("slot[name=collapse-icon]")], SlTree.prototype, "collapsedIconSlot", 2);
 __decorateClass([n$6()], SlTree.prototype, "selection", 2);
 __decorateClass([watch("selection")], SlTree.prototype, "handleSelectionChange", 1);
 
@@ -14912,7 +14955,7 @@ var rating_styles_default = i$7`
  */
 const n$2 = "important",
   i = " !" + n$2,
-  o$4 = e$6(class extends i$3 {
+  o$4 = e$5(class extends i$3 {
     constructor(t) {
       if (super(t), t.type !== t$1.ATTRIBUTE || "style" !== t.name || t.strings?.length > 2) throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.");
     }
@@ -14936,7 +14979,7 @@ const n$2 = "important",
           t.includes("-") || r ? s.setProperty(t, r ? e.slice(0, -11) : e, r ? n$2 : "") : s[t] = e;
         }
       }
-      return T;
+      return E;
     }
   });
 
@@ -15074,10 +15117,10 @@ var SlRating = class extends ShoelaceElement {
     } else {
       displayValue = this.isHovering ? this.hoverValue : this.value;
     }
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       rating: true,
       "rating--readonly": this.readonly,
       "rating--disabled": this.disabled,
@@ -15103,9 +15146,9 @@ var SlRating = class extends ShoelaceElement {
         <span class="rating__symbols">
           ${counter.map(index => {
       if (displayValue > index && displayValue < index + 1) {
-        return x`
+        return b`
                 <span
-                  class=${e$5({
+                  class=${e$4({
           rating__symbol: true,
           "rating__partial-symbol-container": true,
           "rating__symbol--hover": this.isHovering && Math.ceil(displayValue) === index + 1
@@ -15130,9 +15173,9 @@ var SlRating = class extends ShoelaceElement {
                 </span>
               `;
       }
-      return x`
+      return b`
               <span
-                class=${e$5({
+                class=${e$4({
         rating__symbol: true,
         "rating__symbol--hover": this.isHovering && Math.ceil(displayValue) === index + 1,
         "rating__symbol--active": displayValue >= index + 1
@@ -15152,9 +15195,9 @@ SlRating.styles = [component_styles_default, rating_styles_default];
 SlRating.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".rating")], SlRating.prototype, "rating", 2);
-__decorateClass([r$3()], SlRating.prototype, "hoverValue", 2);
-__decorateClass([r$3()], SlRating.prototype, "isHovering", 2);
+__decorateClass([e$6(".rating")], SlRating.prototype, "rating", 2);
+__decorateClass([r$4()], SlRating.prototype, "hoverValue", 2);
+__decorateClass([r$4()], SlRating.prototype, "isHovering", 2);
 __decorateClass([n$6()], SlRating.prototype, "label", 2);
 __decorateClass([n$6({
   type: Number
@@ -15275,11 +15318,11 @@ var SlRelativeTime = class extends ShoelaceElement {
       }
       this.updateTimeout = window.setTimeout(() => this.requestUpdate(), nextInterval);
     }
-    return x` <time datetime=${this.isoTime}>${this.relativeTime}</time> `;
+    return b` <time datetime=${this.isoTime}>${this.relativeTime}</time> `;
   }
 };
-__decorateClass([r$3()], SlRelativeTime.prototype, "isoTime", 2);
-__decorateClass([r$3()], SlRelativeTime.prototype, "relativeTime", 2);
+__decorateClass([r$4()], SlRelativeTime.prototype, "isoTime", 2);
+__decorateClass([r$4()], SlRelativeTime.prototype, "relativeTime", 2);
 __decorateClass([n$6()], SlRelativeTime.prototype, "date", 2);
 __decorateClass([n$6()], SlRelativeTime.prototype, "format", 2);
 __decorateClass([n$6()], SlRelativeTime.prototype, "numeric", 2);
@@ -15700,7 +15743,7 @@ var SlSplitPanel = class extends ShoelaceElement {
       }
     }
     this.style[gridTemplateAlt] = "";
-    return x`
+    return b`
       <slot name="start" part="panel start" class="start"></slot>
 
       <div
@@ -15724,7 +15767,7 @@ var SlSplitPanel = class extends ShoelaceElement {
   }
 };
 SlSplitPanel.styles = [component_styles_default, split_panel_styles_default];
-__decorateClass([e$7(".divider")], SlSplitPanel.prototype, "divider", 2);
+__decorateClass([e$6(".divider")], SlSplitPanel.prototype, "divider", 2);
 __decorateClass([n$6({
   type: Number,
   reflect: true
@@ -15829,7 +15872,7 @@ var SlMutationObserver = class extends ShoelaceElement {
     this.startObserver();
   }
   render() {
-    return x` <slot></slot> `;
+    return b` <slot></slot> `;
   }
 };
 SlMutationObserver.styles = [component_styles_default, mutation_observer_styles_default];
@@ -15979,10 +16022,10 @@ var SlProgressBar = class extends ShoelaceElement {
     this.label = "";
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       "progress-bar": true,
       "progress-bar--indeterminate": this.indeterminate,
       "progress-bar--rtl": this.localize.dir() === "rtl"
@@ -15997,7 +16040,7 @@ var SlProgressBar = class extends ShoelaceElement {
         <div part="indicator" class="progress-bar__indicator" style=${o$4({
       width: `${this.value}%`
     })}>
-          ${!this.indeterminate ? x` <slot part="label" class="progress-bar__label"></slot> ` : ""}
+          ${!this.indeterminate ? b` <slot part="label" class="progress-bar__label"></slot> ` : ""}
         </div>
       </div>
     `;
@@ -16109,7 +16152,7 @@ var SlProgressRing = class extends ShoelaceElement {
     }
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
         class="progress-ring"
@@ -16132,8 +16175,8 @@ var SlProgressRing = class extends ShoelaceElement {
   }
 };
 SlProgressRing.styles = [component_styles_default, progress_ring_styles_default];
-__decorateClass([e$7(".progress-ring__indicator")], SlProgressRing.prototype, "indicator", 2);
-__decorateClass([r$3()], SlProgressRing.prototype, "indicatorOffset", 2);
+__decorateClass([e$6(".progress-ring__indicator")], SlProgressRing.prototype, "indicator", 2);
+__decorateClass([r$4()], SlProgressRing.prototype, "indicatorOffset", 2);
 __decorateClass([n$6({
   type: Number,
   reflect: true
@@ -16656,7 +16699,7 @@ var SlQrCode = class extends ShoelaceElement {
   }
   render() {
     var _a;
-    return x`
+    return b`
       <canvas
         part="base"
         class="qr-code"
@@ -16671,7 +16714,7 @@ var SlQrCode = class extends ShoelaceElement {
   }
 };
 SlQrCode.styles = [component_styles_default, qr_code_styles_default];
-__decorateClass([e$7("canvas")], SlQrCode.prototype, "canvas", 2);
+__decorateClass([e$6("canvas")], SlQrCode.prototype, "canvas", 2);
 __decorateClass([n$6()], SlQrCode.prototype, "value", 2);
 __decorateClass([n$6()], SlQrCode.prototype, "label", 2);
 __decorateClass([n$6({
@@ -16771,7 +16814,7 @@ var SlRadioButton = class extends ShoelaceElement {
           part="${`button${this.checked ? " button--checked" : ""}`}"
           role="radio"
           aria-checked="${this.checked}"
-          class=${e$5({
+          class=${e$4({
       button: true,
       "button--default": true,
       "button--small": this.size === "small",
@@ -16802,9 +16845,9 @@ var SlRadioButton = class extends ShoelaceElement {
   }
 };
 SlRadioButton.styles = [component_styles_default, radio_button_styles_default];
-__decorateClass([e$7(".button")], SlRadioButton.prototype, "input", 2);
-__decorateClass([e$7(".hidden-input")], SlRadioButton.prototype, "hiddenInput", 2);
-__decorateClass([r$3()], SlRadioButton.prototype, "hasFocus", 2);
+__decorateClass([e$6(".button")], SlRadioButton.prototype, "input", 2);
+__decorateClass([e$6(".hidden-input")], SlRadioButton.prototype, "hiddenInput", 2);
+__decorateClass([r$4()], SlRadioButton.prototype, "hasFocus", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -16994,10 +17037,10 @@ var SlRadio = class extends ShoelaceElement {
     this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
   }
   render() {
-    return x`
+    return b`
       <span
         part="base"
-        class=${e$5({
+        class=${e$4({
       radio: true,
       "radio--checked": this.checked,
       "radio--disabled": this.disabled,
@@ -17008,7 +17051,7 @@ var SlRadio = class extends ShoelaceElement {
     })}
       >
         <span part="${`control${this.checked ? " control--checked" : ""}`}" class="radio__control">
-          ${this.checked ? x` <sl-icon part="checked-icon" class="radio__checked-icon" library="system" name="radio"></sl-icon> ` : ""}
+          ${this.checked ? b` <sl-icon part="checked-icon" class="radio__checked-icon" library="system" name="radio"></sl-icon> ` : ""}
         </span>
 
         <slot part="label" class="radio__label"></slot>
@@ -17020,8 +17063,8 @@ SlRadio.styles = [component_styles_default, radio_styles_default];
 SlRadio.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([r$3()], SlRadio.prototype, "checked", 2);
-__decorateClass([r$3()], SlRadio.prototype, "hasFocus", 2);
+__decorateClass([r$4()], SlRadio.prototype, "checked", 2);
+__decorateClass([r$4()], SlRadio.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlRadio.prototype, "value", 2);
 __decorateClass([n$6({
   reflect: true
@@ -17433,10 +17476,10 @@ var SlRange = class extends ShoelaceElement {
     const hasHelpTextSlot = this.hasSlotController.test("help-text");
     const hasLabel = this.label ? true : !!hasLabelSlot;
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
-    return x`
+    return b`
       <div
         part="form-control"
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--medium": true,
       // range only has one size
@@ -17456,7 +17499,7 @@ var SlRange = class extends ShoelaceElement {
         <div part="form-control-input" class="form-control-input">
           <div
             part="base"
-            class=${e$5({
+            class=${e$4({
       range: true,
       "range--disabled": this.disabled,
       "range--focused": this.hasFocus,
@@ -17489,7 +17532,7 @@ var SlRange = class extends ShoelaceElement {
               @invalid=${this.handleInvalid}
               @blur=${this.handleBlur}
             />
-            ${this.tooltip !== "none" && !this.disabled ? x`
+            ${this.tooltip !== "none" && !this.disabled ? b`
                   <output part="tooltip" class="range__tooltip">
                     ${typeof this.tooltipFormatter === "function" ? this.tooltipFormatter(this.value) : this.value}
                   </output>
@@ -17510,10 +17553,10 @@ var SlRange = class extends ShoelaceElement {
   }
 };
 SlRange.styles = [component_styles_default, form_control_styles_default, range_styles_default];
-__decorateClass([e$7(".range__control")], SlRange.prototype, "input", 2);
-__decorateClass([e$7(".range__tooltip")], SlRange.prototype, "output", 2);
-__decorateClass([r$3()], SlRange.prototype, "hasFocus", 2);
-__decorateClass([r$3()], SlRange.prototype, "hasTooltip", 2);
+__decorateClass([e$6(".range__control")], SlRange.prototype, "input", 2);
+__decorateClass([e$6(".range__tooltip")], SlRange.prototype, "output", 2);
+__decorateClass([r$4()], SlRange.prototype, "hasFocus", 2);
+__decorateClass([r$4()], SlRange.prototype, "hasTooltip", 2);
 __decorateClass([n$6()], SlRange.prototype, "title", 2);
 __decorateClass([n$6()], SlRange.prototype, "name", 2);
 __decorateClass([n$6({
@@ -17659,7 +17702,7 @@ var SlButtonGroup = class extends ShoelaceElement {
     });
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
         class="button-group"
@@ -17676,8 +17719,8 @@ var SlButtonGroup = class extends ShoelaceElement {
   }
 };
 SlButtonGroup.styles = [component_styles_default, button_group_styles_default];
-__decorateClass([e$7("slot")], SlButtonGroup.prototype, "defaultSlot", 2);
-__decorateClass([r$3()], SlButtonGroup.prototype, "disableRole", 2);
+__decorateClass([e$6("slot")], SlButtonGroup.prototype, "defaultSlot", 2);
+__decorateClass([r$4()], SlButtonGroup.prototype, "disableRole", 2);
 __decorateClass([n$6()], SlButtonGroup.prototype, "label", 2);
 function findButton(el) {
   var _a;
@@ -17898,13 +17941,13 @@ var SlRadioGroup = class extends ShoelaceElement {
     const hasHelpTextSlot = this.hasSlotController.test("help-text");
     const hasLabel = this.label ? true : !!hasLabelSlot;
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
-    const defaultSlot = x`
+    const defaultSlot = b`
       <slot @slotchange=${this.syncRadios} @click=${this.handleRadioClick} @keydown=${this.handleKeyDown}></slot>
     `;
-    return x`
+    return b`
       <fieldset
         part="form-control"
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -17943,7 +17986,7 @@ var SlRadioGroup = class extends ShoelaceElement {
             </label>
           </div>
 
-          ${this.hasButtonGroup ? x`
+          ${this.hasButtonGroup ? b`
                 <sl-button-group part="button-group" exportparts="base:button-group__base" role="presentation">
                   ${defaultSlot}
                 </sl-button-group>
@@ -17966,11 +18009,11 @@ SlRadioGroup.styles = [component_styles_default, form_control_styles_default, ra
 SlRadioGroup.dependencies = {
   "sl-button-group": SlButtonGroup
 };
-__decorateClass([e$7("slot:not([name])")], SlRadioGroup.prototype, "defaultSlot", 2);
-__decorateClass([e$7(".radio-group__validation-input")], SlRadioGroup.prototype, "validationInput", 2);
-__decorateClass([r$3()], SlRadioGroup.prototype, "hasButtonGroup", 2);
-__decorateClass([r$3()], SlRadioGroup.prototype, "errorMessage", 2);
-__decorateClass([r$3()], SlRadioGroup.prototype, "defaultValue", 2);
+__decorateClass([e$6("slot:not([name])")], SlRadioGroup.prototype, "defaultSlot", 2);
+__decorateClass([e$6(".radio-group__validation-input")], SlRadioGroup.prototype, "validationInput", 2);
+__decorateClass([r$4()], SlRadioGroup.prototype, "hasButtonGroup", 2);
+__decorateClass([r$4()], SlRadioGroup.prototype, "errorMessage", 2);
+__decorateClass([r$4()], SlRadioGroup.prototype, "defaultValue", 2);
 __decorateClass([n$6()], SlRadioGroup.prototype, "label", 2);
 __decorateClass([n$6({
   attribute: "help-text"
@@ -18130,11 +18173,11 @@ var SlImageComparer = class extends ShoelaceElement {
   }
   render() {
     const isRtl = this.localize.dir() === "rtl";
-    return x`
+    return b`
       <div
         part="base"
         id="image-comparer"
-        class=${e$5({
+        class=${e$4({
       "image-comparer": true,
       "image-comparer--rtl": isRtl
     })}
@@ -18188,8 +18231,8 @@ SlImageComparer.styles = [component_styles_default, image_comparer_styles_defaul
 SlImageComparer.scopedElement = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".image-comparer")], SlImageComparer.prototype, "base", 2);
-__decorateClass([e$7(".image-comparer__handle")], SlImageComparer.prototype, "handle", 2);
+__decorateClass([e$6(".image-comparer")], SlImageComparer.prototype, "base", 2);
+__decorateClass([e$6(".image-comparer__handle")], SlImageComparer.prototype, "handle", 2);
 __decorateClass([n$6({
   type: Number,
   reflect: true
@@ -18280,7 +18323,7 @@ var SlInclude = class extends ShoelaceElement {
     }
   }
   render() {
-    return x`<slot></slot>`;
+    return b`<slot></slot>`;
   }
 };
 SlInclude.styles = [component_styles_default, include_styles_default];
@@ -18430,7 +18473,7 @@ var SlMenu = class extends ShoelaceElement {
     });
   }
   render() {
-    return x`
+    return b`
       <slot
         @slotchange=${this.handleSlotChange}
         @click=${this.handleClick}
@@ -18441,7 +18484,7 @@ var SlMenu = class extends ShoelaceElement {
   }
 };
 SlMenu.styles = [component_styles_default, menu_styles_default];
-__decorateClass([e$7("slot")], SlMenu.prototype, "defaultSlot", 2);
+__decorateClass([e$6("slot")], SlMenu.prototype, "defaultSlot", 2);
 
 var tagName$u = "sl-menu";
 SlMenu.define("sl-menu");
@@ -18944,10 +18987,10 @@ var SlInput = class extends ShoelaceElement {
     const hasHelpText = this.helpText ? true : !!hasHelpTextSlot;
     const hasClearIcon = this.clearable && !this.disabled && !this.readonly;
     const isClearIconVisible = hasClearIcon && (typeof this.value === "number" || this.value.length > 0);
-    return x`
+    return b`
       <div
         part="form-control"
-        class=${e$5({
+        class=${e$4({
       "form-control": true,
       "form-control--small": this.size === "small",
       "form-control--medium": this.size === "medium",
@@ -18968,7 +19011,7 @@ var SlInput = class extends ShoelaceElement {
         <div part="form-control-input" class="form-control-input">
           <div
             part="base"
-            class=${e$5({
+            class=${e$4({
       input: true,
       // Sizes
       "input--small": this.size === "small",
@@ -19022,7 +19065,7 @@ var SlInput = class extends ShoelaceElement {
               @blur=${this.handleBlur}
             />
 
-            ${isClearIconVisible ? x`
+            ${isClearIconVisible ? b`
                   <button
                     part="clear-button"
                     class="input__clear"
@@ -19036,7 +19079,7 @@ var SlInput = class extends ShoelaceElement {
                     </slot>
                   </button>
                 ` : ""}
-            ${this.passwordToggle && !this.disabled ? x`
+            ${this.passwordToggle && !this.disabled ? b`
                   <button
                     part="password-toggle-button"
                     class="input__password-toggle"
@@ -19045,11 +19088,11 @@ var SlInput = class extends ShoelaceElement {
                     @click=${this.handlePasswordToggle}
                     tabindex="-1"
                   >
-                    ${this.passwordVisible ? x`
+                    ${this.passwordVisible ? b`
                           <slot name="show-password-icon">
                             <sl-icon name="eye-slash" library="system"></sl-icon>
                           </slot>
-                        ` : x`
+                        ` : b`
                           <slot name="hide-password-icon">
                             <sl-icon name="eye" library="system"></sl-icon>
                           </slot>
@@ -19079,8 +19122,8 @@ SlInput.styles = [component_styles_default, form_control_styles_default, input_s
 SlInput.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".input__control")], SlInput.prototype, "input", 2);
-__decorateClass([r$3()], SlInput.prototype, "hasFocus", 2);
+__decorateClass([e$6(".input__control")], SlInput.prototype, "input", 2);
+__decorateClass([r$4()], SlInput.prototype, "hasFocus", 2);
 __decorateClass([n$6()], SlInput.prototype, "title", 2);
 __decorateClass([n$6({
   reflect: true
@@ -19391,7 +19434,7 @@ class f extends i$3 {
     i !== this.isConnected && (this.isConnected = i, i ? this.reconnected?.() : this.disconnected?.()), t && (s(this, i), o$3(this));
   }
   setValue(t) {
-    if (f$1(this._$Ct)) this._$Ct._$AI(t, this);else {
+    if (r$2(this._$Ct)) this._$Ct._$AI(t, this);else {
       const i = [...this._$Ct._$AH];
       i[this._$Ci] = t, this._$Ct._$AI(i, this, 0);
     }
@@ -19408,13 +19451,13 @@ class f extends i$3 {
 const e = () => new h();
 class h {}
 const o$2 = new WeakMap(),
-  n = e$6(class extends f {
+  n = e$5(class extends f {
     render(i) {
-      return E;
+      return A;
     }
     update(i, [s]) {
       const e = s !== this.G;
-      return e && void 0 !== this.G && this.rt(void 0), (e || this.lt !== this.ct) && (this.G = s, this.ht = i.options?.host, this.rt(this.ct = i.element)), E;
+      return e && void 0 !== this.G && this.rt(void 0), (e || this.lt !== this.ct) && (this.G = s, this.ht = i.options?.host, this.rt(this.ct = i.element)), A;
     }
     rt(t) {
       if (this.isConnected || (t = void 0), "function" == typeof this.G) {
@@ -19654,9 +19697,9 @@ var SubmenuController = class {
   renderSubmenu() {
     const isRtl = getComputedStyle(this.host).direction === "rtl";
     if (!this.isConnected) {
-      return x` <slot name="submenu" hidden></slot> `;
+      return b` <slot name="submenu" hidden></slot> `;
     }
-    return x`
+    return b`
       <sl-popup
         ${n(this.popupRef)}
         placement=${isRtl ? "left-start" : "right-start"}
@@ -19755,11 +19798,11 @@ var SlMenuItem = class extends ShoelaceElement {
   render() {
     const isRtl = this.localize.dir() === "rtl";
     const isSubmenuExpanded = this.submenuController.isExpanded();
-    return x`
+    return b`
       <div
         id="anchor"
         part="base"
-        class=${e$5({
+        class=${e$4({
       "menu-item": true,
       "menu-item--rtl": isRtl,
       "menu-item--checked": this.checked,
@@ -19786,7 +19829,7 @@ var SlMenuItem = class extends ShoelaceElement {
         </span>
 
         ${this.submenuController.renderSubmenu()}
-        ${this.loading ? x` <sl-spinner part="spinner" exportparts="base:spinner__base"></sl-spinner> ` : ""}
+        ${this.loading ? b` <sl-spinner part="spinner" exportparts="base:spinner__base"></sl-spinner> ` : ""}
       </div>
     `;
   }
@@ -19797,8 +19840,8 @@ SlMenuItem.dependencies = {
   "sl-popup": SlPopup,
   "sl-spinner": SlSpinner
 };
-__decorateClass([e$7("slot:not([name])")], SlMenuItem.prototype, "defaultSlot", 2);
-__decorateClass([e$7(".menu-item")], SlMenuItem.prototype, "menuItem", 2);
+__decorateClass([e$6("slot:not([name])")], SlMenuItem.prototype, "defaultSlot", 2);
+__decorateClass([e$6(".menu-item")], SlMenuItem.prototype, "menuItem", 2);
 __decorateClass([n$6()], SlMenuItem.prototype, "type", 2);
 __decorateClass([n$6({
   type: Boolean,
@@ -19849,7 +19892,7 @@ var menu_label_styles_default = i$7`
 
 var SlMenuLabel = class extends ShoelaceElement {
   render() {
-    return x` <slot part="base" class="menu-label"></slot> `;
+    return b` <slot part="base" class="menu-label"></slot> `;
   }
 };
 SlMenuLabel.styles = [component_styles_default, menu_label_styles_default];
@@ -20488,10 +20531,10 @@ var SlDrawer = class extends ShoelaceElement {
     return waitForEvent(this, "sl-after-hide");
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       drawer: true,
       "drawer--open": this.open,
       "drawer--top": this.placement === "top",
@@ -20516,7 +20559,7 @@ var SlDrawer = class extends ShoelaceElement {
           aria-labelledby=${o$7(!this.noHeader ? "title" : void 0)}
           tabindex="0"
         >
-          ${!this.noHeader ? x`
+          ${!this.noHeader ? b`
                 <header part="header" class="drawer__header">
                   <h2 part="title" class="drawer__title" id="title">
                     <!-- If there's no label, use an invisible character to prevent the header from collapsing -->
@@ -20551,9 +20594,9 @@ SlDrawer.styles = [component_styles_default, drawer_styles_default];
 SlDrawer.dependencies = {
   "sl-icon-button": SlIconButton
 };
-__decorateClass([e$7(".drawer")], SlDrawer.prototype, "drawer", 2);
-__decorateClass([e$7(".drawer__panel")], SlDrawer.prototype, "panel", 2);
-__decorateClass([e$7(".drawer__overlay")], SlDrawer.prototype, "overlay", 2);
+__decorateClass([e$6(".drawer")], SlDrawer.prototype, "drawer", 2);
+__decorateClass([e$6(".drawer__panel")], SlDrawer.prototype, "panel", 2);
+__decorateClass([e$6(".drawer__overlay")], SlDrawer.prototype, "overlay", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -21074,7 +21117,7 @@ var SlDropdown = class extends ShoelaceElement {
     }
   }
   render() {
-    return x`
+    return b`
       <sl-popup
         part="base"
         exportparts="popup:base__popup"
@@ -21088,7 +21131,7 @@ var SlDropdown = class extends ShoelaceElement {
         auto-size="vertical"
         auto-size-padding="10"
         sync=${o$7(this.sync ? this.sync : void 0)}
-        class=${e$5({
+        class=${e$4({
       dropdown: true,
       "dropdown--open": this.open
     })}
@@ -21115,9 +21158,9 @@ SlDropdown.styles = [component_styles_default, dropdown_styles_default];
 SlDropdown.dependencies = {
   "sl-popup": SlPopup
 };
-__decorateClass([e$7(".dropdown")], SlDropdown.prototype, "popup", 2);
-__decorateClass([e$7(".dropdown__trigger")], SlDropdown.prototype, "trigger", 2);
-__decorateClass([e$7(".dropdown__panel")], SlDropdown.prototype, "panel", 2);
+__decorateClass([e$6(".dropdown")], SlDropdown.prototype, "popup", 2);
+__decorateClass([e$6(".dropdown__trigger")], SlDropdown.prototype, "trigger", 2);
+__decorateClass([e$6(".dropdown__panel")], SlDropdown.prototype, "panel", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -21207,7 +21250,7 @@ var SlFormatDate = class extends ShoelaceElement {
     if (isNaN(date.getMilliseconds())) {
       return void 0;
     }
-    return x`
+    return b`
       <time datetime=${date.toISOString()}>
         ${this.localize.date(date, {
       weekday: this.weekday,
@@ -22013,12 +22056,12 @@ var SlCarousel = class extends ShoelaceElement {
     const prevEnabled = this.canScrollPrev();
     const nextEnabled = this.canScrollNext();
     const isLtr = this.localize.dir() === "ltr";
-    return x`
+    return b`
       <div part="base" class="carousel">
         <div
           id="scroll-container"
           part="scroll-container"
-          class="${e$5({
+          class="${e$4({
       carousel__slides: true,
       "carousel__slides--horizontal": this.orientation === "horizontal",
       "carousel__slides--vertical": this.orientation === "vertical",
@@ -22037,11 +22080,11 @@ var SlCarousel = class extends ShoelaceElement {
           <slot></slot>
         </div>
 
-        ${this.navigation ? x`
+        ${this.navigation ? b`
               <div part="navigation" class="carousel__navigation">
                 <button
                   part="navigation-button navigation-button--previous"
-                  class="${e$5({
+                  class="${e$4({
       "carousel__navigation-button": true,
       "carousel__navigation-button--previous": true,
       "carousel__navigation-button--disabled": !prevEnabled
@@ -22058,7 +22101,7 @@ var SlCarousel = class extends ShoelaceElement {
 
                 <button
                   part="navigation-button navigation-button--next"
-                  class=${e$5({
+                  class=${e$4({
       "carousel__navigation-button": true,
       "carousel__navigation-button--next": true,
       "carousel__navigation-button--disabled": !nextEnabled
@@ -22074,14 +22117,14 @@ var SlCarousel = class extends ShoelaceElement {
                 </button>
               </div>
             ` : ""}
-        ${this.pagination ? x`
+        ${this.pagination ? b`
               <div part="pagination" role="tablist" class="carousel__pagination">
                 ${o$1(o(pagesCount), index => {
       const isActive = index === currentPage;
-      return x`
+      return b`
                     <button
                       part="pagination-item ${isActive ? "pagination-item--active" : ""}"
-                      class="${e$5({
+                      class="${e$4({
         "carousel__pagination-item": true,
         "carousel__pagination-item--active": isActive
       })}"
@@ -22140,11 +22183,11 @@ __decorateClass([n$6({
   reflect: true,
   attribute: "mouse-dragging"
 })], SlCarousel.prototype, "mouseDragging", 2);
-__decorateClass([e$7(".carousel__slides")], SlCarousel.prototype, "scrollContainer", 2);
-__decorateClass([e$7(".carousel__pagination")], SlCarousel.prototype, "paginationContainer", 2);
-__decorateClass([r$3()], SlCarousel.prototype, "activeSlide", 2);
-__decorateClass([r$3()], SlCarousel.prototype, "scrolling", 2);
-__decorateClass([r$3()], SlCarousel.prototype, "dragging", 2);
+__decorateClass([e$6(".carousel__slides")], SlCarousel.prototype, "scrollContainer", 2);
+__decorateClass([e$6(".carousel__pagination")], SlCarousel.prototype, "paginationContainer", 2);
+__decorateClass([r$4()], SlCarousel.prototype, "activeSlide", 2);
+__decorateClass([r$4()], SlCarousel.prototype, "scrolling", 2);
+__decorateClass([r$4()], SlCarousel.prototype, "dragging", 2);
 __decorateClass([t$2({
   passive: true
 })], SlCarousel.prototype, "handleScroll", 1);
@@ -22197,7 +22240,7 @@ var SlCarouselItem = class extends ShoelaceElement {
     super.connectedCallback();
   }
   render() {
-    return x` <slot></slot> `;
+    return b` <slot></slot> `;
   }
 };
 SlCarouselItem.styles = [component_styles_default, carousel_item_styles_default];
@@ -24359,10 +24402,10 @@ var SlColorPicker = class extends ShoelaceElement {
     const gridHandleX = this.saturation;
     const gridHandleY = 100 - this.brightness;
     const swatches = Array.isArray(this.swatches) ? this.swatches : this.swatches.split(";").filter(color => color.trim() !== "");
-    const colorPicker = x`
+    const colorPicker = b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       "color-picker": true,
       "color-picker--inline": this.inline,
       "color-picker--disabled": this.disabled,
@@ -24372,7 +24415,7 @@ var SlColorPicker = class extends ShoelaceElement {
         aria-labelledby="label"
         tabindex=${this.inline ? "0" : "-1"}
       >
-        ${this.inline ? x`
+        ${this.inline ? b`
               <sl-visually-hidden id="label">
                 <slot name="label">${this.label}</slot>
               </sl-visually-hidden>
@@ -24389,7 +24432,7 @@ var SlColorPicker = class extends ShoelaceElement {
         >
           <span
             part="grid-handle"
-            class=${e$5({
+            class=${e$4({
       "color-picker__grid-handle": true,
       "color-picker__grid-handle--dragging": this.isDraggingGridHandle
     })}
@@ -24430,7 +24473,7 @@ var SlColorPicker = class extends ShoelaceElement {
               ></span>
             </div>
 
-            ${this.opacity ? x`
+            ${this.opacity ? b`
                   <div
                     part="slider opacity-slider"
                     class="color-picker__alpha color-picker__slider color-picker__transparent-bg"
@@ -24500,7 +24543,7 @@ var SlColorPicker = class extends ShoelaceElement {
           ></sl-input>
 
           <sl-button-group>
-            ${!this.noFormatToggle ? x`
+            ${!this.noFormatToggle ? b`
                   <sl-button
                     part="format-button"
                     aria-label=${this.localize.term("toggleColorFormat")}
@@ -24518,7 +24561,7 @@ var SlColorPicker = class extends ShoelaceElement {
                     ${this.setLetterCase(this.format)}
                   </sl-button>
                 ` : ""}
-            ${hasEyeDropper ? x`
+            ${hasEyeDropper ? b`
                   <sl-button
                     part="eye-dropper-button"
                     exportparts="
@@ -24542,7 +24585,7 @@ var SlColorPicker = class extends ShoelaceElement {
           </sl-button-group>
         </div>
 
-        ${swatches.length > 0 ? x`
+        ${swatches.length > 0 ? b`
               <div part="swatches" class="color-picker__swatches">
                 ${swatches.map(swatch => {
       const parsedColor = this.parseColor(swatch);
@@ -24550,7 +24593,7 @@ var SlColorPicker = class extends ShoelaceElement {
         console.error(`Unable to parse swatch color: "${swatch}"`, this);
         return "";
       }
-      return x`
+      return b`
                     <div
                       part="swatch"
                       class="color-picker__swatch color-picker__transparent-bg"
@@ -24576,7 +24619,7 @@ var SlColorPicker = class extends ShoelaceElement {
     if (this.inline) {
       return colorPicker;
     }
-    return x`
+    return b`
       <sl-dropdown
         class="color-dropdown"
         aria-disabled=${this.disabled ? "true" : "false"}
@@ -24588,7 +24631,7 @@ var SlColorPicker = class extends ShoelaceElement {
         <button
           part="trigger"
           slot="trigger"
-          class=${e$5({
+          class=${e$4({
       "color-dropdown__trigger": true,
       "color-dropdown__trigger--disabled": this.disabled,
       "color-dropdown__trigger--small": this.size === "small",
@@ -24621,19 +24664,19 @@ SlColorPicker.dependencies = {
   "sl-input": SlInput,
   "sl-visually-hidden": SlVisuallyHidden
 };
-__decorateClass([e$7('[part~="base"]')], SlColorPicker.prototype, "base", 2);
-__decorateClass([e$7('[part~="input"]')], SlColorPicker.prototype, "input", 2);
-__decorateClass([e$7(".color-dropdown")], SlColorPicker.prototype, "dropdown", 2);
-__decorateClass([e$7('[part~="preview"]')], SlColorPicker.prototype, "previewButton", 2);
-__decorateClass([e$7('[part~="trigger"]')], SlColorPicker.prototype, "trigger", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "hasFocus", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "isDraggingGridHandle", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "isEmpty", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "inputValue", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "hue", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "saturation", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "brightness", 2);
-__decorateClass([r$3()], SlColorPicker.prototype, "alpha", 2);
+__decorateClass([e$6('[part~="base"]')], SlColorPicker.prototype, "base", 2);
+__decorateClass([e$6('[part~="input"]')], SlColorPicker.prototype, "input", 2);
+__decorateClass([e$6(".color-dropdown")], SlColorPicker.prototype, "dropdown", 2);
+__decorateClass([e$6('[part~="preview"]')], SlColorPicker.prototype, "previewButton", 2);
+__decorateClass([e$6('[part~="trigger"]')], SlColorPicker.prototype, "trigger", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "hasFocus", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "isDraggingGridHandle", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "isEmpty", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "inputValue", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "hue", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "saturation", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "brightness", 2);
+__decorateClass([r$4()], SlColorPicker.prototype, "alpha", 2);
 __decorateClass([n$6()], SlColorPicker.prototype, "value", 2);
 __decorateClass([defaultValue()], SlColorPicker.prototype, "defaultValue", 2);
 __decorateClass([n$6()], SlColorPicker.prototype, "label", 2);
@@ -24838,9 +24881,9 @@ var SlCopyButton = class extends ShoelaceElement {
   }
   render() {
     const copyLabel = this.copyLabel || this.localize.term("copy");
-    return x`
+    return b`
       <sl-tooltip
-        class=${e$5({
+        class=${e$4({
       "copy-button": true,
       "copy-button--success": this.status === "success",
       "copy-button--error": this.status === "error"
@@ -24882,12 +24925,12 @@ SlCopyButton.dependencies = {
   "sl-icon": SlIcon,
   "sl-tooltip": SlTooltip
 };
-__decorateClass([e$7('slot[name="copy-icon"]')], SlCopyButton.prototype, "copyIcon", 2);
-__decorateClass([e$7('slot[name="success-icon"]')], SlCopyButton.prototype, "successIcon", 2);
-__decorateClass([e$7('slot[name="error-icon"]')], SlCopyButton.prototype, "errorIcon", 2);
-__decorateClass([e$7("sl-tooltip")], SlCopyButton.prototype, "tooltip", 2);
-__decorateClass([r$3()], SlCopyButton.prototype, "isCopying", 2);
-__decorateClass([r$3()], SlCopyButton.prototype, "status", 2);
+__decorateClass([e$6('slot[name="copy-icon"]')], SlCopyButton.prototype, "copyIcon", 2);
+__decorateClass([e$6('slot[name="success-icon"]')], SlCopyButton.prototype, "successIcon", 2);
+__decorateClass([e$6('slot[name="error-icon"]')], SlCopyButton.prototype, "errorIcon", 2);
+__decorateClass([e$6("sl-tooltip")], SlCopyButton.prototype, "tooltip", 2);
+__decorateClass([r$4()], SlCopyButton.prototype, "isCopying", 2);
+__decorateClass([r$4()], SlCopyButton.prototype, "status", 2);
 __decorateClass([n$6()], SlCopyButton.prototype, "value", 2);
 __decorateClass([n$6()], SlCopyButton.prototype, "from", 2);
 __decorateClass([n$6({
@@ -25158,10 +25201,10 @@ var SlDetails = class extends ShoelaceElement {
   }
   render() {
     const isRtl = this.localize.dir() === "rtl";
-    return x`
+    return b`
       <details
         part="base"
-        class=${e$5({
+        class=${e$4({
       details: true,
       "details--open": this.open,
       "details--disabled": this.disabled,
@@ -25203,10 +25246,10 @@ SlDetails.styles = [component_styles_default, details_styles_default];
 SlDetails.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".details")], SlDetails.prototype, "details", 2);
-__decorateClass([e$7(".details__header")], SlDetails.prototype, "header", 2);
-__decorateClass([e$7(".details__body")], SlDetails.prototype, "body", 2);
-__decorateClass([e$7(".details__expand-icon-slot")], SlDetails.prototype, "expandIconSlot", 2);
+__decorateClass([e$6(".details")], SlDetails.prototype, "details", 2);
+__decorateClass([e$6(".details__header")], SlDetails.prototype, "header", 2);
+__decorateClass([e$6(".details__body")], SlDetails.prototype, "body", 2);
+__decorateClass([e$6(".details__expand-icon-slot")], SlDetails.prototype, "expandIconSlot", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -25527,10 +25570,10 @@ var SlDialog = class extends ShoelaceElement {
     return waitForEvent(this, "sl-after-hide");
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       dialog: true,
       "dialog--open": this.open,
       "dialog--has-footer": this.hasSlotController.test("footer")
@@ -25548,7 +25591,7 @@ var SlDialog = class extends ShoelaceElement {
           aria-labelledby=${o$7(!this.noHeader ? "title" : void 0)}
           tabindex="-1"
         >
-          ${!this.noHeader ? x`
+          ${!this.noHeader ? b`
                 <header part="header" class="dialog__header">
                   <h2 part="title" class="dialog__title" id="title">
                     <slot name="label"> ${this.label.length > 0 ? this.label : String.fromCharCode(65279)} </slot>
@@ -25582,9 +25625,9 @@ SlDialog.styles = [component_styles_default, dialog_styles_default];
 SlDialog.dependencies = {
   "sl-icon-button": SlIconButton
 };
-__decorateClass([e$7(".dialog")], SlDialog.prototype, "dialog", 2);
-__decorateClass([e$7(".dialog__panel")], SlDialog.prototype, "panel", 2);
-__decorateClass([e$7(".dialog__overlay")], SlDialog.prototype, "overlay", 2);
+__decorateClass([e$6(".dialog")], SlDialog.prototype, "dialog", 2);
+__decorateClass([e$6(".dialog__panel")], SlDialog.prototype, "panel", 2);
+__decorateClass([e$6(".dialog__overlay")], SlDialog.prototype, "overlay", 2);
 __decorateClass([n$6({
   type: Boolean,
   reflect: true
@@ -25766,7 +25809,7 @@ var SlAnimatedImage = class extends ShoelaceElement {
     this.isLoaded = false;
   }
   render() {
-    return x`
+    return b`
       <div class="animated-image">
         <img
           class="animated-image__animated"
@@ -25779,7 +25822,7 @@ var SlAnimatedImage = class extends ShoelaceElement {
           @error=${this.handleError}
         />
 
-        ${this.isLoaded ? x`
+        ${this.isLoaded ? b`
               <img
                 class="animated-image__frozen"
                 src=${this.frozenFrame}
@@ -25801,9 +25844,9 @@ SlAnimatedImage.styles = [component_styles_default, animated_image_styles_defaul
 SlAnimatedImage.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7(".animated-image__animated")], SlAnimatedImage.prototype, "animatedImage", 2);
-__decorateClass([r$3()], SlAnimatedImage.prototype, "frozenFrame", 2);
-__decorateClass([r$3()], SlAnimatedImage.prototype, "isLoaded", 2);
+__decorateClass([e$6(".animated-image__animated")], SlAnimatedImage.prototype, "animatedImage", 2);
+__decorateClass([r$4()], SlAnimatedImage.prototype, "frozenFrame", 2);
+__decorateClass([r$4()], SlAnimatedImage.prototype, "isLoaded", 2);
 __decorateClass([n$6()], SlAnimatedImage.prototype, "src", 2);
 __decorateClass([n$6()], SlAnimatedImage.prototype, "alt", 2);
 __decorateClass([n$6({
@@ -27522,11 +27565,11 @@ var SlAnimation = class extends ShoelaceElement {
     (_a = this.animation) == null ? void 0 : _a.finish();
   }
   render() {
-    return x` <slot @slotchange=${this.handleSlotChange}></slot> `;
+    return b` <slot @slotchange=${this.handleSlotChange}></slot> `;
   }
 };
 SlAnimation.styles = [component_styles_default, animation_styles_default];
-__decorateClass([r$2("slot")], SlAnimation.prototype, "defaultSlot", 2);
+__decorateClass([r$3("slot")], SlAnimation.prototype, "defaultSlot", 2);
 __decorateClass([n$6()], SlAnimation.prototype, "name", 2);
 __decorateClass([n$6({
   type: Boolean,
@@ -27661,7 +27704,7 @@ var SlAvatar = class extends ShoelaceElement {
     this.emit("sl-error");
   }
   render() {
-    const avatarWithImage = x`
+    const avatarWithImage = b`
       <img
         part="image"
         class="avatar__image"
@@ -27671,11 +27714,11 @@ var SlAvatar = class extends ShoelaceElement {
         @error="${this.handleImageLoadError}"
       />
     `;
-    let avatarWithoutImage = x``;
+    let avatarWithoutImage = b``;
     if (this.initials) {
-      avatarWithoutImage = x`<div part="initials" class="avatar__initials">${this.initials}</div>`;
+      avatarWithoutImage = b`<div part="initials" class="avatar__initials">${this.initials}</div>`;
     } else {
-      avatarWithoutImage = x`
+      avatarWithoutImage = b`
         <div part="icon" class="avatar__icon" aria-hidden="true">
           <slot name="icon">
             <sl-icon name="person-fill" library="system"></sl-icon>
@@ -27683,10 +27726,10 @@ var SlAvatar = class extends ShoelaceElement {
         </div>
       `;
     }
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       avatar: true,
       "avatar--circle": this.shape === "circle",
       "avatar--rounded": this.shape === "rounded",
@@ -27704,7 +27747,7 @@ SlAvatar.styles = [component_styles_default, avatar_styles_default];
 SlAvatar.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([r$3()], SlAvatar.prototype, "hasError", 2);
+__decorateClass([r$4()], SlAvatar.prototype, "hasError", 2);
 __decorateClass([n$6()], SlAvatar.prototype, "image", 2);
 __decorateClass([n$6()], SlAvatar.prototype, "label", 2);
 __decorateClass([n$6()], SlAvatar.prototype, "initials", 2);
@@ -27776,7 +27819,7 @@ var SlBreadcrumb = class extends ShoelaceElement {
       this.separatorDir = this.localize.dir();
       this.updateComplete.then(() => this.handleSlotChange());
     }
-    return x`
+    return b`
       <nav part="base" class="breadcrumb" aria-label=${this.label}>
         <slot @slotchange=${this.handleSlotChange}></slot>
       </nav>
@@ -27793,8 +27836,8 @@ SlBreadcrumb.styles = [component_styles_default, breadcrumb_styles_default];
 SlBreadcrumb.dependencies = {
   "sl-icon": SlIcon
 };
-__decorateClass([e$7("slot")], SlBreadcrumb.prototype, "defaultSlot", 2);
-__decorateClass([e$7('slot[name="separator"]')], SlBreadcrumb.prototype, "separatorSlot", 2);
+__decorateClass([e$6("slot")], SlBreadcrumb.prototype, "defaultSlot", 2);
+__decorateClass([e$6('slot[name="separator"]')], SlBreadcrumb.prototype, "separatorSlot", 2);
 __decorateClass([n$6()], SlBreadcrumb.prototype, "label", 2);
 
 var tagName$5 = "sl-breadcrumb";
@@ -27936,10 +27979,10 @@ var SlBreadcrumbItem = class extends ShoelaceElement {
     this.setRenderType();
   }
   render() {
-    return x`
+    return b`
       <div
         part="base"
-        class=${e$5({
+        class=${e$4({
       "breadcrumb-item": true,
       "breadcrumb-item--has-prefix": this.hasSlotController.test("prefix"),
       "breadcrumb-item--has-suffix": this.hasSlotController.test("suffix")
@@ -27949,7 +27992,7 @@ var SlBreadcrumbItem = class extends ShoelaceElement {
           <slot name="prefix"></slot>
         </span>
 
-        ${this.renderType === "link" ? x`
+        ${this.renderType === "link" ? b`
               <a
                 part="label"
                 class="breadcrumb-item__label breadcrumb-item__label--link"
@@ -27960,12 +28003,12 @@ var SlBreadcrumbItem = class extends ShoelaceElement {
                 <slot @slotchange=${this.handleSlotChange}></slot>
               </a>
             ` : ""}
-        ${this.renderType === "button" ? x`
+        ${this.renderType === "button" ? b`
               <button part="label" type="button" class="breadcrumb-item__label breadcrumb-item__label--button">
                 <slot @slotchange=${this.handleSlotChange}></slot>
               </button>
             ` : ""}
-        ${this.renderType === "dropdown" ? x`
+        ${this.renderType === "dropdown" ? b`
               <div part="label" class="breadcrumb-item__label breadcrumb-item__label--drop-down">
                 <slot @slotchange=${this.handleSlotChange}></slot>
               </div>
@@ -27983,8 +28026,8 @@ var SlBreadcrumbItem = class extends ShoelaceElement {
   }
 };
 SlBreadcrumbItem.styles = [component_styles_default, breadcrumb_item_styles_default];
-__decorateClass([e$7("slot:not([name])")], SlBreadcrumbItem.prototype, "defaultSlot", 2);
-__decorateClass([r$3()], SlBreadcrumbItem.prototype, "renderType", 2);
+__decorateClass([e$6("slot:not([name])")], SlBreadcrumbItem.prototype, "defaultSlot", 2);
+__decorateClass([r$4()], SlBreadcrumbItem.prototype, "renderType", 2);
 __decorateClass([n$6()], SlBreadcrumbItem.prototype, "href", 2);
 __decorateClass([n$6()], SlBreadcrumbItem.prototype, "target", 2);
 __decorateClass([n$6()], SlBreadcrumbItem.prototype, "rel", 2);
@@ -28102,10 +28145,10 @@ var SlBadge = class extends ShoelaceElement {
     this.pulse = false;
   }
   render() {
-    return x`
+    return b`
       <span
         part="base"
-        class=${e$5({
+        class=${e$4({
       badge: true,
       "badge--primary": this.variant === "primary",
       "badge--success": this.variant === "success",
@@ -28570,7 +28613,7 @@ var hasRequiredScheduler_production;
 function requireScheduler_production () {
 	if (hasRequiredScheduler_production) return scheduler_production;
 	hasRequiredScheduler_production = 1;
-	(function (exports) {
+	(function (exports$1) {
 
 		function push(heap, node) {
 		  var index = heap.length;
@@ -28604,16 +28647,16 @@ function requireScheduler_production () {
 		  var diff = a.sortIndex - b.sortIndex;
 		  return 0 !== diff ? diff : a.id - b.id;
 		}
-		exports.unstable_now = void 0;
+		exports$1.unstable_now = void 0;
 		if ("object" === typeof performance && "function" === typeof performance.now) {
 		  var localPerformance = performance;
-		  exports.unstable_now = function () {
+		  exports$1.unstable_now = function () {
 		    return localPerformance.now();
 		  };
 		} else {
 		  var localDate = Date,
 		    initialTime = localDate.now();
-		  exports.unstable_now = function () {
+		  exports$1.unstable_now = function () {
 		    return localDate.now() - initialTime;
 		  };
 		}
@@ -28648,12 +28691,12 @@ function requireScheduler_production () {
 		  frameInterval = 5,
 		  startTime = -1;
 		function shouldYieldToHost() {
-		  return needsPaint ? true : exports.unstable_now() - startTime < frameInterval ? false : true;
+		  return needsPaint ? true : exports$1.unstable_now() - startTime < frameInterval ? false : true;
 		}
 		function performWorkUntilDeadline() {
 		  needsPaint = false;
 		  if (isMessageLoopRunning) {
-		    var currentTime = exports.unstable_now();
+		    var currentTime = exports$1.unstable_now();
 		    startTime = currentTime;
 		    var hasMoreWork = true;
 		    try {
@@ -28671,7 +28714,7 @@ function requireScheduler_production () {
 		                currentTask.callback = null;
 		                currentPriorityLevel = currentTask.priorityLevel;
 		                var continuationCallback = callback(currentTask.expirationTime <= currentTime);
-		                currentTime = exports.unstable_now();
+		                currentTime = exports$1.unstable_now();
 		                if ("function" === typeof continuationCallback) {
 		                  currentTask.callback = continuationCallback;
 		                  advanceTimers(currentTime);
@@ -28715,25 +28758,25 @@ function requireScheduler_production () {
 		};
 		function requestHostTimeout(callback, ms) {
 		  taskTimeoutID = localSetTimeout(function () {
-		    callback(exports.unstable_now());
+		    callback(exports$1.unstable_now());
 		  }, ms);
 		}
-		exports.unstable_IdlePriority = 5;
-		exports.unstable_ImmediatePriority = 1;
-		exports.unstable_LowPriority = 4;
-		exports.unstable_NormalPriority = 3;
-		exports.unstable_Profiling = null;
-		exports.unstable_UserBlockingPriority = 2;
-		exports.unstable_cancelCallback = function (task) {
+		exports$1.unstable_IdlePriority = 5;
+		exports$1.unstable_ImmediatePriority = 1;
+		exports$1.unstable_LowPriority = 4;
+		exports$1.unstable_NormalPriority = 3;
+		exports$1.unstable_Profiling = null;
+		exports$1.unstable_UserBlockingPriority = 2;
+		exports$1.unstable_cancelCallback = function (task) {
 		  task.callback = null;
 		};
-		exports.unstable_forceFrameRate = function (fps) {
+		exports$1.unstable_forceFrameRate = function (fps) {
 		  0 > fps || 125 < fps ? console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported") : frameInterval = 0 < fps ? Math.floor(1e3 / fps) : 5;
 		};
-		exports.unstable_getCurrentPriorityLevel = function () {
+		exports$1.unstable_getCurrentPriorityLevel = function () {
 		  return currentPriorityLevel;
 		};
-		exports.unstable_next = function (eventHandler) {
+		exports$1.unstable_next = function (eventHandler) {
 		  switch (currentPriorityLevel) {
 		    case 1:
 		    case 2:
@@ -28751,10 +28794,10 @@ function requireScheduler_production () {
 		    currentPriorityLevel = previousPriorityLevel;
 		  }
 		};
-		exports.unstable_requestPaint = function () {
+		exports$1.unstable_requestPaint = function () {
 		  needsPaint = true;
 		};
-		exports.unstable_runWithPriority = function (priorityLevel, eventHandler) {
+		exports$1.unstable_runWithPriority = function (priorityLevel, eventHandler) {
 		  switch (priorityLevel) {
 		    case 1:
 		    case 2:
@@ -28773,8 +28816,8 @@ function requireScheduler_production () {
 		    currentPriorityLevel = previousPriorityLevel;
 		  }
 		};
-		exports.unstable_scheduleCallback = function (priorityLevel, callback, options) {
-		  var currentTime = exports.unstable_now();
+		exports$1.unstable_scheduleCallback = function (priorityLevel, callback, options) {
+		  var currentTime = exports$1.unstable_now();
 		  "object" === typeof options && null !== options ? (options = options.delay, options = "number" === typeof options && 0 < options ? currentTime + options : currentTime) : options = currentTime;
 		  switch (priorityLevel) {
 		    case 1:
@@ -28804,8 +28847,8 @@ function requireScheduler_production () {
 		  options > currentTime ? (priorityLevel.sortIndex = options, push(timerQueue, priorityLevel), null === peek(taskQueue) && priorityLevel === peek(timerQueue) && (isHostTimeoutScheduled ? (localClearTimeout(taskTimeoutID), taskTimeoutID = -1) : isHostTimeoutScheduled = true, requestHostTimeout(handleTimeout, options - currentTime))) : (priorityLevel.sortIndex = timeout, push(taskQueue, priorityLevel), isHostCallbackScheduled || isPerformingWork || (isHostCallbackScheduled = true, isMessageLoopRunning || (isMessageLoopRunning = true, schedulePerformWorkUntilDeadline())));
 		  return priorityLevel;
 		};
-		exports.unstable_shouldYield = shouldYieldToHost;
-		exports.unstable_wrapCallback = function (callback) {
+		exports$1.unstable_shouldYield = shouldYieldToHost;
+		exports$1.unstable_wrapCallback = function (callback) {
 		  var parentPriorityLevel = currentPriorityLevel;
 		  return function () {
 		    var previousPriorityLevel = currentPriorityLevel;
