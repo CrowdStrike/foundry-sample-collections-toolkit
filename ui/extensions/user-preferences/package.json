@@ -67,5 +67,11 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "overrides": {
+    "svgo": "2.8.1",
+    "minimatch@3": "3.1.4",
+    "minimatch@9": "9.0.9",
+    "lodash": "4.17.23"
   }
 }
