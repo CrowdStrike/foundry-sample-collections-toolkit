@@ -56,10 +56,10 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
         await extensionHeading.click();
         this.logger.info(`Clicked to expand ${this.extensionName} extension`);
 
-        await expect(this.page.locator('iframe')).toBeVisible({ timeout: 15000 });
+        await expect(this.page.locator('iframe[name="portal"]')).toBeVisible({ timeout: 15000 });
         this.logger.info('Extension iframe loaded');
 
-        const iframe: FrameLocator = this.page.frameLocator('iframe');
+        const iframe: FrameLocator = this.page.frameLocator('iframe[name="portal"]');
         await this.verifyExtensionContent(iframe);
 
         this.logger.success(`${this.extensionName} extension renders correctly`);
