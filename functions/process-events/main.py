@@ -84,9 +84,9 @@ def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
 
     # Retrieve the most recent checkpoint for this workflow
     checkpoint_response = custom_storage.SearchObjects(filter=f"workflow_id:'{workflow_id}'",
-                                                   collection_name=checkpoint_collection,
-                                                   sort="last_processed_timestamp.desc",
-                                                   limit=1)
+                                                       collection_name=checkpoint_collection,
+                                                       sort="last_processed_timestamp.desc",
+                                                       limit=1)
 
     logger.debug(f"checkpoint response: {checkpoint_response}")
 
@@ -98,7 +98,7 @@ def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
 
         # SearchObjects returns metadata, not actual objects, so use GetObject for details
         object_details = custom_storage.GetObject(collection_name=checkpoint_collection,
-                                              object_key=last_checkpoint["object_key"])
+                                                  object_key=last_checkpoint["object_key"])
 
         # GetObject returns bytes; convert to JSON
         json_response = json.loads(object_details.decode("utf-8"))
@@ -142,8 +142,8 @@ def _process_and_update(workflow_context: Dict[str, Any], checkpoint_data: Dict[
     logger.debug(f"Sending data to PutObject: {checkpoint_update}")
 
     custom_storage.PutObject(body=checkpoint_update,
-                         collection_name=checkpoint_collection,
-                         object_key=f"checkpoint_{workflow_id}")
+                             collection_name=checkpoint_collection,
+                             object_key=f"checkpoint_{workflow_id}")
 
     return Response(
         body={

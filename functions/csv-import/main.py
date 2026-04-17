@@ -268,8 +268,8 @@ def _process_batch(batch_context: Dict[str, Any]) -> Dict[str, int]:
     for record in batch:
         try:
             response = custom_storage.PutObject(body=record,
-                                            collection_name=collection_name,
-                                            object_key=record["event_id"])
+                                                collection_name=collection_name,
+                                                object_key=record["event_id"])
 
             if response["status_code"] == 200:
                 success_count += 1
