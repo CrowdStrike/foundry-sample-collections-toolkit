@@ -1,6 +1,6 @@
 import { Page, expect, FrameLocator } from '@playwright/test';
 import { HostPanelExtensionPage } from './HostPanelExtensionPage';
-import { config } from '../config/TestConfig';
+import { config } from '@crowdstrike/foundry-playwright';
 
 /**
  * Page object for testing the "User Preferences" UI extension

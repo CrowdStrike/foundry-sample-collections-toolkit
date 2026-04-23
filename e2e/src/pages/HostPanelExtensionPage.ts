@@ -1,5 +1,5 @@
 import { Page, expect, FrameLocator } from '@playwright/test';
-import { SocketNavigationPage } from './SocketNavigationPage';
+import { SocketNavigationPage } from '@crowdstrike/foundry-playwright';
 
 /**
  * Base page object for testing UI extensions in hosts.host.panel socket
