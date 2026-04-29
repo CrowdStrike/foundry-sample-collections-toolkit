@@ -23,7 +23,7 @@ export class UserPreferencesExtensionPage extends HostPanelExtensionPage {
   async savePreference(): Promise<void> {
     return this.withTiming(
       async () => {
-        const iframe = this.page.frameLocator('iframe');
+        const iframe = this.page.frameLocator('iframe[name="portal"]');
 
         // Wait for Save button to confirm form is loaded
         await expect(iframe.getByRole('button', { name: /Save Preferences/i })).toBeVisible({ timeout: 10000 });
