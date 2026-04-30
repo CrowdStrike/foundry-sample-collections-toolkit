@@ -7,7 +7,7 @@ function Link({ children, useFalconNavigation = false, to }) {
 
   if (useFalconNavigation) {
     return (
-      <a onClick={navigation.onClick} href={to}>{children}</a>
+      <a onClick={(e) => { e.preventDefault(); navigation.navigateTo({ path: to }); }} href={to}>{children}</a>
     )
   }
 
