@@ -15,7 +15,7 @@ from typing import Dict, Any, List
 
 import pandas as pd
 from crowdstrike.foundry.function import Function, Request, Response, APIError
-from falconpy import APIHarnessV2
+from falconpy import CustomStorage
 
 FUNC = Function.instance()
 
@@ -63,9 +63,8 @@ def import_csv_handler(request: Request, config: Dict[str, object] | None, logge
 
 def _process_import_request(request: Request, collection_name: str, logger: Logger) -> Response:
     """Process the import request and return response."""
-    # Initialize API client and headers
-    api_client = APIHarnessV2()
-    headers = _get_headers()
+    # Initialize custom storage with app headers baked in
+    custom_storage = CustomStorage(ext_headers=_app_headers())
 
     # Read CSV data
     csv_data_result = _read_csv_data(request, logger)
@@ -77,7 +76,7 @@ def _process_import_request(request: Request, collection_name: str, logger: Logg
     transformed_records = _process_dataframe(df, source_filename, import_timestamp)
 
     # Import records to Collection with batch processing
-    import_results = batch_import_records(api_client, transformed_records, collection_name, headers)
+    import_results = batch_import_records(custom_storage, transformed_records, collection_name)
 
     return _create_success_response({
         "df": df,
@@ -89,12 +88,12 @@ def _process_import_request(request: Request, collection_name: str, logger: Logg
     })
 
 
-def _get_headers() -> Dict[str, str]:
-    """Get headers for API requests."""
-    headers = {}
-    if os.environ.get("APP_ID"):
-        headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
-    return headers
+def _app_headers() -> Dict[str, str]:
+    """Build app headers for CustomStorage construction."""
+    app_id = os.environ.get("APP_ID")
+    if app_id:
+        return {"X-CS-APP-ID": app_id}
+    return {}
 
 
 def _read_csv_data(request: Request, logger: Logger) -> Dict[str, Any]:
@@ -222,10 +221,9 @@ def validate_record(record: Dict[str, Any]) -> None:
 
 
 def batch_import_records(
-    api_client: APIHarnessV2,
+    custom_storage: CustomStorage,
     records: List[Dict[str, Any]],
     collection_name: str,
-    headers: Dict[str, str],
     batch_size: int = 50
 ) -> Dict[str, int]:
     """Import records to Collection in batches with rate limiting."""
@@ -241,10 +239,9 @@ def batch_import_records(
             time.sleep(0.5)
 
         batch_context = {
-            "api_client": api_client,
+            "custom_storage": custom_storage,
             "batch": batch,
             "collection_name": collection_name,
-            "headers": headers,
             "batch_number": i // batch_size + 1
         }
 
@@ -260,10 +257,9 @@ def batch_import_records(
 
 def _process_batch(batch_context: Dict[str, Any]) -> Dict[str, int]:
     """Process a single batch of records."""
-    api_client = batch_context["api_client"]
+    custom_storage = batch_context["custom_storage"]
     batch = batch_context["batch"]
     collection_name = batch_context["collection_name"]
-    headers = batch_context["headers"]
     batch_number = batch_context["batch_number"]
 
     success_count = 0
@@ -271,11 +267,9 @@ def _process_batch(batch_context: Dict[str, Any]) -> Dict[str, int]:
 
     for record in batch:
         try:
-            response = api_client.command("PutObject",
-                                          body=record,
-                                          collection_name=collection_name,
-                                          object_key=record["event_id"],
-                                          headers=headers)
+            response = custom_storage.PutObject(body=record,
+                                                collection_name=collection_name,
+                                                object_key=record["event_id"])
 
             if response["status_code"] == 200:
                 success_count += 1

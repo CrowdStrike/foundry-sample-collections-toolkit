@@ -12,7 +12,7 @@ from logging import Logger
 from typing import Dict, List, Any
 
 from crowdstrike.foundry.function import Function, Request, Response, APIError
-from falconpy import APIHarnessV2
+from falconpy import CustomStorage
 
 FUNC = Function.instance()
 
@@ -24,7 +24,7 @@ def process_events_handler(request: Request, config: Dict[str, object] | None, l
     _ = config
 
     try:
-        # Initialize API client and workflow
+        # Initialize custom storage and workflow
         workflow_context = _initialize_workflow(request, logger)
 
         # Get checkpoint data
@@ -51,11 +51,8 @@ def process_events_handler(request: Request, config: Dict[str, object] | None, l
 
 
 def _initialize_workflow(request: Request, logger: Logger) -> Dict[str, Any]:
-    """Initialize workflow context with API client and configuration."""
-    api_client = APIHarnessV2()
-    headers = {}
-    if os.environ.get("APP_ID"):
-        headers = {"X-CS-APP-ID": os.environ.get("APP_ID")}
+    """Initialize workflow context with custom storage and configuration."""
+    custom_storage = CustomStorage(ext_headers=_app_headers())
 
     checkpoint_collection = "processing_checkpoints"
     workflow_id = request.body.get("workflow_id", "default")
@@ -63,29 +60,33 @@ def _initialize_workflow(request: Request, logger: Logger) -> Dict[str, Any]:
     logger.info(f"Processing workflow ID: {workflow_id}")
 
     return {
-        "api_client": api_client,
-        "headers": headers,
+        "custom_storage": custom_storage,
         "checkpoint_collection": checkpoint_collection,
         "workflow_id": workflow_id,
         "logger": logger
     }
 
 
+def _app_headers() -> Dict[str, str]:
+    """Build app headers for CustomStorage construction."""
+    app_id = os.environ.get("APP_ID")
+    if app_id:
+        return {"X-CS-APP-ID": app_id}
+    return {}
+
+
 def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
     """Retrieve the last checkpoint for the workflow."""
-    api_client = workflow_context["api_client"]
-    headers = workflow_context["headers"]
+    custom_storage = workflow_context["custom_storage"]
     checkpoint_collection = workflow_context["checkpoint_collection"]
     workflow_id = workflow_context["workflow_id"]
     logger = workflow_context["logger"]
 
     # Retrieve the most recent checkpoint for this workflow
-    checkpoint_response = api_client.command("SearchObjects",
-                                             filter=f"workflow_id:'{workflow_id}'",
-                                             collection_name=checkpoint_collection,
-                                             sort="last_processed_timestamp.desc",
-                                             limit=1,
-                                             headers=headers)
+    checkpoint_response = custom_storage.SearchObjects(filter=f"workflow_id:'{workflow_id}'",
+                                                       collection_name=checkpoint_collection,
+                                                       sort="last_processed_timestamp.desc",
+                                                       limit=1)
 
     logger.debug(f"checkpoint response: {checkpoint_response}")
 
@@ -96,10 +97,8 @@ def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
         logger.debug(f"last_checkpoint: {last_checkpoint}")
 
         # SearchObjects returns metadata, not actual objects, so use GetObject for details
-        object_details = api_client.command("GetObject",
-                                            collection_name=checkpoint_collection,
-                                            object_key=last_checkpoint["object_key"],
-                                            headers=headers)
+        object_details = custom_storage.GetObject(collection_name=checkpoint_collection,
+                                                  object_key=last_checkpoint["object_key"])
 
         # GetObject returns bytes; convert to JSON
         json_response = json.loads(object_details.decode("utf-8"))
@@ -114,8 +113,7 @@ def _get_checkpoint(workflow_context: Dict[str, Any]) -> Dict[str, Any]:
 
 def _process_and_update(workflow_context: Dict[str, Any], checkpoint_data: Dict[str, Any]) -> Response:
     """Process events and update checkpoint."""
-    api_client = workflow_context["api_client"]
-    headers = workflow_context["headers"]
+    custom_storage = workflow_context["custom_storage"]
     checkpoint_collection = workflow_context["checkpoint_collection"]
     workflow_id = workflow_context["workflow_id"]
     logger = workflow_context["logger"]
@@ -143,11 +141,9 @@ def _process_and_update(workflow_context: Dict[str, Any], checkpoint_data: Dict[
 
     logger.debug(f"Sending data to PutObject: {checkpoint_update}")
 
-    api_client.command("PutObject",
-                       body=checkpoint_update,
-                       collection_name=checkpoint_collection,
-                       object_key=f"checkpoint_{workflow_id}",
-                       headers=headers)
+    custom_storage.PutObject(body=checkpoint_update,
+                             collection_name=checkpoint_collection,
+                             object_key=f"checkpoint_{workflow_id}")
 
     return Response(
         body={
