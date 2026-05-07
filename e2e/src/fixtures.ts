@@ -1,10 +1,9 @@
 import { test as baseTest } from '@playwright/test';
 import {
-  FoundryHomePage, AppManagerPage, AppCatalogPage, config,
+  FoundryHomePage, AppManagerPage, AppCatalogPage, WorkflowsPage, config,
 } from '@crowdstrike/foundry-playwright';
 import { UserPreferencesExtensionPage } from './pages/UserPreferencesExtensionPage';
 import { CollectionsCRUDExtensionPage } from './pages/CollectionsCRUDExtensionPage';
-import { WorkflowsPage } from './pages/WorkflowsPage';
 
 type FoundryFixtures = {
   foundryHomePage: FoundryHomePage;
