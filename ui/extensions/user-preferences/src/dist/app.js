@@ -4521,7 +4521,7 @@ class Z {
   }
 }
 const B = t$3.litHtmlPolyfillSupport;
-B?.(S, k), (t$3.litHtmlVersions ??= []).push("3.3.2");
+B?.(S, k), (t$3.litHtmlVersions ??= []).push("3.3.3");
 const D = (t, i, s) => {
   const e = s?.renderBefore ?? i;
   let h = e._$litPart$;
@@ -5730,7 +5730,7 @@ const translations = new Map();
 let fallback;
 let documentDirection = 'ltr';
 let documentLanguage = 'en';
-const isClient = typeof MutationObserver !== "undefined" && typeof document !== "undefined" && typeof document.documentElement !== "undefined";
+const isClient = typeof MutationObserver !== 'undefined' && typeof document !== 'undefined' && typeof document.documentElement !== 'undefined';
 if (isClient) {
   const documentElementObserver = new MutationObserver(update);
   documentDirection = document.documentElement.dir || 'ltr';
@@ -5784,9 +5784,20 @@ let LocalizeController$1 = class LocalizeController {
   }
   getTranslationData(lang) {
     var _a, _b;
-    const locale = new Intl.Locale(lang.replace(/_/g, '-'));
-    const language = locale === null || locale === void 0 ? void 0 : locale.language.toLowerCase();
-    const region = (_b = (_a = locale === null || locale === void 0 ? void 0 : locale.region) === null || _a === void 0 ? void 0 : _a.toLowerCase()) !== null && _b !== void 0 ? _b : '';
+    let locale;
+    try {
+      locale = new Intl.Locale(lang.replace(/_/g, '-'));
+    } catch (_c) {
+      return {
+        locale: undefined,
+        language: '',
+        region: '',
+        primary: undefined,
+        secondary: undefined
+      };
+    }
+    const language = locale.language.toLowerCase();
+    const region = (_b = (_a = locale.region) === null || _a === void 0 ? void 0 : _a.toLowerCase()) !== null && _b !== void 0 ? _b : '';
     const primary = translations.get(`${language}-${region}`);
     const secondary = translations.get(language);
     return {
@@ -19460,10 +19471,10 @@ const o$2 = new WeakMap(),
     }
     update(i, [s]) {
       const e = s !== this.G;
-      return e && void 0 !== this.G && this.rt(void 0), (e || this.lt !== this.ct) && (this.G = s, this.ht = i.options?.host, this.rt(this.ct = i.element)), A;
+      return e && this.rt(void 0), (e || this.lt !== this.ct) && (this.G = s, this.ht = i.options?.host, this.rt(this.ct = i.element)), A;
     }
     rt(t) {
-      if (this.isConnected || (t = void 0), "function" == typeof this.G) {
+      if (void 0 !== this.G) if (this.isConnected || (t = void 0), "function" == typeof this.G) {
         const i = this.ht ?? globalThis;
         let s = o$2.get(i);
         void 0 === s && (s = new WeakMap(), o$2.set(i, s)), void 0 !== s.get(this.G) && this.G.call(this.ht, void 0), s.set(this.G, t), void 0 !== t && this.G.call(this.ht, t);
