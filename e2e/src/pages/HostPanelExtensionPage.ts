@@ -1,5 +1,5 @@
 import { Page, expect, FrameLocator } from '@playwright/test';
-import { SocketNavigationPage } from '@crowdstrike/foundry-playwright';
+import { SocketNavigationPage, config } from '@crowdstrike/foundry-playwright';
 
 /**
  * Base page object for testing UI extensions in hosts.host.panel socket
@@ -17,14 +17,14 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
 
         // Click second column to avoid checkbox in first column
         const firstRowCell = this.page.locator('table tbody tr:first-child td:nth-child(2)');
-        await firstRowCell.waitFor({ state: 'visible', timeout: 10000 });
+        await firstRowCell.waitFor({ state: 'visible', timeout: config.extensionTimeout });
         await firstRowCell.click();
 
         this.logger.info('Clicked on first row to open Host Information panel');
         await this.page.waitForLoadState('networkidle');
 
         const sidePanelHeader = this.page.locator('h2:has-text("Host information")').first();
-        await sidePanelHeader.waitFor({ state: 'visible', timeout: 10000 });
+        await sidePanelHeader.waitFor({ state: 'visible', timeout: config.extensionTimeout });
 
         this.logger.success(`Navigated to host with ${this.extensionName} extension`);
       },
@@ -39,7 +39,7 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
         await this.page.waitForLoadState('networkidle');
 
         const hostInfoPanel = this.page.locator('h2:has-text("Host information")').first();
-        await hostInfoPanel.waitFor({ state: 'visible', timeout: 10000 });
+        await hostInfoPanel.waitFor({ state: 'visible', timeout: config.extensionTimeout });
         this.logger.info('Host Information panel is visible');
 
         // Scroll to bottom to reveal extensions
@@ -47,16 +47,14 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
         await this.page.keyboard.press('End');
         this.logger.info('Scrolled to bottom of page');
 
-        await this.page.waitForTimeout(1000);
-
         const extensionHeading = this.page.locator(`h1:has-text("${this.extensionName}")`).first();
-        await extensionHeading.waitFor({ state: 'visible', timeout: 15000 });
+        await extensionHeading.waitFor({ state: 'visible', timeout: config.extensionTimeout });
         this.logger.info(`Found ${this.extensionName} heading`);
 
         await extensionHeading.click();
         this.logger.info(`Clicked to expand ${this.extensionName} extension`);
 
-        await expect(this.page.locator('iframe[name="portal"]')).toBeVisible({ timeout: 15000 });
+        await expect(this.page.locator('iframe[name="portal"]')).toBeVisible({ timeout: config.extensionTimeout });
         this.logger.info('Extension iframe loaded');
 
         const iframe: FrameLocator = this.page.frameLocator('iframe[name="portal"]');
