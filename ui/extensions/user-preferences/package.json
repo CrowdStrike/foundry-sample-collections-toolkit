@@ -22,7 +22,7 @@
     "react-router-dom": "7.17.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.5",
     "@babel/preset-react": "7.27.1",
     "@rollup/plugin-babel": "6.0.4",
@@ -79,6 +79,7 @@
     "brace-expansion@2": "2.0.3",
     "uuid": "13.0.1",
     "tmp": "0.2.7",
-    "ws": "8.21.0"
+    "ws": "8.21.0",
+    "js-yaml": "4.2.0"
   }
 }
