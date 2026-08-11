@@ -47,12 +47,15 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
         await this.page.keyboard.press('End');
         this.logger.info('Scrolled to bottom of page');
 
-        const extensionHeading = this.page.locator(`h1:has-text("${this.extensionName}")`).first();
-        await extensionHeading.waitFor({ state: 'visible', timeout: config.extensionTimeout });
-        this.logger.info(`Found ${this.extensionName} heading`);
+        const extensionButton = this.page.getByRole('button', { name: new RegExp(this.extensionName, 'i') }).first();
+        await extensionButton.waitFor({ state: 'visible', timeout: config.extensionTimeout });
+        this.logger.info(`Found ${this.extensionName} button`);
 
-        await extensionHeading.click();
-        this.logger.info(`Clicked to expand ${this.extensionName} extension`);
+        const isExpanded = await extensionButton.getAttribute('aria-expanded');
+        if (isExpanded === 'false' || isExpanded === null) {
+          await extensionButton.click();
+          this.logger.info(`Clicked to expand ${this.extensionName} extension`);
+        }
 
         await expect(this.page.locator('iframe[name="portal"]')).toBeVisible({ timeout: config.extensionTimeout });
         this.logger.info('Extension iframe loaded');
