@@ -15,6 +15,21 @@ export abstract class HostPanelExtensionPage extends SocketNavigationPage {
         await this.navigateToPath('/host-management/hosts', 'Host Management page');
         await this.page.waitForLoadState('networkidle');
 
+        // Dismiss alert banners (e.g., CVE Tech Alerts) that push content down
+        // and cause the sticky table header to overlap clickable rows
+        const alertClose = this.page.locator('[role="alert"] button:has-text("Close")');
+        if (await alertClose.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await alertClose.click();
+          this.logger.info('Dismissed alert banner');
+        }
+
+        // Collapse one-click filters to free vertical space for the table rows
+        const filtersToggle = this.page.getByRole('switch', { name: 'One-click filters' });
+        if (await filtersToggle.isChecked().catch(() => false)) {
+          await filtersToggle.click();
+          this.logger.info('Collapsed one-click filters');
+        }
+
         // Click second column to avoid checkbox in first column
         const firstRowCell = this.page.locator('table tbody tr:first-child td:nth-child(2)');
         await firstRowCell.waitFor({ state: 'visible', timeout: config.extensionTimeout });
