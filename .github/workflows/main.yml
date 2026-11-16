@@ -26,7 +26,7 @@ jobs:
             CHANGED_FILES=$(git diff --name-only origin/${{ github.event.repository.default_branch }}...HEAD)
           fi
 
-          if echo "$CHANGED_FILES" | grep -qE '^(functions/|\.github/workflows/main\.yml)'; then
+          if echo "$CHANGED_FILES" | grep -qE '^(functions/|\.github/workflows/main\.yml|\.github/requirements-dev\.txt)'; then
             echo "functions=true" >> $GITHUB_OUTPUT
           else
             echo "functions=false" >> $GITHUB_OUTPUT
@@ -57,7 +57,7 @@ jobs:
           python-version: '3.14'
           cache: 'pip'
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r ../../.github/requirements-dev.txt
         working-directory: ${{ matrix.function }}
       - name: Run tests if test_main.py exists
         run: |

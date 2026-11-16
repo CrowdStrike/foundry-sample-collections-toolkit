@@ -2,6 +2,8 @@ version: 2
 updates:
   - package-ecosystem: pip
     directories:
+      - "/.github"
+      - "/functions/csv-import/"
       - "/functions/log-event/"
       - "/functions/process-events/"
     schedule:
