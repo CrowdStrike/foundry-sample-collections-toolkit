@@ -2,4 +2,4 @@ crowdstrike-foundry-function==1.1.4
 crowdstrike-falconpy
 requests
 numpy==2.3.4
-pandas==2.3.3
+pandas==3.1.1
