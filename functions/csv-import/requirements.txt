@@ -1,5 +1,5 @@
 crowdstrike-foundry-function==1.1.4
 crowdstrike-falconpy
 requests
-numpy==2.3.4
+numpy==2.5.5
 pandas==2.3.3
